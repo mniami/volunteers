@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">android.kotlin.benchmark</string>
+    <string name="volunteer_item_name">Volunteer Name</string>
+    <string name="volunteer_item_description">Bydgoszcz Volunteer</string>
 </resources>
