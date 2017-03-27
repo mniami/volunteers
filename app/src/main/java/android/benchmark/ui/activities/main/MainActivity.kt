@@ -3,6 +3,8 @@ package android.benchmark.ui.activities.main
 import android.benchmark.R
 import android.benchmark.ui.fragments.base.IFragmentContainer
 import android.benchmark.ui.fragments.settings.SettingsFragment
+import android.benchmark.ui.views.actionbar.ActionBarTool
+import android.benchmark.ui.views.actionbar.IActionBarTool
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -10,7 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 
 internal class MainActivity : AppCompatActivity(), IMainActivity {
-    override val actionBarTool: IActionBarTool = ActionBarToolImpl(this)
+    override val actionBarTool: IActionBarTool = ActionBarTool(this)
 
     val presenter by lazy { MainPresenter(this) }
 

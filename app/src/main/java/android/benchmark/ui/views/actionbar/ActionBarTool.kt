@@ -1,6 +1,8 @@
-package android.benchmark.ui.activities.main
+package android.benchmark.ui.views.actionbar
 
-internal class ActionBarToolImpl(val mainActivity: MainActivity) : IActionBarTool {
+import android.benchmark.ui.activities.main.MainActivity
+
+internal class ActionBarTool(val mainActivity: MainActivity) : IActionBarTool {
     override fun showBackArrow() {
         mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true);
         mainActivity.supportActionBar?.setDisplayShowHomeEnabled(true);

@@ -1,4 +1,4 @@
-package android.benchmark.ui.activities.main
+package android.benchmark.ui.views.actionbar
 
 interface IActionBarTool {
     fun setTitle(title : String)
