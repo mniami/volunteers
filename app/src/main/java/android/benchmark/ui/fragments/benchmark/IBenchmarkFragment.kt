@@ -1,4 +1,4 @@
-package android.benchmark.ui.fragments.animationBenchmark
+package android.benchmark.ui.fragments.benchmark
 
 import android.benchmark.ui.fragments.base.IFragmentContainer
 import android.graphics.Bitmap

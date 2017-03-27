@@ -4,13 +4,13 @@ import android.benchmark.ui.fragments.volunteer.VolunteerListFragment
 
 internal class MainPresenter(val mainActivity: IMainActivity) :
         IMainPresenter {
+    override fun onSettingsClick() {
+        mainActivity.openSettings()
+    }
+
     override fun onCreate() {
-        //animationBenchmark.show()
         val volunteerView = VolunteerListFragment()
         mainActivity.navigateTo(volunteerView)
     }
 }
 
-interface IMainPresenter {
-    fun onCreate()
-}

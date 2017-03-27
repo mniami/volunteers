@@ -43,9 +43,11 @@ class ListAdapter(val data: List<Volunteer>) :
                 descriptionView.text = String.format("%s %s",
                         volunteerAddress.city, volunteerAddress.street)
             }
-            Picasso.with(itemView.context)
-                    .load(volunteer.avatarImageUri)
-                    .into(imageView)
+            if (!volunteer.avatarImageUri.isEmpty()) {
+                Picasso.with(itemView.context)
+                        .load(volunteer.avatarImageUri)
+                        .into(imageView)
+            }
         }
     }
 }

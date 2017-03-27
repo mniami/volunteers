@@ -1,4 +1,4 @@
-package android.benchmark.ui.fragments.animationBenchmark
+package android.benchmark.ui.fragments.benchmark
 
 import android.benchmark.ui.activities.main.IMainActivity
 import android.benchmark.ui.fragments.base.IFragmentContainer
@@ -11,11 +11,6 @@ import android.support.v4.app.Fragment
 
 internal class BenchmarkPresenter(val animationBenchmarkFragment:
                                   IBenchmarkFragment, val mainActivity: IMainActivity, val bitmapUtils: BitmapUtils) : IFragmentContainer {
-    companion object {
-        fun createInstance(bundle: Bundle = Bundle(), mainActivity: IMainActivity, bitmapUtils: BitmapUtils = BitmapUtils()): BenchmarkPresenter {
-            return BenchmarkPresenter(AnimationBenchmarkFragment(), mainActivity, bitmapUtils)
-        }
-    }
 
     val handler: Handler = Handler(Looper.getMainLooper())
 

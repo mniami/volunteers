@@ -1,4 +1,4 @@
-package android.benchmark.ui.fragments.animationBenchmark
+package android.benchmark.ui.fragments.benchmark
 
 import android.benchmark.R
 import android.benchmark.ui.activities.main.IMainActivity
@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 
-internal class AnimationBenchmarkFragment : Fragment(), IBenchmarkFragment {
+internal class BenchmarkFragment : Fragment(), IBenchmarkFragment {
     val presenter by lazy { BenchmarkPresenter(this, activity as IMainActivity, bitmapUtils = BitmapUtils()) }
     val imageBreakerView by lazy { view?.findViewById(R.id.imageBreakerView) as? ImageBreakerView }
 
