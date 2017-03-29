@@ -3,17 +3,28 @@ package android.benchmark.ui.views.actionbar
 import android.benchmark.ui.activities.main.MainActivity
 
 internal class ActionBarTool(val mainActivity: MainActivity) : IActionBarTool {
+    override var onBackPressed = fun(): Boolean { return false }
+    val actionBar by lazy { mainActivity.supportActionBar }
+
+    override fun clearOnBackPressed() {
+        onBackPressed = fun() : Boolean { return false }
+    }
+
+    override fun backPressed() : Boolean{
+        return this::onBackPressed.get().invoke()
+    }
+
     override fun showBackArrow() {
-        mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true);
-        mainActivity.supportActionBar?.setDisplayShowHomeEnabled(true);
+        actionBar?.setDisplayHomeAsUpEnabled(true);
+        actionBar?.setDisplayShowHomeEnabled(true);
     }
 
     override fun hideBackArrow() {
-        mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false);
-        mainActivity.supportActionBar?.setDisplayShowHomeEnabled(false);
+        actionBar?.setDisplayHomeAsUpEnabled(false);
+        actionBar?.setDisplayShowHomeEnabled(false);
     }
 
     override fun setTitle(title: String) {
-        mainActivity.supportActionBar?.setTitle(title)
+        actionBar?.setTitle(title)
     }
 }

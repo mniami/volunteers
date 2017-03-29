@@ -13,6 +13,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 
 internal class BenchmarkFragment : Fragment(), IBenchmarkFragment {
+    override fun getName(): String {
+        return "Benchmark"
+    }
+
     val presenter by lazy { BenchmarkPresenter(this, activity as IMainActivity, bitmapUtils = BitmapUtils()) }
     val imageBreakerView by lazy { view?.findViewById(R.id.imageBreakerView) as? ImageBreakerView }
 

@@ -10,7 +10,7 @@ import android.os.Looper
 import android.support.v4.app.Fragment
 
 internal class BenchmarkPresenter(val animationBenchmarkFragment:
-                                  IBenchmarkFragment, val mainActivity: IMainActivity, val bitmapUtils: BitmapUtils) : IFragmentContainer {
+                                  IBenchmarkFragment, val mainActivity: IMainActivity, val bitmapUtils: BitmapUtils) {
 
     val handler: Handler = Handler(Looper.getMainLooper())
 
@@ -25,10 +25,6 @@ internal class BenchmarkPresenter(val animationBenchmarkFragment:
         }, { errorMessage ->
             animationBenchmarkFragment.onAnimationError(errorMessage)
         })
-    }
-
-    override fun getFragment(): Fragment {
-        return animationBenchmarkFragment.getFragment()
     }
 }
 

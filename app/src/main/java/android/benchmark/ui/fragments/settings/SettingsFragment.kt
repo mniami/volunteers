@@ -28,6 +28,11 @@ class SettingsFragment : Fragment(), ISettingsFragment {
         presenter.onResume()
     }
 
+    override fun onPause() {
+        super.onPause()
+        presenter.onPause()
+    }
+
     override fun setAppVersion(appVersion: String) {
         tvAppVersion.setText(appVersion)
     }

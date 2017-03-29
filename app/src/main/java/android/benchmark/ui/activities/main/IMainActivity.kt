@@ -8,5 +8,6 @@ interface IMainActivity {
     fun navigateTo(fragmentContainer: IFragmentContainer)
     fun openSettings()
     fun getResourceText(id : Int) : String
+    fun goBack()
 }
 

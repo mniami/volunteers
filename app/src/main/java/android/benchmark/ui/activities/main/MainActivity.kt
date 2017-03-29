@@ -12,9 +12,14 @@ import android.view.Menu
 import android.view.MenuItem
 
 internal class MainActivity : AppCompatActivity(), IMainActivity {
+
     override val actionBarTool: IActionBarTool = ActionBarTool(this)
 
     val presenter by lazy { MainPresenter(this) }
+
+    override fun goBack() {
+        supportFragmentManager.popBackStack()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +30,13 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
 
         if (savedInstanceState === null) {
             presenter.onCreate()
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (!actionBarTool.backPressed()) {
+            supportFragmentManager.popBackStack()
         }
     }
 
@@ -49,10 +61,17 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
                 // as a favorite...
                 return true
 
-            else ->
+            android.R.id.home -> {
+                if (!actionBarTool.backPressed()) {
+                    supportFragmentManager.popBackStack()
+                }
+                return true
+            }
+            else -> {
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item)
+            }
         }
     }
 
