@@ -19,6 +19,7 @@ class VolunteerDetailsFragment : Fragment(), IVolunteerDetailsFragment {
     private val mainActivity by lazy { activity as IMainActivity }
     private val actionBarTool by lazy { mainActivity.actionBarTool }
     private var tvTitle : TextView? = null
+    private var tvSubHeader : TextView? = null
     private var tvHeader : TextView? = null
     private var tvShortDescription : TextView? = null
     private var tvDescription : TextView? = null
@@ -42,6 +43,7 @@ class VolunteerDetailsFragment : Fragment(), IVolunteerDetailsFragment {
             tvDescription = v.findViewById(R.id.tv_description) as TextView
             imImage = v.findViewById(R.id.iv_image) as ImageView
             vpViewPager = v.findViewById(R.id.volunteer_details_fragment_pager) as ViewPager
+            tvSubHeader = v.findViewById(R.id.tv_sub_header) as TextView
         }
         updateView()
     }
@@ -53,7 +55,7 @@ class VolunteerDetailsFragment : Fragment(), IVolunteerDetailsFragment {
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         if (enter){
-            presenter.volunteer?.name?.let { actionBarTool.setTitle(it) }
+            presenter.volunteer?.let { actionBarTool.setTitle("${it.name} ${it.surname}") }
             actionBarTool.showBackArrow()
         }
         return super.onCreateAnimation(transit, enter, nextAnim)
@@ -61,7 +63,7 @@ class VolunteerDetailsFragment : Fragment(), IVolunteerDetailsFragment {
 
     private fun updateView() {
         presenter.volunteer?.let { v ->
-            tvTitle?.setText("${v.name} ${v.surname}")
+            tvSubHeader?.setText("${v.name} ${v.surname}")
             tvHeader?.setText(v.volunteerType)
             tvShortDescription?.setText(v.shortDescription)
             tvDescription?.setText(v.description)

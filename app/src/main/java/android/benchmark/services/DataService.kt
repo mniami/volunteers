@@ -52,6 +52,34 @@ class DataServiceMock : IDataService {
                                     "1 Maja",
                                     "35A",
                                     "7"))))
+            volunteers.add(Volunteer(
+                    name = "Mirosław",
+                    surname = "Klosse",
+                    description = "This tutorial describes how to use Kotlin Android Extensions to improve support ... dependent on runtime, they require annotating fields for each View",
+                    shortDescription = "This tutorial describes how to use Kotlin",
+                    volunteerType = VolunteerType.Junior,
+                    avatarImageUri = "http://www.uidownload.com/files/553/986/399/avatar-face-icon.png",
+                    addresses = listOf(
+                            Address(
+                                    "Berlin",
+                                    "945321",
+                                    "Suzigkeiten Strasse",
+                                    "35",
+                                    "732"))))
+            volunteers.add(Volunteer(
+                    name = "Vladimir",
+                    surname = "Boroviz",
+                    description = "This tutorial describes how to use Kotlin Android Extensions to improve support ... dependent on runtime, they require annotating fields for each View",
+                    shortDescription = "This tutorial describes how to use Kotlin",
+                    volunteerType = VolunteerType.Regular,
+                    avatarImageUri = "http://www.iconninja.com/files/920/85/235/user-person-people-male-face-profile-mask-human-account-avatar-man-member-icon.png",
+                    addresses = listOf(
+                            Address(
+                                    "Moskwa",
+                                    "9556821",
+                                    "Stalinowska ulica",
+                                    "9897",
+                                    "73"))))
             emitter.onNext(volunteers)
         }
     }
