@@ -1,10 +1,13 @@
 package android.benchmark.ui.fragments.volunteer
 
+import android.app.Activity
 import android.benchmark.R
 import android.benchmark.domain.Volunteer
 import android.benchmark.services.DataServiceMock
 import android.benchmark.services.IDataService
 import android.benchmark.ui.activities.main.IMainActivity
+import android.benchmark.ui.views.actionbar.IActionBarTool
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -16,10 +19,11 @@ import android.view.animation.Animation
 
 class VolunteerListFragment : Fragment(), IVolunteerListFragment {
     private val FRAGMENT_NAME = "VolunteerList"
-    private val mainActivity by lazy { activity as IMainActivity }
     private val dataService: IDataService by lazy { DataServiceMock() }
     private val presenter: VolunteersPresenter by lazy { VolunteersPresenter(dataService, this) }
-    private val recyclerView by lazy { view?.findViewById(R.id.recycler_view) as RecyclerView }
+    private var mainActivity : IMainActivity? = null
+    private var recyclerView : RecyclerView? = null
+    private var actionBarTool : IActionBarTool? = null
 
     override fun getName(): String {
         return FRAGMENT_NAME
@@ -29,9 +33,18 @@ class VolunteerListFragment : Fragment(), IVolunteerListFragment {
         return this
     }
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        mainActivity = context as IMainActivity
+        actionBarTool = mainActivity?.actionBarTool
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.volunteer_list_fragment, container, false)
+        if (null == savedInstanceState) {
+            return inflater!!.inflate(R.layout.volunteer_list_fragment, container, false)
+        }
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onResume() {
@@ -41,22 +54,28 @@ class VolunteerListFragment : Fragment(), IVolunteerListFragment {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.setHasFixedSize(true)
+        recyclerView = view?.findViewById(R.id.recycler_view) as RecyclerView
+        recyclerView?.setHasFixedSize(true)
+
         val layoutManager = LinearLayoutManager(context)
-        recyclerView.layoutManager = layoutManager
+        recyclerView?.layoutManager = layoutManager
     }
 
     override fun showVolunteers(volunteers: List<Volunteer>) {
-        if (recyclerView.adapter == null) {
-            val adapter = ListAdapter(volunteers)
-            recyclerView.adapter = adapter
+        recyclerView?.let {
+            val adapter = ListAdapter(volunteers) { volunteer ->
+                mainActivity?.showVolunteer(volunteer)
+            }
+            recyclerView?.adapter = adapter
         }
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         if (enter){
-            mainActivity.actionBarTool.setTitle(mainActivity.getResourceText(R.string.app_name))
-            mainActivity.actionBarTool.hideBackArrow()
+            if (mainActivity != null) {
+                actionBarTool?.setTitle(mainActivity!!.getResourceText(R.string.app_name))
+                actionBarTool?.hideBackArrow()
+            }
         }
         return super.onCreateAnimation(transit, enter, nextAnim)
     }

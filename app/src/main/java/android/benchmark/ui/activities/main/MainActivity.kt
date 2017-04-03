@@ -1,8 +1,10 @@
 package android.benchmark.ui.activities.main
 
 import android.benchmark.R
+import android.benchmark.domain.Volunteer
 import android.benchmark.ui.fragments.base.IFragmentContainer
 import android.benchmark.ui.fragments.settings.SettingsFragment
+import android.benchmark.ui.fragments.volunteer.VolunteerDetailsFragment
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.IActionBarTool
 import android.os.Bundle
@@ -33,13 +35,6 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (!actionBarTool.backPressed()) {
-            supportFragmentManager.popBackStack()
-        }
-    }
-
     override fun getResourceText(id: Int): String {
         return getString(id)
     }
@@ -57,8 +52,6 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
             }
 
             R.id.action_favorite ->
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
                 return true
 
             android.R.id.home -> {
@@ -68,8 +61,6 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
                 return true
             }
             else -> {
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item)
             }
         }
@@ -79,8 +70,9 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
         val fragment = fragmentContainer.getFragment()
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
         val transaction = supportFragmentManager.beginTransaction()
-
-        transaction.addToBackStack(null)
+        if (currentFragment != null) {
+            transaction.addToBackStack(null)
+        }
         transaction.setCustomAnimations(R.anim.abc_popup_enter, R.anim.abc_popup_exit)
         if (currentFragment === null) {
             transaction.add(R.id.fragmentContainer, fragment, fragmentContainer.getName())
@@ -95,6 +87,20 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
                 .addToBackStack(null)
                 .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
                 .replace(R.id.fragmentContainer, SettingsFragment(), "settings")
+                .commit()
+    }
+
+    override fun showVolunteer(volunteer: Volunteer) {
+        val bundle = Bundle()
+        bundle.putSerializable("volunteer", volunteer)
+
+        val volunteerDetailsFragment = VolunteerDetailsFragment()
+        volunteerDetailsFragment.arguments = bundle
+
+        supportFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
+                .replace(R.id.fragmentContainer, volunteerDetailsFragment, "volunteers")
                 .commit()
     }
 }

@@ -10,12 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 
-class ListAdapter(val data: List<Volunteer>) :
+class ListAdapter(val data: List<Volunteer>, val onClickListener: (Volunteer) -> Unit) :
         RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListAdapter.ViewHolder {
         return ViewHolder(LayoutInflater.from(parent?.context)
-                .inflate(R.layout.volunteer_item, parent, false))
+                .inflate(R.layout.volunteer_item, parent, false), onClickListener)
     }
 
     override fun onBindViewHolder(holder: ListAdapter.ViewHolder?, position: Int) {
@@ -27,7 +27,7 @@ class ListAdapter(val data: List<Volunteer>) :
         return data.size
     }
 
-    class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View?, val onClickListener: (Volunteer) -> Unit) : RecyclerView.ViewHolder(itemView) {
         fun update(volunteer: Volunteer) {
             val nameView = itemView.findViewById(R.id.volunteer_name) as
                     TextView
@@ -43,11 +43,25 @@ class ListAdapter(val data: List<Volunteer>) :
                 descriptionView.text = String.format("%s %s",
                         volunteerAddress.city, volunteerAddress.street)
             }
+            nameView.tag = volunteer
+            descriptionView.tag = volunteer
+            imageView.tag = volunteer
+            itemView.tag = volunteer
+
+            nameView.setOnClickListener(this::onClick)
+            descriptionView.setOnClickListener(this::onClick)
+            imageView.setOnClickListener(this::onClick)
+            itemView.setOnClickListener(this::onClick)
+
             if (!volunteer.avatarImageUri.isEmpty()) {
                 Picasso.with(itemView.context)
                         .load(volunteer.avatarImageUri)
                         .into(imageView)
             }
+        }
+
+        fun onClick(view: View) {
+            onClickListener(view.tag as Volunteer)
         }
     }
 }
