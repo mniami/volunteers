@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.TextView
-import kotlinx.android.synthetic.main.activity_main.*
 
 class SettingsFragment : Fragment(), ISettingsFragment {
     val mainActivity by lazy { activity as IMainActivity }

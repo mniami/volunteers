@@ -29,12 +29,9 @@ class ListAdapter(val data: List<Volunteer>, val onClickListener: (Volunteer) ->
 
     class ViewHolder(itemView: View?, val onClickListener: (Volunteer) -> Unit) : RecyclerView.ViewHolder(itemView) {
         fun update(volunteer: Volunteer) {
-            val nameView = itemView.findViewById(R.id.volunteer_name) as
-                    TextView
-            val descriptionView = itemView.findViewById(R.id
-                    .volunteer_description) as TextView
-            val imageView = itemView.findViewById(R.id.volunteer_image) as
-                    ImageView
+            val nameView = itemView.findViewById(R.id.volunteer_name) as TextView
+            val descriptionView = itemView.findViewById(R.id.volunteer_description) as TextView
+            val imageView = itemView.findViewById(R.id.volunteer_image) as ImageView
 
             nameView.text = String.format("%s %s", volunteer.name,
                     volunteer.surname)

@@ -1,6 +1,5 @@
 package android.benchmark.ui.fragments.volunteer
 
-import android.app.Activity
 import android.benchmark.R
 import android.benchmark.domain.Volunteer
 import android.benchmark.services.DataServiceMock
@@ -72,8 +71,8 @@ class VolunteerListFragment : Fragment(), IVolunteerListFragment {
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         if (enter){
-            if (mainActivity != null) {
-                actionBarTool?.setTitle(mainActivity!!.getResourceText(R.string.app_name))
+            mainActivity?.let { ma ->
+                actionBarTool?.setTitle(ma.getResourceText(R.string.app_name))
                 actionBarTool?.hideBackArrow()
             }
         }
