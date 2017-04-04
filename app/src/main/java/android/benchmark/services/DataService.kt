@@ -80,6 +80,8 @@ class DataServiceMock : IDataService {
                                     "Stalinowska ulica",
                                     "9897",
                                     "73"))))
+            volunteers.addAll(volunteers)
+            volunteers.addAll(volunteers)
             emitter.onNext(volunteers)
         }
     }

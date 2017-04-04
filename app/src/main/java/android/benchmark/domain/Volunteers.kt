@@ -42,6 +42,13 @@ class VolunteerType {
     }
 }
 
+open class Project (val name : String = "",
+                    val volunteersEngaged : List<Volunteer> = emptyList(),
+                    val images : List<ImageMetadata> = emptyList()) : Serializable
+
+open class ImageMetadata (val name : String = "",
+                          val url : String = "") : Serializable
+
 class Address(
         val city: String = "",
         val zip: String = "",
