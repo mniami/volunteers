@@ -1,8 +1,6 @@
 package android.benchmark.services
 
-import android.benchmark.domain.Address
-import android.benchmark.domain.Volunteer
-import android.benchmark.domain.VolunteerType
+import android.benchmark.domain.*
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
@@ -21,9 +19,16 @@ class DataService : IDataService {
 }
 
 class DataServiceMock : IDataService {
+    val DESCRIPTION = "This tutorial describes how to use Kotlin Android Extensions to improve support ... dependent on runtime, they require annotating fields for each View"
+
     override fun getVolunteers(): Observable<List<Volunteer>> {
         return Observable.create { emitter: ObservableEmitter<List<Volunteer>> ->
             val volunteers = arrayListOf<Volunteer>()
+            val projectImages = listOf(
+                    ImageMetadata("", "https://s-media-cache-ak0.pinimg.com/564x/3b/7d/6f/3b7d6f60e2d450b899c322266fc6edfd.jpg"),
+                    ImageMetadata("", "https://cdn4.iconfinder.com/data/icons/STROKE/communications/png/400/avatar.png"),
+                    ImageMetadata("", "http://www.uidownload.com/files/553/986/399/avatar-face-icon.png"),
+                    ImageMetadata("", "http://www.iconninja.com/files/920/85/235/user-person-people-male-face-profile-mask-human-account-avatar-man-member-icon.png"))
             volunteers.add(Volunteer(
                     name = "Damian",
                     surname = "Szczepański",
@@ -31,6 +36,7 @@ class DataServiceMock : IDataService {
                     shortDescription = "This tutorial describes how to use Kotlin",
                     volunteerType = VolunteerType.Senior,
                     avatarImageUri = "https://s-media-cache-ak0.pinimg.com/564x/3b/7d/6f/3b7d6f60e2d450b899c322266fc6edfd.jpg",
+                    projects = listOf(Project("Sadzenie drzewek", DESCRIPTION, emptyList(), projectImages), Project("Wykopanie rowu", DESCRIPTION), Project("Zbudowanie aplikacji")),
                     addresses = listOf(
                             Address(
                                     "Bydgoszcz",

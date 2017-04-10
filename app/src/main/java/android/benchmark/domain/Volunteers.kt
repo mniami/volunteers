@@ -9,8 +9,9 @@ class Volunteer(val needies: List<Needy> = emptyList(),
                 shortDescription: String = "",
                 description: String = "",
                 volunteerType : String = "",
+                projects : List<Project> = emptyList(),
                 addresses: List<Address> = emptyList()) :
-        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, addresses)
+        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, projects, addresses)
 
 class Needy(val volunteers: List<Volunteer> = emptyList(),
             name: String = "",
@@ -19,8 +20,9 @@ class Needy(val volunteers: List<Volunteer> = emptyList(),
             shortDescription: String = "",
             description: String = "",
             volunteerType : String = "",
+            projects : List<Project> = emptyList(),
             addresses: List<Address> = emptyList()) :
-        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, addresses)
+        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, projects, addresses)
 
 open class Person (
         val name: String = "",
@@ -29,6 +31,7 @@ open class Person (
         val shortDescription: String = "",
         val description: String = "",
         val volunteerType : String = "",
+        val projects : List<Project> = emptyList(),
         val addresses: List<Address> = emptyList()) : Serializable {
 
 }
@@ -43,7 +46,8 @@ class VolunteerType {
 }
 
 open class Project (val name : String = "",
-                    val volunteersEngaged : List<Volunteer> = emptyList(),
+                    val description : String = "",
+                    val volunteersInvolved: List<Volunteer> = emptyList(),
                     val images : List<ImageMetadata> = emptyList()) : Serializable
 
 open class ImageMetadata (val name : String = "",

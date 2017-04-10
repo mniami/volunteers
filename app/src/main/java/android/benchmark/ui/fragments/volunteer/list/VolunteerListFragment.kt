@@ -1,10 +1,13 @@
-package android.benchmark.ui.fragments.volunteer
+package android.benchmark.ui.fragments.volunteer.list
 
 import android.benchmark.R
 import android.benchmark.domain.Volunteer
 import android.benchmark.services.DataServiceMock
 import android.benchmark.services.IDataService
 import android.benchmark.ui.activities.main.IMainActivity
+import android.benchmark.ui.fragments.volunteer.list.VolunteersPresenter
+import android.benchmark.ui.fragments.volunteer.list.IVolunteerListFragment
+import android.benchmark.ui.fragments.volunteer.list.ListAdapter
 import android.benchmark.ui.views.actionbar.IActionBarTool
 import android.content.Context
 import android.os.Bundle

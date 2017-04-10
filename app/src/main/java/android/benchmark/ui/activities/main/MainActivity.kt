@@ -4,7 +4,7 @@ import android.benchmark.R
 import android.benchmark.domain.Volunteer
 import android.benchmark.ui.fragments.base.IFragmentContainer
 import android.benchmark.ui.fragments.settings.SettingsFragment
-import android.benchmark.ui.fragments.volunteer.VolunteerDetailsFragment
+import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.IActionBarTool
 import android.os.Bundle
@@ -30,9 +30,7 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
         val myToolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(myToolbar)
 
-        if (savedInstanceState === null) {
-            presenter.onCreate()
-        }
+        presenter.onCreate()
     }
 
     override fun getResourceText(id: Int): String {

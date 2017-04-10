@@ -1,4 +1,4 @@
-package android.benchmark.ui.fragments.volunteer
+package android.benchmark.ui.fragments.volunteer.details
 
 import android.benchmark.R
 import android.benchmark.domain.Volunteer
@@ -15,16 +15,16 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 
 class VolunteerDetailsFragment : Fragment(), IVolunteerDetailsFragment {
-    private val presenter : VolunteerDetailsPresenter = VolunteerDetailsPresenter(this)
+    private val presenter: VolunteerDetailsPresenter = VolunteerDetailsPresenter(this)
     private val mainActivity by lazy { activity as IMainActivity }
     private val actionBarTool by lazy { mainActivity.actionBarTool }
-    private var tvTitle : TextView? = null
-    private var tvSubHeader : TextView? = null
-    private var tvHeader : TextView? = null
-    private var tvShortDescription : TextView? = null
-    private var tvDescription : TextView? = null
-    private var imImage : ImageView? = null
-    private var vpViewPager : ViewPager? = null
+    private var tvTitle: TextView? = null
+    private var tvSubHeader: TextView? = null
+    private var tvHeader: TextView? = null
+    private var tvShortDescription: TextView? = null
+    private var tvDescription: TextView? = null
+    private var imImage: ImageView? = null
+    private var vpViewPager: ViewPager? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -44,8 +44,8 @@ class VolunteerDetailsFragment : Fragment(), IVolunteerDetailsFragment {
             imImage = v.findViewById(R.id.iv_image) as ImageView
             vpViewPager = v.findViewById(R.id.volunteer_details_fragment_pager) as ViewPager
             tvSubHeader = v.findViewById(R.id.tv_sub_header) as TextView
+            updateView()
         }
-        updateView()
     }
 
     override fun setArguments(args: Bundle?) {
@@ -54,7 +54,7 @@ class VolunteerDetailsFragment : Fragment(), IVolunteerDetailsFragment {
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        if (enter){
+        if (enter) {
             presenter.volunteer?.let { actionBarTool.setTitle("${it.name} ${it.surname}") }
             actionBarTool.showBackArrow()
         }
@@ -67,6 +67,8 @@ class VolunteerDetailsFragment : Fragment(), IVolunteerDetailsFragment {
             tvHeader?.setText(v.volunteerType)
             tvShortDescription?.setText(v.shortDescription)
             tvDescription?.setText(v.description)
+            vpViewPager?.adapter = ProjectAdapter(fragmentManager, v.projects)
+
             Picasso.with(context).load(v.avatarImageUri).into(imImage)
         }
     }

@@ -1,4 +1,4 @@
-package android.benchmark.ui.fragments.volunteer
+package android.benchmark.ui.fragments.volunteer.list
 
 import android.benchmark.R
 import android.benchmark.domain.Volunteer
@@ -13,12 +13,12 @@ import com.squareup.picasso.Picasso
 class ListAdapter(val data: List<Volunteer>, val onClickListener: (Volunteer) -> Unit) :
         RecyclerView.Adapter<ListAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent?.context)
                 .inflate(R.layout.volunteer_item, parent, false), onClickListener)
     }
 
-    override fun onBindViewHolder(holder: ListAdapter.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val volunteer = data[position]
         holder?.update(volunteer)
     }
