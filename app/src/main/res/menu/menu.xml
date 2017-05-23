@@ -11,4 +11,8 @@
           android:title="@string/action_settings"
           app:showAsAction="never"/>
 
+    <item android:id="@+id/action_authentication"
+          android:title="@string/authentication"
+          app:showAsAction="never"/>
+
 </menu>

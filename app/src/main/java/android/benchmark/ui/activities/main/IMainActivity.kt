@@ -11,5 +11,6 @@ interface IMainActivity {
     fun getResourceText(id: Int): String
     fun goBack()
     fun showVolunteer(volunteer: Volunteer)
+    fun openAuthentication()
 }
 
