@@ -3,11 +3,13 @@ package android.benchmark.ui.activities.main
 import android.benchmark.R
 import android.benchmark.domain.Volunteer
 import android.benchmark.ui.fragments.base.IFragmentContainer
+import android.benchmark.ui.fragments.settings.AuthenticationFragment
 import android.benchmark.ui.fragments.settings.SettingsFragment
 import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.IActionBarTool
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -49,6 +51,11 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
                 return true
             }
 
+            R.id.action_authentication -> {
+                presenter.onAuthenticationClick()
+                return true
+            }
+
             R.id.action_favorite ->
                 return true
 
@@ -80,13 +87,8 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
         transaction.commit()
     }
 
-    override fun openSettings() {
-        supportFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
-                .replace(R.id.fragmentContainer, SettingsFragment(), "settings")
-                .commit()
-    }
+    override fun openSettings() = changeFragment(SettingsFragment(), "settings")
+    override fun openAuthentication() = changeFragment(AuthenticationFragment(), "authentication")
 
     override fun showVolunteer(volunteer: Volunteer) {
         val bundle = Bundle()
@@ -95,10 +97,14 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
         val volunteerDetailsFragment = VolunteerDetailsFragment()
         volunteerDetailsFragment.arguments = bundle
 
+        changeFragment(volunteerDetailsFragment, "volunteers")
+    }
+
+    fun changeFragment(fragment : Fragment, name : String){
         supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
                 .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
-                .replace(R.id.fragmentContainer, volunteerDetailsFragment, "volunteers")
+                .replace(R.id.fragmentContainer, fragment, name)
                 .commit()
     }
 }

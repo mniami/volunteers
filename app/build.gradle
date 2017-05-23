@@ -22,6 +22,11 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+    productFlavors {
+        free {
+            versionName "1.0-free"
+        }
+    }
 }
 
 dependencies {
