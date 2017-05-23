@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "802067048480",
+    "firebase_url": "https://androidkotlinbenchmark.firebaseio.com",
+    "project_id": "androidkotlinbenchmark",
+    "storage_bucket": "androidkotlinbenchmark.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802067048480:android:764dfb7ee841eeba",
+        "android_client_info": {
+          "package_name": "android.androidkotlinbenchmark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802067048480-hl3vr2vdpusuotm50d0jv1pdrdtgt1fj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.androidkotlinbenchmark",
+            "certificate_hash": "6948779bd0af641776f52914213c15d25cbd21cf"
+          }
+        },
+        {
+          "client_id": "802067048480-804egjo90gtaiatdog2ol5q4def639m3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD09IBpEVV0KeasWySVjUz2zaeYmzGmuBs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802067048480-804egjo90gtaiatdog2ol5q4def639m3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

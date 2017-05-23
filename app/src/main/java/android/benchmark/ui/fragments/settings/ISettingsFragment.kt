@@ -1,7 +1,8 @@
 package android.benchmark.ui.fragments.settings
 
-import android.benchmark.ui.activities.main.IMainActivity
+import android.benchmark.domain.User
 
 interface ISettingsFragment {
     fun setAppVersion(appVersion : String)
+    fun showUserData(user: User?)
 }

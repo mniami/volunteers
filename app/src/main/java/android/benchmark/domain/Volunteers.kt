@@ -32,9 +32,19 @@ open class Person (
         val description: String = "",
         val volunteerType : String = "",
         val projects : List<Project> = emptyList(),
-        val addresses: List<Address> = emptyList()) : Serializable {
+        val addresses: List<Address> = emptyList()) : Serializable
 
-}
+class User(val volunteers: List<Volunteer> = emptyList(),
+           name: String = "",
+           surname: String = "",
+           avatarImageUri: String = "",
+           shortDescription: String = "",
+           description: String = "",
+           volunteerType: String = "",
+           projects: List<Project> = emptyList(),
+           addresses: List<Address> = emptyList()) :
+        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, projects, addresses)
+
 class VolunteerType {
     companion object {
         const val Admin = "Admin"

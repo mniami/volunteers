@@ -1,6 +1,8 @@
 package android.benchmark.ui.fragments.settings
 
 import android.benchmark.R
+import android.benchmark.domain.User
+import android.benchmark.services.Services
 import android.benchmark.ui.activities.main.IMainActivity
 import android.benchmark.ui.utils.AppVersionProvider
 import android.os.Bundle
@@ -14,7 +16,7 @@ import android.widget.TextView
 class SettingsFragment : Fragment(), ISettingsFragment {
     val mainActivity by lazy { activity as IMainActivity }
     val appVersionProvider by lazy { AppVersionProvider(activity.packageManager, activity.packageName) }
-    val presenter by lazy { SettingsPresenter(this, appVersionProvider, mainActivity) }
+    val presenter by lazy { SettingsPresenter(this, appVersionProvider, Services.dataService, mainActivity) }
     val tvAppVersion by lazy { view?.findViewById(R.id.tvAppVersion) as TextView }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -33,7 +35,7 @@ class SettingsFragment : Fragment(), ISettingsFragment {
     }
 
     override fun setAppVersion(appVersion: String) {
-        tvAppVersion.setText(appVersion)
+        tvAppVersion.text = appVersion
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
@@ -42,5 +44,11 @@ class SettingsFragment : Fragment(), ISettingsFragment {
             mainActivity.actionBarTool.showBackArrow()
         }
         return super.onCreateAnimation(transit, enter, nextAnim)
+    }
+
+    override fun showUserData(user: User?) {
+        user?.let {
+
+        }
     }
 }

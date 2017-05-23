@@ -1,24 +1,17 @@
-package android.benchmark.services
+package android.benchmark.services.dataservices
 
 import android.benchmark.domain.*
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
-interface IDataService {
-    fun getVolunteers(): Observable<List<Volunteer>>
-}
-
-class DataService : IDataService {
-    override fun getVolunteers(): Observable<List<Volunteer>> {
-        return Observable.create { emitter: ObservableEmitter<List<Volunteer>> ->
-            val volunteers = arrayListOf<Volunteer>()
-            volunteers.add(Volunteer(name = "Damian"))
-            emitter.onNext(volunteers)
+class DataServiceMock : IDataService {
+    override fun getUser(): Observable<User> {
+        return Observable.create { emitter: ObservableEmitter<User> ->
+            emitter.onNext(User(name = "damian.szczepanski", surname = "Damian Szczepanski"))
+            emitter.onComplete()
         }
     }
-}
 
-class DataServiceMock : IDataService {
     val DESCRIPTION = "This tutorial describes how to use Kotlin Android Extensions to improve support ... dependent on runtime, they require annotating fields for each View"
 
     override fun getVolunteers(): Observable<List<Volunteer>> {
@@ -34,7 +27,7 @@ class DataServiceMock : IDataService {
                     surname = "Szczepański",
                     description = "This tutorial describes how to use Kotlin Android Extensions to improve support ... dependent on runtime, they require annotating fields for each View",
                     shortDescription = "This tutorial describes how to use Kotlin",
-                    volunteerType = VolunteerType.Senior,
+                    volunteerType = VolunteerType.Companion.Senior,
                     avatarImageUri = "https://s-media-cache-ak0.pinimg.com/564x/3b/7d/6f/3b7d6f60e2d450b899c322266fc6edfd.jpg",
                     projects = listOf(Project("Sadzenie drzewek", DESCRIPTION, emptyList(), projectImages), Project("Wykopanie rowu", DESCRIPTION), Project("Zbudowanie aplikacji")),
                     addresses = listOf(
@@ -49,7 +42,7 @@ class DataServiceMock : IDataService {
                     surname = "Grochowiecka",
                     description = "This tutorial describes how to use Kotlin Android Extensions to improve support ... dependent on runtime, they require annotating fields for each View",
                     shortDescription = "This tutorial describes how to use Kotlin",
-                    volunteerType = VolunteerType.Moderator,
+                    volunteerType = VolunteerType.Companion.Moderator,
                     avatarImageUri = "https://cdn4.iconfinder.com/data/icons/STROKE/communications/png/400/avatar.png",
                     addresses = listOf(
                             Address(
@@ -63,7 +56,7 @@ class DataServiceMock : IDataService {
                     surname = "Klosse",
                     description = "This tutorial describes how to use Kotlin Android Extensions to improve support ... dependent on runtime, they require annotating fields for each View",
                     shortDescription = "This tutorial describes how to use Kotlin",
-                    volunteerType = VolunteerType.Junior,
+                    volunteerType = VolunteerType.Companion.Junior,
                     avatarImageUri = "http://www.uidownload.com/files/553/986/399/avatar-face-icon.png",
                     addresses = listOf(
                             Address(
@@ -77,7 +70,7 @@ class DataServiceMock : IDataService {
                     surname = "Boroviz",
                     description = "This tutorial describes how to use Kotlin Android Extensions to improve support ... dependent on runtime, they require annotating fields for each View",
                     shortDescription = "This tutorial describes how to use Kotlin",
-                    volunteerType = VolunteerType.Regular,
+                    volunteerType = VolunteerType.Companion.Regular,
                     avatarImageUri = "http://www.iconninja.com/files/920/85/235/user-person-people-male-face-profile-mask-human-account-avatar-man-member-icon.png",
                     addresses = listOf(
                             Address(
@@ -89,6 +82,7 @@ class DataServiceMock : IDataService {
             volunteers.addAll(volunteers)
             volunteers.addAll(volunteers)
             emitter.onNext(volunteers)
+            emitter.onComplete()
         }
     }
 }
