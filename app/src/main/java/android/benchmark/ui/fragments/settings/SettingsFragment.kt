@@ -4,6 +4,8 @@ import android.benchmark.R
 import android.benchmark.domain.User
 import android.benchmark.services.Services
 import android.benchmark.ui.activities.main.IMainActivity
+import android.benchmark.ui.fragments.base.BaseFragment
+import android.benchmark.ui.fragments.base.ToolbarConfiguration
 import android.benchmark.ui.utils.AppVersionProvider
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,8 +15,11 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.TextView
 
-class SettingsFragment : Fragment(), ISettingsFragment {
-    val mainActivity by lazy { activity as IMainActivity }
+class SettingsFragment : BaseFragment(
+        R.layout.settings_fragment,
+        ToolbarConfiguration(),
+        SettingsPresenter(, appVersionProvider, Services.dataService, mainActivity)
+        ), ISettingsFragment {
     val appVersionProvider by lazy { AppVersionProvider(activity.packageManager, activity.packageName) }
     val presenter by lazy { SettingsPresenter(this, appVersionProvider, Services.dataService, mainActivity) }
     val tvAppVersion by lazy { view?.findViewById(R.id.tvAppVersion) as TextView }
