@@ -13,14 +13,11 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TableRow
-import android.widget.TextView
+import kotlinx.android.synthetic.main.project_details_fragment.*
 
 class ProjectDetailsFragment : Fragment(), IProjectDetailsFragment {
     private val presenter: ProjectDetailsPresenter = ProjectDetailsPresenter(this)
-    private var tvDescription: TextView? = null
-    private var vpImages: ViewGroup? = null
-    private var layoutInflater: LayoutInflater? = null
-    private var mainContainer : ViewGroup? = null
+    private var layoutInflater : LayoutInflater? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -34,10 +31,6 @@ class ProjectDetailsFragment : Fragment(), IProjectDetailsFragment {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view?.let { v ->
-            tvDescription = v.findViewById(R.id.tv_description) as TextView
-            vpImages = v.findViewById(R.id.vp_images) as ViewGroup
-            mainContainer = view as ViewGroup
-
             updateView()
         }
     }

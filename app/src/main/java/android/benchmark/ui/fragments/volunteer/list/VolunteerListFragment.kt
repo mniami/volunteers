@@ -15,13 +15,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
+import kotlinx.android.synthetic.main.volunteer_list_fragment.*
 
 class VolunteerListFragment : Fragment(), IVolunteerListFragment {
     private val FRAGMENT_NAME = "VolunteerList"
     private val dataService: IDataService by lazy { DataServiceMock() }
     private val presenter: VolunteersPresenter by lazy { VolunteersPresenter(dataService, this) }
     private var mainActivity : IMainActivity? = null
-    private var recyclerView : RecyclerView? = null
     private var actionBarTool : IActionBarTool? = null
 
     override fun getName(): String {
@@ -53,7 +53,6 @@ class VolunteerListFragment : Fragment(), IVolunteerListFragment {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView = view?.findViewById(R.id.recycler_view) as RecyclerView
         recyclerView?.setHasFixedSize(true)
 
         val layoutManager = LinearLayoutManager(context)
