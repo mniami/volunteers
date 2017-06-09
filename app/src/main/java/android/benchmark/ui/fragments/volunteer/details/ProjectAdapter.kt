@@ -2,6 +2,7 @@ package android.benchmark.ui.fragments.volunteer.details
 
 import android.benchmark.domain.Project
 import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFragment
+import android.benchmark.ui.utils.withPosition
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter
 
 class ProjectAdapter(fragmentManager: FragmentManager, val projectList: List<Project>) :
         FragmentPagerAdapter(fragmentManager) {
+
     override fun getItem(position: Int): Fragment {
         val f = ProjectDetailsFragment()
         val bundle = Bundle()
@@ -22,7 +24,8 @@ class ProjectAdapter(fragmentManager: FragmentManager, val projectList: List<Pro
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        val project = projectList[position]
-        return project?.name
+        return projectList.withPosition(position, "", { project ->
+            project?.name
+        })
     }
 }

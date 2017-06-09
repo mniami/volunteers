@@ -1,6 +1,8 @@
 package android.benchmark.ui.fragments.settings
 
-class AuthenticationPresenter {
+import android.benchmark.ui.fragments.base.Presenter
+
+class AuthenticationPresenter : Presenter(){
     companion object {
         val NOT_SIGNED_UP = 1
         val NOT_SIGNED_IN = 2

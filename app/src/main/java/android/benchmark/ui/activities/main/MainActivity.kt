@@ -2,10 +2,12 @@ package android.benchmark.ui.activities.main
 
 import android.benchmark.R
 import android.benchmark.domain.Volunteer
-import android.benchmark.ui.fragments.base.IFragmentContainer
+import android.benchmark.services.Services
 import android.benchmark.ui.fragments.settings.AuthenticationFragment
 import android.benchmark.ui.fragments.settings.SettingsFragment
 import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
+import android.benchmark.ui.fragments.volunteer.list.VolunteerListFragment
+import android.benchmark.ui.utils.AppVersionProvider
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.IActionBarTool
 import android.os.Bundle
@@ -19,7 +21,8 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
 
     override val actionBarTool: IActionBarTool = ActionBarTool(this)
 
-    val presenter by lazy { MainPresenter(this) }
+    val presenter by lazy { MainPresenter(this, dataService) }
+    val dataService = Services.dataService
 
     override fun goBack() {
         supportFragmentManager.popBackStack()
@@ -71,25 +74,9 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
         }
     }
 
-    override fun navigateTo(fragmentContainer: IFragmentContainer) {
-        val fragment = fragmentContainer.getFragment()
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
-        val transaction = supportFragmentManager.beginTransaction()
-        if (currentFragment != null) {
-            transaction.addToBackStack(null)
-        }
-        transaction.setCustomAnimations(R.anim.abc_popup_enter, R.anim.abc_popup_exit)
-        if (currentFragment === null) {
-            transaction.add(R.id.fragmentContainer, fragment, fragmentContainer.getName())
-        } else {
-            transaction.replace(R.id.fragmentContainer, fragment, fragmentContainer.getName())
-        }
-        transaction.commit()
-    }
-
     override fun openSettings() = changeFragment(SettingsFragment(), "settings")
     override fun openAuthentication() = changeFragment(AuthenticationFragment(), "authentication")
-
+    override fun showVolunteerList() = changeFragment(VolunteerListFragment(), "volunteerList")
     override fun showVolunteer(volunteer: Volunteer) {
         val bundle = Bundle()
         bundle.putSerializable("volunteer", volunteer)
@@ -100,7 +87,7 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
         changeFragment(volunteerDetailsFragment, "volunteers")
     }
 
-    fun changeFragment(fragment : Fragment, name : String){
+    private fun changeFragment(fragment : Fragment, name : String){
         supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
                 .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)

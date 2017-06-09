@@ -1,8 +1,7 @@
 package android.benchmark.ui.fragments.volunteer.list
 
 import android.benchmark.domain.Volunteer
-import android.benchmark.ui.fragments.base.IFragmentContainer
 
-interface IVolunteerListFragment : IFragmentContainer {
+interface IVolunteerListFragment {
     fun showVolunteers(volunteers: List<Volunteer>)
 }

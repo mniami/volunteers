@@ -3,6 +3,10 @@ package android.benchmark.ui.fragments.volunteer.details.project
 import android.benchmark.R
 import android.benchmark.domain.ImageMetadata
 import android.benchmark.domain.Project
+import android.benchmark.ui.fragments.base.BaseFragment
+import android.benchmark.ui.fragments.base.FragmentConfiguration
+import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
+import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsPresenter
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -15,17 +19,11 @@ import android.widget.ImageView
 import android.widget.TableRow
 import kotlinx.android.synthetic.main.project_details_fragment.*
 
-class ProjectDetailsFragment : Fragment(), IProjectDetailsFragment {
-    private val presenter: ProjectDetailsPresenter = ProjectDetailsPresenter(this)
-    private var layoutInflater : LayoutInflater? = null
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        layoutInflater = inflater
-        if (savedInstanceState == null) {
-            return inflater!!.inflate(R.layout.project_details_fragment, container, false)
-        }
-        return super.onCreateView(inflater, container, savedInstanceState)
+class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProjectDetailsFragment {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        presenter = ProjectDetailsPresenter(this)
+        configuration = FragmentConfiguration.withLayout(R.layout.project_details_fragment).create()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -37,11 +35,11 @@ class ProjectDetailsFragment : Fragment(), IProjectDetailsFragment {
 
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
-        presenter.project = args?.get("project") as Project
+        presenter?.project = args?.get("project") as Project
     }
 
     private fun updateView() {
-        presenter.project?.let { project ->
+        presenter?.project?.let { project ->
             tvDescription?.text = project.description
             layoutInflater?.let { inflater ->
                 if (project.images.size === 0) {
