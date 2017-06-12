@@ -11,8 +11,7 @@ import kotlinx.android.synthetic.main.authentication_fragment.*
 
 class AuthenticationFragment : BaseFragment<AuthenticationPresenter>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    init {
         configuration = FragmentConfiguration.withLayout(R.layout.authentication_fragment)
                 .title(R.string.authentication)
                 .showBackArrow()

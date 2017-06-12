@@ -20,8 +20,7 @@ import kotlinx.android.synthetic.main.settings_fragment.*
 
 class SettingsFragment : BaseFragment<SettingsPresenter>(), ISettingsFragment {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    init {
         presenter = SettingsPresenter(AppVersionProvider.fromActivity(activity), Services.dataService, mainActivity)
         configuration = FragmentConfiguration
                 .withLayout(R.layout.settings_fragment)

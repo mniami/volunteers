@@ -11,8 +11,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.volunteer_list_fragment.*
 
 class VolunteerListFragment : BaseFragment<VolunteersPresenter>(), IVolunteerListFragment {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    init {
         configuration = FragmentConfiguration.withLayout(R.layout.volunteer_list_fragment).title(R.string.app_name).noArrow().create()
         presenter = VolunteersPresenter(Services.dataService, this)
     }

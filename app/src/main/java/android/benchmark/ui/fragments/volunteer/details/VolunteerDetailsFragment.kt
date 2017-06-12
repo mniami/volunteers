@@ -13,10 +13,9 @@ import kotlinx.android.synthetic.main.volunteer_details_fragment.*
 class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVolunteerDetailsFragment {
     private val actionBarTool by lazy { mainActivity.actionBarTool }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        configuration = FragmentConfiguration.withLayout(R.layout.volunteer_details_fragment).create()
+    init {
         presenter = VolunteerDetailsPresenter(this)
+        configuration = FragmentConfiguration.withLayout(R.layout.volunteer_details_fragment).create()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
