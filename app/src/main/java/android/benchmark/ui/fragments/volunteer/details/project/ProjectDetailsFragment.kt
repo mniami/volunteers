@@ -5,14 +5,9 @@ import android.benchmark.domain.ImageMetadata
 import android.benchmark.domain.Project
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
-import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
-import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsPresenter
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
-import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -20,8 +15,7 @@ import android.widget.TableRow
 import kotlinx.android.synthetic.main.project_details_fragment.*
 
 class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProjectDetailsFragment {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    init {
         presenter = ProjectDetailsPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.project_details_fragment).create()
     }
@@ -54,14 +48,14 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
                     var tableRow = TableRow(context)
                     var index = 0
                     val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT)
-                    tableRow.setLayoutParams(rowParams)
+                    tableRow.layoutParams = rowParams
                     vpImages.addView(tableRow)
 
                     project.images.forEach {
                         if (index > 2) {
                             index = 0
                             tableRow = TableRow(context)
-                            tableRow.setLayoutParams(rowParams)
+                            tableRow.layoutParams = rowParams
                             vpImages.addView(tableRow)
                         }
 
@@ -77,7 +71,7 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
         val imageView = ImageView(context)
         val oldImageView = view as ImageView
 
-        oldImageView?.let {
+        oldImageView.let {
             imageView.setImageBitmap(oldImageView.drawingCache)
         }
         val layoutParams = FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
