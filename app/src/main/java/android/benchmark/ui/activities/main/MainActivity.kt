@@ -8,6 +8,7 @@ import android.benchmark.ui.fragments.settings.SettingsFragment
 import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
 import android.benchmark.ui.fragments.volunteer.list.VolunteerListFragment
 import android.benchmark.ui.utils.AppVersionProvider
+import android.benchmark.ui.utils.ConfirmationToastAction
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.IActionBarTool
 import android.os.Bundle
@@ -23,6 +24,7 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
 
     val presenter by lazy { MainPresenter(this, dataService) }
     val dataService = Services.dataService
+    val confirmationToastAction = ConfirmationToastAction()
 
     override fun goBack() {
         supportFragmentManager.popBackStack()
@@ -45,6 +47,17 @@ internal class MainActivity : AppCompatActivity(), IMainActivity {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
         return true
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            super.onBackPressed()
+        }
+        else {
+            confirmationToastAction.callAction(baseContext, "Click back button to close the App") {
+                finishAffinity()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

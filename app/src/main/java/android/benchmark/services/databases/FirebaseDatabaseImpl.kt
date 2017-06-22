@@ -13,8 +13,7 @@ class FirebaseDatabaseImpl : Database {
     private var snapshot: DataSnapshot? = null
 
     override fun getUser(name: String): Observable<User> {
-        return Observable.create { emitter ->
-            {
+        return Observable.create { emitter -> run {
                 val ref = database.reference.child("users").child(name)
                 val eventListener = object : ValueEventListener {
                     override fun onDataChange(var1: DataSnapshot) {

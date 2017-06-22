@@ -82,22 +82,29 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="Description"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Projects"
+                android:textColor="@android:color/black"/>
+
             <android.support.v4.view.ViewPager
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/volunteerDetailsFragmentPager"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_260sdp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp">
 
-                <android.support.v4.view.PagerTitleStrip
-                    android:id="@+id/volunteerDetailsFragmentPagerTitleStrip"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:background="#33b5e5"
-                    android:paddingBottom="4dp"
-                    android:paddingTop="4dp"
-                    android:textColor="#fff"/>
+                <!--<android.support.v4.view.PagerTitleStrip-->
+                    <!--android:id="@+id/volunteerDetailsFragmentPagerTitleStrip"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="top"-->
+                    <!--android:background="#33b5e5"-->
+                    <!--android:paddingBottom="4dp"-->
+                    <!--android:paddingTop="4dp"-->
+                    <!--android:textColor="#fff"/>-->
 
             </android.support.v4.view.ViewPager>
         </LinearLayout>
