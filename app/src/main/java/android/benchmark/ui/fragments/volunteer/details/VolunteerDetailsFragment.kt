@@ -1,6 +1,7 @@
 package android.benchmark.ui.fragments.volunteer.details
 
 import android.benchmark.R
+import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
@@ -44,9 +45,16 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
             tvHeader?.text = v.volunteerType
             tvShortDescription?.text = v.shortDescription
             tvDescription?.text = v.description
-            volunteerDetailsFragmentPager?.adapter = ProjectAdapter(fragmentManager, v.projects)
-
+            projectsRecyclerView?.let {
+                it.adapter = ProjectAdapter(v.projects, onClickListener = { project ->
+                    showProject(project)
+                })
+            }
             Picasso.with(context).load(v.avatarImageUri).into(ivImage)
         }
+    }
+
+    private fun showProject(project: Project) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
