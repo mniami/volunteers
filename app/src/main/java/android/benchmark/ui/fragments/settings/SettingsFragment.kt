@@ -5,25 +5,21 @@ import android.benchmark.domain.User
 import android.benchmark.services.Services
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
-import android.benchmark.ui.utils.AppVersionProvider
-import android.content.Context
 import kotlinx.android.synthetic.main.settings_fragment.*
 
 class SettingsFragment : BaseFragment<SettingsPresenter>(), ISettingsFragment {
 
     init {
+        presenter = SettingsPresenter(
+                Services.instance.appVersionProvider,
+                Services.instance.dataService,
+                mainActivity)
         configuration = FragmentConfiguration
                 .withLayout(R.layout.settings_fragment)
                 .title(R.string.action_settings)
                 .showBackArrow()
                 .create()
     }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        presenter = SettingsPresenter(AppVersionProvider.fromActivity(activity), Services.dataService, mainActivity)
-    }
-
     override fun setAppVersion(appVersion: String) {
         tvAppVersion.text = appVersion
     }

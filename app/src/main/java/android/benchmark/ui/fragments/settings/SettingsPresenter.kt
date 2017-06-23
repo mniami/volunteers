@@ -1,7 +1,7 @@
 package android.benchmark.ui.fragments.settings
 
-import android.benchmark.services.dataservices.IDataService
-import android.benchmark.ui.activities.main.IMainActivity
+import android.benchmark.services.dataservices.DataService
+import android.benchmark.ui.activities.main.MainActivity
 import android.benchmark.ui.fragments.base.Presenter
 import android.benchmark.ui.utils.AppVersionProvider
 import io.reactivex.Observable
@@ -10,8 +10,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class SettingsPresenter(val appVersionProvider: AppVersionProvider,
-                        val dataService: IDataService,
-                        val mainView: IMainActivity) : Presenter() {
+                        val dataService: DataService,
+                        val mainView: MainActivity) : Presenter() {
     var view: ISettingsFragment? = null
     var userRef: Disposable? = null
 

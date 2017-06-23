@@ -4,7 +4,7 @@ import android.benchmark.domain.*
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
-class DataServiceMock : IDataService {
+class DataServiceMock : DataService {
     override fun getUser(): Observable<User> {
         return Observable.create { emitter: ObservableEmitter<User> ->
             emitter.onNext(User(name = "damian.szczepanski", surname = "Damian Szczepanski"))

@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.volunteer_list_fragment.*
 class VolunteerListFragment : BaseFragment<VolunteersPresenter>(), IVolunteerListFragment {
     init {
         configuration = FragmentConfiguration.withLayout(R.layout.volunteer_list_fragment).title(R.string.app_name).noArrow().create()
-        presenter = VolunteersPresenter(Services.dataService, this)
+        presenter = VolunteersPresenter(Services.instance.dataService, this)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class VolunteerListFragment : BaseFragment<VolunteersPresenter>(), IVolunteerLis
     override fun showVolunteers(volunteers: List<Volunteer>) {
         recyclerView?.let {
             val adapter = ListAdapter(volunteers) { volunteer ->
-                mainActivity?.showVolunteer(volunteer)
+                mainActivity.showVolunteer(volunteer)
             }
             recyclerView?.adapter = adapter
         }
