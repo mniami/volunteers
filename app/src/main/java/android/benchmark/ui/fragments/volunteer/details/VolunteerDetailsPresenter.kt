@@ -6,4 +6,10 @@ import android.benchmark.ui.fragments.volunteer.details.IVolunteerDetailsFragmen
 
 class VolunteerDetailsPresenter(val fragment: IVolunteerDetailsFragment) : Presenter(){
     var volunteer : Volunteer? = null
+    set(value) {
+        field = value
+        value?.let {
+            fragment.onVolunteerLoaded(value)
+        }
+    }
 }

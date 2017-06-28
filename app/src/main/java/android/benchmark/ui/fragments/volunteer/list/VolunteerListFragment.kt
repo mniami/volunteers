@@ -26,10 +26,9 @@ class VolunteerListFragment : BaseFragment<VolunteersPresenter>(), IVolunteerLis
 
     override fun showVolunteers(volunteers: List<Volunteer>) {
         recyclerView?.let {
-            val adapter = ListAdapter(volunteers) { volunteer ->
+            it.adapter = ListAdapter(volunteers) { volunteer ->
                 mainActivity.showVolunteer(volunteer)
             }
-            recyclerView?.adapter = adapter
         }
     }
 }

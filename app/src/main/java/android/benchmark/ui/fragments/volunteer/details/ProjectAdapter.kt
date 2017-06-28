@@ -13,12 +13,12 @@ import com.squareup.picasso.Picasso
 class ProjectAdapter(val data: List<Project>, val onClickListener: (Project) -> Unit) :
         RecyclerView.Adapter<ProjectAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ProjectAdapter.ViewHolder {
-        return ProjectAdapter.ViewHolder(LayoutInflater.from(parent?.context)
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+        return ViewHolder(LayoutInflater.from(parent?.context)
                 .inflate(R.layout.volunteer_item, parent, false), onClickListener)
     }
 
-    override fun onBindViewHolder(holder: ProjectAdapter.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val project = data[position]
         holder?.update(project)
     }
