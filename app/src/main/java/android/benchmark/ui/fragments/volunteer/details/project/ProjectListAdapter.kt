@@ -1,7 +1,8 @@
-package android.benchmark.ui.fragments.volunteer.details
+package android.benchmark.ui.fragments.volunteer.details.project
 
 import android.benchmark.R
 import android.benchmark.domain.Project
+import android.support.v4.app.FragmentManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 
-class ProjectAdapter(val data: List<Project>, val onClickListener: (Project) -> Unit) :
-        RecyclerView.Adapter<ProjectAdapter.ViewHolder>() {
+class ProjectListAdapter(val data: List<Project>, val onClickListener: (Project) -> Unit) :
+        RecyclerView.Adapter<ProjectListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent?.context)
-                .inflate(R.layout.volunteer_item, parent, false), onClickListener)
+                .inflate(R.layout.project_item_view, parent, false), onClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
@@ -29,16 +30,17 @@ class ProjectAdapter(val data: List<Project>, val onClickListener: (Project) -> 
 
     class ViewHolder(itemView: View?, val onClickListener: (Project) -> Unit) : RecyclerView.ViewHolder(itemView) {
         fun update(project: Project) {
-            val nameView = itemView.findViewById(R.id.volunteer_name) as TextView
-            val descriptionView = itemView.findViewById(R.id.volunteer_description) as TextView
-            val imageView = itemView.findViewById(R.id.volunteer_image) as ImageView
+            val nameView = itemView.findViewById(R.id.name) as TextView
+            val descriptionView = itemView.findViewById(R.id.description) as TextView
+            val imageView = itemView.findViewById(R.id.image) as ImageView
 
-            nameView.text = String.format("%s %s", project.name,
-                    project.description)
             nameView.tag = project
             descriptionView.tag = project
             imageView.tag = project
             itemView.tag = project
+
+            nameView.text = project.name
+            descriptionView.text = project.description
 
             nameView.setOnClickListener(this::onClick)
             descriptionView.setOnClickListener(this::onClick)

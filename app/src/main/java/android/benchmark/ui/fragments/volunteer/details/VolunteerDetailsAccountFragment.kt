@@ -14,9 +14,6 @@ class VolunteerDetailsAccountFragment : BaseFragment<VolunteerDetailsPresenter>(
         configuration = FragmentConfiguration.withLayout(R.layout.volunteer_details_account).showBackArrow().create()
     }
 
-    override fun onVolunteerLoaded(volunteer: Volunteer) {
-    }
-
     override fun onResume() {
         super.onResume()
         updateView()
