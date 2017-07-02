@@ -34,6 +34,7 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
 
     private fun updateView() {
         presenter?.project?.let { project ->
+            tvTitle?.text = project.name
             tvDescription?.text = project.description
             layoutInflater?.let { inflater ->
                 if (project.images.size === 0) {

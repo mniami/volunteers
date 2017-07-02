@@ -1,8 +1,6 @@
 package android.benchmark.ui.views.actionbar
 
-import android.benchmark.R
 import android.benchmark.ui.activities.main.MainActivityImpl
-import android.view.View
 
 internal class ActionBarToolImpl(val mainActivityImpl: MainActivityImpl) : ActionBarTool {
     val actionBar by lazy { mainActivityImpl.supportActionBar }
@@ -38,7 +36,7 @@ internal class ActionBarToolImpl(val mainActivityImpl: MainActivityImpl) : Actio
     override var onBackPressed = fun(): Boolean { return false }
 
     private fun changeOptionsVisibility (visible : Boolean){
-        TODO("menu")
+        //TODO("menu")
 //        actionBar?.let {
 //            val menu = mainActivityImpl.findViewById(R.menu.menu)
 //            val favorite = menu.findViewById(R.id.action_favorite)
