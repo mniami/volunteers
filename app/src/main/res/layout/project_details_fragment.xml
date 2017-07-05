@@ -1,34 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/mainContainer"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/mainContainer"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:padding="@dimen/fragment_padding"
+             android:background="#ececec">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#b1b1b1"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingTop="@dimen/_1sdp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:text="Title"
-                android:textAllCaps="false"
-                android:textSize="@dimen/_20sdp"/>
+                android:background="#FFFFFF"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_75sdp"
+                    android:layout_height="@dimen/_75sdp"
+                    android:layout_margin="@dimen/_4sdp"
+                    android:src="@drawable/common_google_signin_btn_icon_dark_pressed"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/projectName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_4sdp"
+                        android:layout_marginRight="@dimen/_4sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:text="Sadzenie drzewek"
+                        android:textAllCaps="false"
+                        android:textColor="@color/headerTextColor"
+                        android:textSize="@dimen/_20sdp"/>
+
+                    <TextView
+                        android:id="@+id/projectShortDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rozpoczęto 2018/09/23\nProjekt losowy\nIstotny dla firmy"
+                        android:textColor="@color/shortDescriptionTextColor"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_25sdp"
+                android:background="#ececec">
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <android.benchmark.ui.views.SlidingTabLayout
+            android:id="@+id/slidingTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.benchmark.ui.views.SlidingTabLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+        <TextView
+            android:id="@+id/projectDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="Looking for solution for similar but simpler problem, that is to wrap child text content in horizontal layout. kape123's solution works fine. But find a simpler one for this problem, using ClickableSpan. Maybe it could be useful for some simple case. snippet:"
+            android:textColor="@color/descriptionTextColor"
+            android:textSize="14sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#b1b1b1"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_1sdp"
+            android:paddingTop="@dimen/_1sdp"
+            android:orientation="vertical">
 
             <TableLayout
-                android:id="@+id/vpImages"
+                android:id="@+id/projectImages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="#ececec">
             </TableLayout>
-
-            <TextView
-                android:id="@+id/tvDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Description"/>
         </LinearLayout>
+
+    </LinearLayout>
 </FrameLayout>

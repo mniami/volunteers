@@ -9,8 +9,8 @@ class Volunteer(val needies: List<Needy> = emptyList(),
                 shortDescription: String = "",
                 description: String = "",
                 volunteerType : String = "",
-                projects : List<Project> = emptyList(),
-                addresses: List<Address> = emptyList()) :
+                projects : MutableList<Project> = mutableListOf(),
+                addresses: MutableList<Address> = mutableListOf()) :
         Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, projects, addresses)
 
 class Needy(val volunteers: List<Volunteer> = emptyList(),
@@ -20,8 +20,8 @@ class Needy(val volunteers: List<Volunteer> = emptyList(),
             shortDescription: String = "",
             description: String = "",
             volunteerType : String = "",
-            projects : List<Project> = emptyList(),
-            addresses: List<Address> = emptyList()) :
+            projects : MutableList<Project> = mutableListOf(),
+            addresses: MutableList<Address> = mutableListOf()) :
         Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, projects, addresses)
 
 open class Person (
@@ -31,18 +31,18 @@ open class Person (
         val shortDescription: String = "",
         val description: String = "",
         val volunteerType : String = "",
-        val projects : List<Project> = emptyList(),
-        val addresses: List<Address> = emptyList()) : Serializable
+        val projects : MutableList<Project> = mutableListOf(),
+        val addresses: MutableList<Address> = mutableListOf()) : Serializable
 
-class User(val volunteers: List<Volunteer> = emptyList(),
+class User(val volunteers: MutableList<Volunteer> = mutableListOf(),
            name: String = "",
            surname: String = "",
            avatarImageUri: String = "",
            shortDescription: String = "",
            description: String = "",
            volunteerType: String = "",
-           projects: List<Project> = emptyList(),
-           addresses: List<Address> = emptyList()) :
+           projects: MutableList<Project> = mutableListOf(),
+           addresses: MutableList<Address> = mutableListOf()) :
         Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, projects, addresses)
 
 class VolunteerType {
@@ -57,8 +57,9 @@ class VolunteerType {
 
 open class Project (val name : String = "",
                     val description : String = "",
-                    val volunteersInvolved: List<Volunteer> = emptyList(),
-                    val images : List<ImageMetadata> = emptyList()) : Serializable
+                    val longDescription : String = "",
+                    val volunteersInvolved: MutableList<Volunteer> = mutableListOf(),
+                    val images : MutableList<ImageMetadata> = mutableListOf()) : Serializable
 
 open class ImageMetadata (val name : String = "",
                           val url : String = "") : Serializable

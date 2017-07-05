@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 
 class SettingsPresenter(val appVersionProvider: AppVersionProvider,
                         val dataService: DataService,
-                        val mainView: MainActivity) : Presenter() {
+                        var mainView: MainActivity) : Presenter() {
     var view: ISettingsFragment? = null
     var userRef: Disposable? = null
 

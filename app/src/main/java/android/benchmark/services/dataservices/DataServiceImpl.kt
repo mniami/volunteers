@@ -24,4 +24,12 @@ class DataServiceImpl(val database: Database, val localDataCache: LocalDataCache
         return Observable.empty<User>()
     }
 }
+class EmptyDataService : DataService {
+    override fun getVolunteers(): Observable<List<Volunteer>> {
+        return Observable.empty()
+    }
 
+    override fun getUser(): Observable<User> {
+        return Observable.empty()
+    }
+}

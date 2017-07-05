@@ -37,11 +37,6 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         val myToolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(myToolbar)
 
-        if (Services.instance == null) {
-            Services.instance = Services(
-                    dataCache = AndroidLocalDataCache(baseContext),
-                    appVersionProvider = AppVersionProviderImpl(packageManager, packageName))
-        }
         if (presenter == null) {
             presenter = MainPresenter(this, Services.instance.dataService)
         }
