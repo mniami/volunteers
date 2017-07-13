@@ -8,10 +8,11 @@ class Volunteer(val needies: List<Needy> = emptyList(),
                 avatarImageUri: String = "",
                 shortDescription: String = "",
                 description: String = "",
-                volunteerType : String = "",
-                projects : MutableList<Project> = mutableListOf(),
+                volunteerType: String = "",
+                skills: Skills = Skills(),
+                projects: MutableList<Project> = mutableListOf(),
                 addresses: MutableList<Address> = mutableListOf()) :
-        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, projects, addresses)
+        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, projects, addresses)
 
 class Needy(val volunteers: List<Volunteer> = emptyList(),
             name: String = "",
@@ -19,19 +20,21 @@ class Needy(val volunteers: List<Volunteer> = emptyList(),
             avatarImageUri: String = "",
             shortDescription: String = "",
             description: String = "",
-            volunteerType : String = "",
-            projects : MutableList<Project> = mutableListOf(),
+            volunteerType: String = "",
+            skills: Skills = Skills(),
+            projects: MutableList<Project> = mutableListOf(),
             addresses: MutableList<Address> = mutableListOf()) :
-        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, projects, addresses)
+        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, projects, addresses)
 
-open class Person (
+open class Person(
         val name: String = "",
         val surname: String = "",
         val avatarImageUri: String = "",
         val shortDescription: String = "",
         val description: String = "",
-        val volunteerType : String = "",
-        val projects : MutableList<Project> = mutableListOf(),
+        val volunteerType: String = "",
+        val skills: Skills = Skills(),
+        val projects: MutableList<Project> = mutableListOf(),
         val addresses: MutableList<Address> = mutableListOf()) : Serializable
 
 class User(val volunteers: MutableList<Volunteer> = mutableListOf(),
@@ -41,9 +44,46 @@ class User(val volunteers: MutableList<Volunteer> = mutableListOf(),
            shortDescription: String = "",
            description: String = "",
            volunteerType: String = "",
+           skills: Skills = Skills(),
            projects: MutableList<Project> = mutableListOf(),
            addresses: MutableList<Address> = mutableListOf()) :
-        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, projects, addresses)
+        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, projects, addresses)
+
+class Skills(val stamina: SkillLevel = SkillLevel(),
+             val engagement: SkillLevel = SkillLevel(),
+             val humor: SkillLevel = SkillLevel(),
+             val enjoyment: SkillLevel = SkillLevel(),
+             val psychicStrength: SkillLevel = SkillLevel(),
+             val social: SkillLevel = SkillLevel(),
+             val intuition: SkillLevel = SkillLevel(),
+             val marketing: SkillLevel = SkillLevel(),
+             val talkative : SkillLevel = SkillLevel(),
+             val technical : SkillLevel = SkillLevel(),
+             val economic : SkillLevel = SkillLevel(),
+             val laziness : SkillLevel = SkillLevel(),
+             val leading : SkillLevel = SkillLevel(),
+             val introvert : SkillLevel = SkillLevel(),
+             val traveling: SkillLevel = SkillLevel()) {
+}
+class SkillLevel(override val level : Float = 0f) : Level{
+    operator fun times (skill2 : SkillLevel) : SkillLevel {
+        return SkillLevel(level * skill2.level)
+    }
+    operator fun times (skillLevel : Float) : SkillLevel {
+        return SkillLevel(level * skillLevel)
+    }
+    operator fun div (skill2 : SkillLevel) : SkillLevel {
+        return SkillLevel(level / skill2.level)
+    }
+    operator fun div (skillLevel : Float) : SkillLevel {
+        return SkillLevel(level / skillLevel)
+    }
+}
+class WillingLevel(override val level : Float = 0f) : Level {
+}
+interface Level {
+    val level : Float
+}
 
 class VolunteerType {
     companion object {
@@ -55,14 +95,14 @@ class VolunteerType {
     }
 }
 
-open class Project (val name : String = "",
-                    val description : String = "",
-                    val longDescription : String = "",
-                    val volunteersInvolved: MutableList<Volunteer> = mutableListOf(),
-                    val images : MutableList<ImageMetadata> = mutableListOf()) : Serializable
+open class Project(val name: String = "",
+                   val description: String = "",
+                   val longDescription: String = "",
+                   val volunteersInvolved: MutableList<Volunteer> = mutableListOf(),
+                   val images: MutableList<ImageMetadata> = mutableListOf()) : Serializable
 
-open class ImageMetadata (val name : String = "",
-                          val url : String = "") : Serializable
+open class ImageMetadata(val name: String = "",
+                         val url: String = "") : Serializable
 
 class Address(
         val city: String = "",
