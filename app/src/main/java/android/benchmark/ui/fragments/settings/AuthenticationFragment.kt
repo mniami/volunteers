@@ -1,29 +1,50 @@
 package android.benchmark.ui.fragments.settings
 
 import android.benchmark.R
-import android.benchmark.ui.activities.main.IMainActivity
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
+import android.benchmark.services.Services
+import android.benchmark.ui.fragments.base.BaseFragment
+import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import kotlinx.android.synthetic.main.authentication_fragment.*
 
-class AuthenticationFragment : Fragment() {
-    val mainActivity by lazy { activity as IMainActivity }
-    val presenter = AuthenticationPresenter()
+class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), AuthenticationFragment {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.authentication_fragment, container, false)
+    init {
+        configuration = FragmentConfiguration.withLayout(R.layout.authentication_fragment)
+                .title(R.string.authentication)
+                .showBackArrow()
+                .create()
+        presenter = AuthenticationPresenter(Services.instance.dataService, this, Services.instance.dataCache)
     }
 
     override fun onResume() {
         super.onResume()
 
-        sign_up_layout.visibility = if (presenter.needsToSignUp()) VISIBLE else GONE
-        sign_in_layout.visibility = if (presenter.needsToSignIn()) VISIBLE else GONE
-        sign_out_layout.visibility = if (presenter.signedIn()) VISIBLE else GONE
+        val loginButton = activity.findViewById(R.id.facebook_login_button) as LoginButton
+        val mCallbackManager = CallbackManager.Factory.create()
+
+        loginButton.setReadPermissions("email", "public_profile")
+        loginButton.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                presenter?.onAuthenticationSuccess(loginResult)
+            }
+
+            override fun onCancel() {}
+            override fun onError(var1: FacebookException) {}
+        })
+
+        presenter?.let {
+            sign_up_layout.visibility = if (it.needsToSignUp()) VISIBLE else GONE
+            sign_in_layout.visibility = if (it.needsToSignIn()) VISIBLE else GONE
+            sign_out_layout.visibility = if (it.signedIn()) VISIBLE else GONE
+        }
     }
 }
+
+interface AuthenticationFragment

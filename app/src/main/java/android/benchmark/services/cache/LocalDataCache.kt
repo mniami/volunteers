@@ -1,5 +1,5 @@
 package android.benchmark.services.cache
 
-interface ILocalDataCache {
+interface LocalDataCache {
     fun getString(name: String): String?
 }
