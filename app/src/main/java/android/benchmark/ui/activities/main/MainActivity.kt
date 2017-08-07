@@ -1,5 +1,6 @@
 package android.benchmark.ui.activities.main
 
+import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.ui.views.actionbar.ActionBarTool
 
@@ -12,5 +13,6 @@ interface MainActivity {
     fun showVolunteer(volunteer: Volunteer)
     fun openAuthentication()
     fun showVolunteerList()
+    fun showProject(project: Project)
 }
 

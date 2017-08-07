@@ -1,6 +1,6 @@
 package android.benchmark.ui.activities.main
 
-import android.benchmark.services.dataservices.DataService
+import android.benchmark.helpers.dataservices.DataService
 
 internal class MainPresenter(val mainActivity: MainActivity, val dataService: DataService) :
         IMainPresenter {

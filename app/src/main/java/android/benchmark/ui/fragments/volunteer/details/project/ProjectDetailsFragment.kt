@@ -6,6 +6,8 @@ import android.benchmark.domain.Project
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -33,30 +35,61 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
     }
 
     private fun updateView() {
+        actionBar?.setTitle(context.getString(R.string.project_label))
         presenter?.project?.let { project ->
-            tvDescription?.text = project.description
+            projectName?.text = project.name
+            projectDescription?.text = project.description
+
+            viewPager?.let {
+                it.adapter = object : FragmentPagerAdapter(childFragmentManager) {
+                    override fun getCount(): Int {
+                        return 2
+                    }
+
+                    override fun getItem(position: Int): Fragment? {
+                        var fragment: Fragment? = null
+                        when (position) {
+                            0 -> fragment = ProjectDetailsInfoFragment()
+                            1 -> fragment = ProjectDetailsVolunteersFragment()
+                        }
+                        val bundle = Bundle()
+                        bundle.putSerializable("project", project)
+                        fragment?.arguments = bundle
+                        return fragment
+                    }
+
+                    override fun getPageTitle(position: Int): CharSequence {
+                        when (position) {
+                            0 -> return "Info"
+                            1 -> return "Volunteers"
+                        }
+                        return ""
+                    }
+                }
+                slidingTabLayout?.setViewPager(it)
+            }
             layoutInflater?.let { inflater ->
                 if (project.images.size === 0) {
-                    vpImages?.visibility = GONE
+                    projectImages?.visibility = GONE
                 }
 
                 var adapter = ProjectImageAdapter(context, inflater) { view, imageMetadata ->
                     showImage(view, imageMetadata)
                 }
 
-                vpImages?.let { vpImages ->
+                projectImages?.let { projectImages ->
                     var tableRow = TableRow(context)
                     var index = 0
                     val rowParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT)
                     tableRow.layoutParams = rowParams
-                    vpImages.addView(tableRow)
+                    projectImages.addView(tableRow)
 
                     project.images.forEach {
                         if (index > 2) {
                             index = 0
                             tableRow = TableRow(context)
                             tableRow.layoutParams = rowParams
-                            vpImages.addView(tableRow)
+                            projectImages.addView(tableRow)
                         }
 
                         adapter.instantiateItem(tableRow, it)

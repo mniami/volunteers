@@ -7,4 +7,6 @@ interface ActionBarTool {
     var onBackPressed : () -> Boolean
     fun clearOnBackPressed()
     fun backPressed() : Boolean
+    fun hideOptions()
+    fun showOptions()
 }
