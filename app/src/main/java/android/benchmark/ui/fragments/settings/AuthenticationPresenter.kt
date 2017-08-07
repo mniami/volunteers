@@ -1,7 +1,7 @@
 package android.benchmark.ui.fragments.settings
 
-import android.benchmark.services.cache.LocalDataCache
-import android.benchmark.services.dataservices.DataService
+import android.benchmark.helpers.cache.LocalDataCache
+import android.benchmark.helpers.dataservices.DataService
 import android.benchmark.ui.fragments.base.Presenter
 import com.facebook.login.LoginResult
 

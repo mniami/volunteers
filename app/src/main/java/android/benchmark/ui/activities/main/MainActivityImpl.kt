@@ -3,14 +3,12 @@ package android.benchmark.ui.activities.main
 import android.benchmark.R
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
-import android.benchmark.services.Services
-import android.benchmark.services.cache.AndroidLocalDataCache
+import android.benchmark.helpers.Services
 import android.benchmark.ui.fragments.settings.AuthenticationFragmentImpl
 import android.benchmark.ui.fragments.settings.SettingsFragment
 import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
 import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFragment
 import android.benchmark.ui.fragments.volunteer.list.VolunteerListFragment
-import android.benchmark.ui.utils.AppVersionProviderImpl
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
 import android.os.Bundle

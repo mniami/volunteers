@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array
+        name="travel_destinations">
+        <item>Barcelona</item>
+        <item>Warsaw</item>
+        <item>Paris</item>
+        <item>Kiev</item>
+        <item>Bombay</item>
+        <item>Rio</item>
+    </array>
+
+</resources>
