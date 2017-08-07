@@ -8,4 +8,24 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="HeaderText">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="HeaderTextView" parent="HeaderText">
+        <item name="android:layout_marginTop">@dimen/_10sdp</item>
+        <item name="android:paddingLeft">@dimen/_2sdp</item>
+        <item name="android:paddingRight">@dimen/_2sdp</item>
+        <item name="android:paddingBottom">@dimen/_5sdp</item>
+    </style>
+
+
+    <style name="SubHeaderText">
+
+    </style>
+
+    <style name="DescriptionText">
+
+    </style>
 </resources>

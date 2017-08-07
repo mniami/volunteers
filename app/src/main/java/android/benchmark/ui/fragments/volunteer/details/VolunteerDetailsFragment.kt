@@ -7,6 +7,7 @@ import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.volunteer_details_fragment.*
 
 class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVolunteerDetailsFragment {
@@ -23,7 +24,11 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
     fun updateView() {
         actionBar.hideOptions()
         presenter?.volunteer?.let { v ->
-            actionBar.setTitle(String.format("%s %s", v.name, v.surname))
+            actionBar.setTitle("Volunteers Details")
+            tvSubHeader?.text = "${v.name} ${v.surname}"
+            tvHeader?.text = v.volunteerType
+            Picasso.with(context).load(v.avatarImageUri).into(ivImage)
+            tvShortDescription?.text = v.shortDescription
         }
         viewPager?.let {
             it.adapter = object : FragmentPagerAdapter(childFragmentManager) {

@@ -21,11 +21,7 @@ class VolunteerDetailsAccountFragment : BaseFragment<VolunteerDetailsPresenter>(
 
     private fun updateView() {
         presenter?.volunteer?.let { v ->
-            tvSubHeader?.text = "${v.name} ${v.surname}"
-            tvHeader?.text = v.volunteerType
-            tvShortDescription?.text = v.shortDescription
             tvDescription?.text = v.description
-            Picasso.with(context).load(v.avatarImageUri).into(ivImage)
         }
     }
 
