@@ -2,7 +2,7 @@ package android.benchmark.ui.fragments.settings
 
 import android.benchmark.R
 import android.benchmark.domain.User
-import android.benchmark.services.Services
+import android.benchmark.helpers.Services
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.content.Context

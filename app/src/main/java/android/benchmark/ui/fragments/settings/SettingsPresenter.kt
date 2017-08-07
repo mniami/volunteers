@@ -1,6 +1,6 @@
 package android.benchmark.ui.fragments.settings
 
-import android.benchmark.services.dataservices.DataService
+import android.benchmark.helpers.dataservices.DataService
 import android.benchmark.ui.activities.main.MainActivity
 import android.benchmark.ui.fragments.base.Presenter
 import android.benchmark.ui.utils.AppVersionProvider
