@@ -11,23 +11,15 @@ import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFr
 import android.benchmark.ui.fragments.volunteer.list.VolunteerListFragment
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
 
-
-
-
-
-internal class MainActivityImpl : AppCompatActivity(), MainActivity, GoogleApiClient.OnConnectionFailedListener {
+internal class MainActivityImpl : AppCompatActivity(), MainActivity {
 
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
@@ -38,23 +30,24 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity, GoogleApiCl
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount <= 1){
+        if (supportFragmentManager.backStackEntryCount <= 1) {
             finishAffinity()
-        }
-        else {
+        } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data?.let {
+            Services.instance.googleAuth.onActivityResult(requestCode, it)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build()
-        val googleApiClient = GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build()
+
+        Services.instance.googleAuth.init(this)
 
         setContentView(R.layout.activity_main)
 
@@ -119,6 +112,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity, GoogleApiCl
 
         changeFragment(projectDetailsFragment, "project")
     }
+
     override fun showVolunteer(volunteer: Volunteer) {
         val bundle = Bundle()
         bundle.putSerializable("volunteer", volunteer)
@@ -129,11 +123,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity, GoogleApiCl
         changeFragment(volunteerDetailsFragment, "volunteers")
     }
 
-    override fun onConnectionFailed(p0: ConnectionResult) {
-        Log.w("MYAPP", "Google auth connection failed")
-    }
-
-    private fun changeFragment(fragment : Fragment, name : String){
+    private fun changeFragment(fragment: Fragment, name: String) {
         supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)

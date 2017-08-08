@@ -1,5 +1,6 @@
 package android.benchmark.helpers
 
+import android.benchmark.auth.GoogleAuthImpl
 import android.benchmark.helpers.authentication.FacebookAuthentication
 import android.benchmark.helpers.cache.EmptyLocalDataCache
 import android.benchmark.helpers.cache.LocalDataCache
@@ -13,6 +14,7 @@ interface IServices {
     val facebookAuthentication: FacebookAuthentication
     val dataCache: LocalDataCache
     val appVersionProvider: AppVersionProvider
+    val googleAuth : GoogleAuthImpl
 }
 
 class EmptyServices : IServices {
@@ -20,6 +22,7 @@ class EmptyServices : IServices {
     override val facebookAuthentication: FacebookAuthentication = FacebookAuthentication()
     override val dataCache: LocalDataCache = EmptyLocalDataCache()
     override val appVersionProvider: AppVersionProvider = EmptyAppVersionProvider()
+    override val googleAuth: GoogleAuthImpl = GoogleAuthImpl()
 }
 
 class Services {
@@ -32,5 +35,6 @@ class ServicesImpl(
         override val dataService: DataService,
         override val facebookAuthentication: FacebookAuthentication,
         override val dataCache: LocalDataCache,
-        override val appVersionProvider: AppVersionProvider) : IServices {
+        override val appVersionProvider: AppVersionProvider,
+        override val googleAuth: GoogleAuthImpl) : IServices {
 }

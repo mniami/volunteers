@@ -1,6 +1,7 @@
 package android.benchmark
 
 import android.app.Application
+import android.benchmark.auth.GoogleAuthImpl
 import android.benchmark.helpers.Services
 import android.benchmark.helpers.ServicesImpl
 import android.benchmark.helpers.authentication.FacebookAuthentication
@@ -16,7 +17,7 @@ class App : Application() {
                 dataService = DataServiceMock(AndroidResourceManager(this)),
                 dataCache = AndroidLocalDataCache(baseContext),
                 appVersionProvider = AppVersionProviderImpl(packageManager, packageName),
-                facebookAuthentication = FacebookAuthentication())
+                facebookAuthentication = FacebookAuthentication(),
+                googleAuth = GoogleAuthImpl())
     }
 }
-
