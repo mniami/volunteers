@@ -27,7 +27,7 @@ class ProjectDetailsVolunteersFragment : BaseFragment<ProjectDetailsPresenter>()
             rv.layoutManager = LinearLayoutManager(context)
             presenter?.project?.let {
                 rv.adapter = VolunteerListAdapter(it.volunteersInvolved) { volunteer ->
-
+                    //todo handle volunteer clicked
                 }
             }
         }

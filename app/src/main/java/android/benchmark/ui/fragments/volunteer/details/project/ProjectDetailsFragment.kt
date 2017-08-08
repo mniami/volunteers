@@ -24,9 +24,7 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view?.let { v ->
-            updateView()
-        }
+        view?.let { updateView() }
     }
 
     override fun setArguments(args: Bundle?) {
@@ -35,7 +33,7 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
     }
 
     private fun updateView() {
-        actionBar?.setTitle(context.getString(R.string.project_label))
+        actionBar.setTitle(context.getString(R.string.project_label))
         presenter?.project?.let { project ->
             projectName?.text = project.name
             projectDescription?.text = project.description
@@ -69,7 +67,7 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
                 slidingTabLayout?.setViewPager(it)
             }
             layoutInflater?.let { inflater ->
-                if (project.images.size === 0) {
+                if (project.images.size == 0) {
                     projectImages?.visibility = GONE
                 }
 
@@ -101,6 +99,9 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
     }
 
     private fun showImage(view: View, imageMetadata: ImageMetadata) {
+
+        //todo handle image metadata
+
         val imageView = ImageView(context)
         val oldImageView = view as ImageView
 

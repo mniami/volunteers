@@ -28,6 +28,15 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         supportFragmentManager.popBackStack()
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount <= 1){
+            finishAffinity()
+        }
+        else {
+            super.onBackPressed()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -106,7 +115,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
     private fun changeFragment(fragment : Fragment, name : String){
         supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
-                .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.fragmentContainer, fragment, name)
                 .commit()
     }
