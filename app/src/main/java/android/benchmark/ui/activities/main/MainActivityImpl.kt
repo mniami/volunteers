@@ -15,10 +15,19 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
 
-internal class MainActivityImpl : AppCompatActivity(), MainActivity {
+
+
+
+
+internal class MainActivityImpl : AppCompatActivity(), MainActivity, GoogleApiClient.OnConnectionFailedListener {
 
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
@@ -39,6 +48,14 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+        val googleApiClient = GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build()
+
         setContentView(R.layout.activity_main)
 
         val myToolbar = findViewById(R.id.toolbar) as Toolbar
@@ -110,6 +127,10 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         volunteerDetailsFragment.arguments = bundle
 
         changeFragment(volunteerDetailsFragment, "volunteers")
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+        Log.w("MYAPP", "Google auth connection failed")
     }
 
     private fun changeFragment(fragment : Fragment, name : String){
