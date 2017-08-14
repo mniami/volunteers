@@ -3,10 +3,18 @@ package android.benchmark.helpers.dataservices
 import android.benchmark.domain.*
 import android.benchmark.helpers.content.ResourceManager
 import android.benchmark.helpers.content.Resources
+import android.benchmark.helpers.dataservices.datasource.DataSource
+import android.benchmark.helpers.dataservices.datasource.DataSourceContainer
+import android.benchmark.helpers.dataservices.datasource.DataSourceId
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
-class DataServiceMock(val resourcesManager: ResourceManager) : DataService {
+class DataServiceMock(val resourcesManager: ResourceManager,
+                      val dataSourceContainer: DataSourceContainer) : DataService {
+    override fun getDataSource(id: DataSourceId): DataSource {
+        return dataSourceContainer.getDataSource(id)
+    }
+
     override fun getUser(): Observable<User> {
         return Observable.create { emitter: ObservableEmitter<User> ->
             emitter.onNext(User(name = "damian.szczepanski", surname = "Damian Szczepanski"))

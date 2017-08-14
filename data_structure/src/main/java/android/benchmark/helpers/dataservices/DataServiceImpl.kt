@@ -1,13 +1,22 @@
 package android.benchmark.helpers.dataservices
 
+import android.benchmark.helpers.dataservices.datasource.DataSource
+import android.benchmark.helpers.dataservices.datasource.DataSourceId
 import android.benchmark.domain.User
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.cache.LocalDataCache
-import android.benchmark.helpers.databases.Database
+import android.benchmark.helpers.dataservices.databases.Database
+import android.benchmark.helpers.dataservices.datasource.DataSourceContainer
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
-class DataServiceImpl(val database: Database, val localDataCache: LocalDataCache) : DataService {
+class DataServiceImpl(val database: Database,
+                      val localDataCache: LocalDataCache,
+                      val dataSourceContainer : DataSourceContainer) : DataService {
+    override fun getDataSource(id: DataSourceId): DataSource {
+        return dataSourceContainer.getDataSource(id)
+    }
+
     override fun getVolunteers(): Observable<List<Volunteer>> {
         return Observable.create { emitter: ObservableEmitter<List<Volunteer>> ->
             val volunteers = arrayListOf<Volunteer>()
@@ -22,14 +31,5 @@ class DataServiceImpl(val database: Database, val localDataCache: LocalDataCache
             return database.getUser(userName)
         }
         return Observable.empty<User>()
-    }
-}
-class EmptyDataService : DataService {
-    override fun getVolunteers(): Observable<List<Volunteer>> {
-        return Observable.empty()
-    }
-
-    override fun getUser(): Observable<User> {
-        return Observable.empty()
     }
 }
