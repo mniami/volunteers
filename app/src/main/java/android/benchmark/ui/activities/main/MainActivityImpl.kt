@@ -4,11 +4,15 @@ import android.benchmark.R
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
+import android.benchmark.helpers.android.fromSerializable
+import android.benchmark.helpers.android.withStringValue
+import android.benchmark.helpers.dataservices.datasource.VolunteersDataSource
+import android.benchmark.ui.fragments.genericlist.GenericListFragmentImpl
 import android.benchmark.ui.fragments.settings.AuthenticationFragmentImpl
 import android.benchmark.ui.fragments.settings.SettingsFragment
 import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
+import android.benchmark.ui.fragments.volunteer.details.VolunteerGenericItemMap
 import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFragment
-import android.benchmark.ui.fragments.volunteer.list.VolunteerListFragment
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
 import android.os.Bundle
@@ -23,16 +27,16 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
     var presenter: MainPresenter? = null
+    val dataSourceContainer = Services.instance.dataSourceContainer
 
     override fun goBack() {
         supportFragmentManager.popBackStack()
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount <= 1){
+        if (supportFragmentManager.backStackEntryCount <= 1) {
             finishAffinity()
-        }
-        else {
+        } else {
             super.onBackPressed()
         }
     }
@@ -45,7 +49,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         setSupportActionBar(myToolbar)
 
         if (presenter == null) {
-            presenter = MainPresenter(this, Services.instance.dataService)
+            presenter = MainPresenter(this)
         }
         presenter?.onCreate()
     }
@@ -88,7 +92,18 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
 
     override fun openSettings() = changeFragment(SettingsFragment(), "settings")
     override fun openAuthentication() = changeFragment(AuthenticationFragmentImpl(), "authentication")
-    override fun showVolunteerList() = changeFragment(VolunteerListFragment(), "volunteerList")
+    override fun showVolunteerList() {
+        val dataSource = dataSourceContainer.getDataSource(VolunteersDataSource.ID)
+        val bundle = Bundle()
+                .fromSerializable("dataSourceId", dataSource.id)
+                .withStringValue("mapperClassName", VolunteerGenericItemMap::class.java.name)
+        val fragment = GenericListFragmentImpl()
+
+        fragment.arguments = bundle
+
+        changeFragment(fragment, "volunteerList")
+    }
+
     override fun openHome() {
         supportFragmentManager.popBackStack("volunteerList", R.id.fragmentContainer)
     }
@@ -102,6 +117,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
 
         changeFragment(projectDetailsFragment, "project")
     }
+
     override fun showVolunteer(volunteer: Volunteer) {
         val bundle = Bundle()
         bundle.putSerializable("volunteer", volunteer)
@@ -112,7 +128,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         changeFragment(volunteerDetailsFragment, "volunteers")
     }
 
-    private fun changeFragment(fragment : Fragment, name : String){
+    private fun changeFragment(fragment: Fragment, name: String) {
         supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
@@ -120,4 +136,5 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
                 .commit()
     }
 }
+
 

@@ -20,7 +20,7 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
                 .title(R.string.authentication)
                 .showBackArrow()
                 .create()
-        presenter = AuthenticationPresenter(Services.instance.dataService, this, Services.instance.dataCache)
+        presenter = AuthenticationPresenter(this, Services.instance.dataCache)
     }
 
     override fun onResume() {

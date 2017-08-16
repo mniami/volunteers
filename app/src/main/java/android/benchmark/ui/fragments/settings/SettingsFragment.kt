@@ -13,8 +13,8 @@ class SettingsFragment : BaseFragment<SettingsPresenter>(), ISettingsFragment {
     init {
         presenter = SettingsPresenter(
                 Services.instance.appVersionProvider,
-                Services.instance.dataService,
-                mainActivity)
+                mainActivity,
+                Services.instance.dataSourceContainer)
         configuration = FragmentConfiguration
                 .withLayout(R.layout.settings_fragment)
                 .title(R.string.action_settings)

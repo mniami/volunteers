@@ -1,10 +1,11 @@
 package android.benchmark.ui.fragments.genericlist
 
 import android.benchmark.helpers.dataservices.datasource.DataSource
+import android.benchmark.helpers.dataservices.datasource.ObservableDataSource
 
-fun DataSource.isGenericListDataSource() : Boolean{
-    return this is GenericListDataSource
+fun DataSource.isObservableDataSource() : Boolean{
+    return this is ObservableDataSource<*>
 }
-fun <T> DataSource.asGenericListDataSource() : GenericListDataSource {
-    return this as GenericListDataSource
+fun <T> DataSource.asObservableDataSource() : ObservableDataSource<T>? {
+    return this as ObservableDataSource<T>
 }

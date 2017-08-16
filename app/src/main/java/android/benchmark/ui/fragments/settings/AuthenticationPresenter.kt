@@ -1,12 +1,10 @@
 package android.benchmark.ui.fragments.settings
 
 import android.benchmark.helpers.cache.LocalDataCache
-import android.benchmark.helpers.dataservices.DataService
 import android.benchmark.ui.fragments.base.Presenter
 import com.facebook.login.LoginResult
 
 class AuthenticationPresenter(
-        val dataService: DataService,
         val authenticationFragment: AuthenticationFragment,
         val dataCache: LocalDataCache) :
         Presenter() {

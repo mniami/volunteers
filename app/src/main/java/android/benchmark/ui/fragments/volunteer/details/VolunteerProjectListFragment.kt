@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.volunteer_details_projects.*
 class VolunteerProjectListFragment : BaseFragment<VolunteerProjectListPresenter>(), IVolunteerProjectListFragment {
 
     init {
-        presenter = VolunteerProjectListPresenter(Services.instance.dataService, this)
+        presenter = VolunteerProjectListPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.volunteer_details_projects).showBackArrow().create()
     }
 

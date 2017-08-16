@@ -9,20 +9,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 
-class GenericListAdapter(val genericListProvider: GenericListProvider, val onClickListener: (GenericItem) -> Unit) : RecyclerView.Adapter<GenericListAdapter.ViewHolder>() {
+class GenericListAdapter(val list: List<GenericItem>, val onClickListener: (GenericItem) -> Unit) : RecyclerView.Adapter<GenericListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): GenericListAdapter.ViewHolder {
         return GenericListAdapter.ViewHolder(LayoutInflater.from(parent?.context)
                 .inflate(R.layout.generic_item, parent, false), onClickListener)
     }
 
     override fun onBindViewHolder(holder: GenericListAdapter.ViewHolder?, position: Int) {
-        val data = genericListProvider.list
-        val item = data[position]
+        val item = list[position]
         holder?.update(item)
     }
 
     override fun getItemCount(): Int {
-        return genericListProvider.list.size
+        return list.size
     }
 
     class ViewHolder(itemView: View?, val onClickListener: (GenericItem) -> Unit) : RecyclerView.ViewHolder(itemView) {
