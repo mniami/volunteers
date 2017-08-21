@@ -22,14 +22,16 @@ class SettingsPresenter(val appVersionProvider: AppVersionProvider,
             mainView.goBack()
             true
         }
-        val userDataSource = dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource
+        val userDataSource = dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
         view?.setAppVersion(appVersionProvider.getAppVersion())
-        userRef = Observable.wrap(userDataSource.data.observable)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { user ->
-                    view?.showUserData(user)
-                }
+        if (userDataSource != null) {
+            userRef = Observable.wrap(userDataSource.data.observable)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { user ->
+                        view?.showUserData(user)
+                    }
+        }
     }
 
     override fun onPause() {

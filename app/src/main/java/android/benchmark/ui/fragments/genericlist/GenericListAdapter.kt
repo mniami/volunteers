@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 
-class GenericListAdapter(val list: List<GenericItem>, val onClickListener: (GenericItem) -> Unit) : RecyclerView.Adapter<GenericListAdapter.ViewHolder>() {
+class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (GenericItem<*>?) -> Unit) : RecyclerView.Adapter<GenericListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): GenericListAdapter.ViewHolder {
         return GenericListAdapter.ViewHolder(LayoutInflater.from(parent?.context)
                 .inflate(R.layout.generic_item, parent, false), onClickListener)
@@ -24,13 +24,13 @@ class GenericListAdapter(val list: List<GenericItem>, val onClickListener: (Gene
         return list.size
     }
 
-    class ViewHolder(itemView: View?, val onClickListener: (GenericItem) -> Unit) : RecyclerView.ViewHolder(itemView) {
-        fun update(item : GenericItem) {
+    class ViewHolder(itemView: View?, val onClickListener: (GenericItem<*>?) -> Unit) : RecyclerView.ViewHolder(itemView) {
+        fun update(item : GenericItem<*>?) {
             val titleView = itemView.findViewById(R.id.title) as TextView
             val subtitleView = itemView.findViewById(R.id.subtitle) as TextView
             val imageView = itemView.findViewById(R.id.image) as ImageView
 
-            titleView.text = item.title
+            titleView.text = item?.title
 
             titleView.tag = item
             subtitleView.tag = item
@@ -42,7 +42,7 @@ class GenericListAdapter(val list: List<GenericItem>, val onClickListener: (Gene
             imageView.setOnClickListener(this::onClick)
             itemView.setOnClickListener(this::onClick)
 
-            if (!item.imageUrl.isEmpty()) {
+            if (item != null && !item.imageUrl.isEmpty()) {
                 Picasso.with(itemView.context)
                         .load(item.imageUrl)
                         .into(imageView)
@@ -50,7 +50,7 @@ class GenericListAdapter(val list: List<GenericItem>, val onClickListener: (Gene
         }
 
         fun onClick(view: View) {
-            onClickListener(view.tag as GenericItem)
+            onClickListener(view.tag as GenericItem<*>?)
         }
     }
 }

@@ -7,6 +7,9 @@ import android.benchmark.helpers.Services
 import android.benchmark.helpers.android.fromSerializable
 import android.benchmark.helpers.android.withStringValue
 import android.benchmark.helpers.dataservices.datasource.VolunteersDataSource
+import android.benchmark.ui.fragments.base.ToolbarConfiguration
+import android.benchmark.ui.fragments.genericlist.GenericItemClickEvent
+import android.benchmark.ui.fragments.genericlist.GenericListFragment
 import android.benchmark.ui.fragments.genericlist.GenericListFragmentImpl
 import android.benchmark.ui.fragments.settings.AuthenticationFragmentImpl
 import android.benchmark.ui.fragments.settings.SettingsFragment
@@ -94,11 +97,21 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
     override fun openAuthentication() = changeFragment(AuthenticationFragmentImpl(), "authentication")
     override fun showVolunteerList() {
         val dataSource = dataSourceContainer.getDataSource(VolunteersDataSource.ID)
-        val bundle = Bundle()
-                .fromSerializable("dataSourceId", dataSource.id)
-                .withStringValue("mapperClassName", VolunteerGenericItemMap::class.java.name)
-        val fragment = GenericListFragmentImpl()
+        var bundle = Bundle()
+                .fromSerializable(GenericListFragment.TOOLBAR_CONFIGURATION, ToolbarConfiguration(titleResourceId = R.string.volunteers_title, showBackArrow = false))
+                .withStringValue(GenericListFragment.EVENT_CLICK_ID, VolunteersDataSource.ID.key)
+                .withStringValue(GenericListFragment.MAPPER_CLASS_NAME, VolunteerGenericItemMap::class.java.name)
+        if (dataSource != null){
+            bundle = bundle.fromSerializable(GenericListFragment.DATA_SOURCE_ID, dataSource.id)
+        }
 
+        val fragment = GenericListFragmentImpl()
+        Services.instance.eventBusContainer.get<GenericItemClickEvent>(VolunteersDataSource.ID.key).observe().subscribe { it ->
+            val volunteer = it.item.data as Volunteer?
+            if (volunteer != null) {
+                showVolunteer(volunteer)
+            }
+        }
         fragment.arguments = bundle
 
         changeFragment(fragment, "volunteerList")

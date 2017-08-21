@@ -7,7 +7,9 @@ import android.benchmark.helpers.ServicesImpl
 import android.benchmark.helpers.authentication.FacebookAuthentication
 import android.benchmark.helpers.cache.AndroidLocalDataCache
 import android.benchmark.helpers.content.AndroidResourceManager
+import android.benchmark.helpers.databases.FirebaseDatabaseImpl
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainerImpl
+import android.benchmark.helpers.dataservices.datasource.UserDataSource
 import android.benchmark.helpers.dataservices.datasource.VolunteersDataSource
 import android.benchmark.ui.utils.AppVersionProviderImpl
 
@@ -25,7 +27,9 @@ class App : Application() {
                 eventBusContainer = EventBusContainer(),
                 dataSourceContainer = DataSourceContainerImpl())
 
-        val dataSources = listOf(VolunteersDataSource(resourceManager))
+        val dataSources = listOf(
+                VolunteersDataSource(resourceManager),
+                UserDataSource(FirebaseDatabaseImpl(), Services.instance.dataCache))
         for (dataSource in dataSources) {
             Services.instance.dataSourceContainer.putDataSource(dataSource)
         }

@@ -37,7 +37,7 @@ class ObservableDataImpl<T>(override val observable: Observable<T>) : Observable
 class EmptyDataSource(override val id: DataSourceId = DataSourceId(), override val data: Data = EmptyData()) : DataSource
 
 interface DataSourceContainer{
-    fun getDataSource(dataSourceId: DataSourceId): DataSource
+    fun getDataSource(dataSourceId: DataSourceId): DataSource?
     fun putDataSource(dataSource: DataSource)
 }
 
@@ -48,8 +48,8 @@ class DataSourceContainerImpl : DataSourceContainer {
         map.put(dataSource.id, dataSource)
     }
 
-    override fun getDataSource(dataSourceId : DataSourceId) : DataSource {
-        return map.get(dataSourceId) as DataSource
+    override fun getDataSource(dataSourceId : DataSourceId) : DataSource? {
+        return map.get(dataSourceId)
     }
 }
 

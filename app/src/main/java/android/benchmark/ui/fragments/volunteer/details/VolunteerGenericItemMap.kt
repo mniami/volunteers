@@ -7,11 +7,11 @@ import android.benchmark.ui.fragments.genericlist.GenericItemMap
 import io.reactivex.Observable
 
 class VolunteerGenericItemMap : GenericItemMap{
-    override fun map(observable: Observable<*>) : Observable<GenericItem>?{
+    override fun map(observable: Observable<*>) : Observable<GenericItem<*>>?{
         val obs = observable as Observable<Volunteer>?
         if (obs != null) {
             return obs.map({
-                GenericItemImpl(it.name + " " + it.surname, it.shortDescription, it.avatarImageUri)
+                GenericItemImpl(it.name + " " + it.surname, it.shortDescription, it.avatarImageUri, it)
             })
         }
         return null

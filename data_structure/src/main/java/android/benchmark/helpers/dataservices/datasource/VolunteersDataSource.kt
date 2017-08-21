@@ -15,7 +15,6 @@ class VolunteersDataSource(resourcesManager: ResourceManager) : ObservableDataSo
     val DESCRIPTION = "This tutorial describes how to use Kotlin Android Extensions to improve support ... dependent on runtime, they require annotating fields for each View"
 
     init {
-        val volunteers = arrayListOf<Volunteer>()
         val projectImages = mutableListOf(
                 ImageMetadata("", "https://s-media-cache-ak0.pinimg.com/564x/3b/7d/6f/3b7d6f60e2d450b899c322266fc6edfd.jpg"),
                 ImageMetadata("", "https://cdn4.iconfinder.com/data/icons/STROKE/communications/png/400/avatar.png"),
