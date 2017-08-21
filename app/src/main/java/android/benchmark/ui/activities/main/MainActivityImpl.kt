@@ -4,17 +4,10 @@ import android.benchmark.R
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
-import android.benchmark.helpers.android.fromSerializable
-import android.benchmark.helpers.android.withStringValue
-import android.benchmark.helpers.dataservices.datasource.VolunteersDataSource
-import android.benchmark.ui.fragments.base.ToolbarConfiguration
-import android.benchmark.ui.fragments.genericlist.GenericItemClickEvent
-import android.benchmark.ui.fragments.genericlist.GenericListFragment
-import android.benchmark.ui.fragments.genericlist.GenericListFragmentImpl
+import android.benchmark.ui.fragments.VolunteersFragmentPresenter
 import android.benchmark.ui.fragments.settings.AuthenticationFragmentImpl
 import android.benchmark.ui.fragments.settings.SettingsFragment
 import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
-import android.benchmark.ui.fragments.volunteer.details.VolunteerGenericItemMap
 import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFragment
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
@@ -30,7 +23,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
     var presenter: MainPresenter? = null
-    val dataSourceContainer = Services.instance.dataSourceContainer
+    val fragmentChanger = FragmentChanger(supportFragmentManager, Services.instance.dataSourceContainer)
 
     override fun goBack() {
         supportFragmentManager.popBackStack()
@@ -93,61 +86,12 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         }
     }
 
-    override fun openSettings() = changeFragment(SettingsFragment(), "settings")
-    override fun openAuthentication() = changeFragment(AuthenticationFragmentImpl(), "authentication")
-    override fun showVolunteerList() {
-        val dataSource = dataSourceContainer.getDataSource(VolunteersDataSource.ID)
-        var bundle = Bundle()
-                .fromSerializable(GenericListFragment.TOOLBAR_CONFIGURATION, ToolbarConfiguration(titleResourceId = R.string.volunteers_title, showBackArrow = false))
-                .withStringValue(GenericListFragment.EVENT_CLICK_ID, VolunteersDataSource.ID.key)
-                .withStringValue(GenericListFragment.MAPPER_CLASS_NAME, VolunteerGenericItemMap::class.java.name)
-        if (dataSource != null){
-            bundle = bundle.fromSerializable(GenericListFragment.DATA_SOURCE_ID, dataSource.id)
-        }
-
-        val fragment = GenericListFragmentImpl()
-        Services.instance.eventBusContainer.get<GenericItemClickEvent>(VolunteersDataSource.ID.key).observe().subscribe { it ->
-            val volunteer = it.item.data as Volunteer?
-            if (volunteer != null) {
-                showVolunteer(volunteer)
-            }
-        }
-        fragment.arguments = bundle
-
-        changeFragment(fragment, "volunteerList")
-    }
-
-    override fun openHome() {
-        supportFragmentManager.popBackStack("volunteerList", R.id.fragmentContainer)
-    }
-
-    override fun showProject(project: Project) {
-        val bundle = Bundle()
-        bundle.putSerializable("project", project)
-
-        val projectDetailsFragment = ProjectDetailsFragment()
-        projectDetailsFragment.arguments = bundle
-
-        changeFragment(projectDetailsFragment, "project")
-    }
-
-    override fun showVolunteer(volunteer: Volunteer) {
-        val bundle = Bundle()
-        bundle.putSerializable("volunteer", volunteer)
-
-        val volunteerDetailsFragment = VolunteerDetailsFragment()
-        volunteerDetailsFragment.arguments = bundle
-
-        changeFragment(volunteerDetailsFragment, "volunteers")
-    }
-
-    private fun changeFragment(fragment: Fragment, name: String) {
-        supportFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                .replace(R.id.fragmentContainer, fragment, name)
-                .commit()
-    }
+    override fun openSettings() = fragmentChanger.openSettings()
+    override fun openAuthentication() = fragmentChanger.openAuthentication()
+    override fun showVolunteerList() = fragmentChanger.showVolunteerList()
+    override fun openHome() = fragmentChanger.openHome()
+    override fun showProject(project: Project) = fragmentChanger.showProject(project)
+    override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
 }
 
 

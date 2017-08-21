@@ -17,6 +17,9 @@ import android.widget.TableRow
 import kotlinx.android.synthetic.main.project_details_fragment.*
 
 class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProjectDetailsFragment {
+    companion object {
+        val PROJECT_ARG = "project"
+    }
     init {
         presenter = ProjectDetailsPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.project_details_fragment).create()
@@ -29,7 +32,7 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
 
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
-        presenter?.project = args?.get("project") as Project
+        presenter?.project = args?.get(PROJECT_ARG) as Project
     }
 
     private fun updateView() {
