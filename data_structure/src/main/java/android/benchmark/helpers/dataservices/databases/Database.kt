@@ -1,4 +1,4 @@
-package android.benchmark.helpers.databases
+package android.benchmark.helpers.dataservices.databases
 
 import android.benchmark.domain.User
 import io.reactivex.Observable

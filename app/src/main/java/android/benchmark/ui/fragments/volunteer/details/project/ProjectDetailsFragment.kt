@@ -17,6 +17,9 @@ import android.widget.TableRow
 import kotlinx.android.synthetic.main.project_details_fragment.*
 
 class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProjectDetailsFragment {
+    companion object {
+        val PROJECT_ARG = "project"
+    }
     init {
         presenter = ProjectDetailsPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.project_details_fragment).create()
@@ -24,18 +27,16 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view?.let { v ->
-            updateView()
-        }
+        view?.let { updateView() }
     }
 
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
-        presenter?.project = args?.get("project") as Project
+        presenter?.project = args?.get(PROJECT_ARG) as Project
     }
 
     private fun updateView() {
-        actionBar?.setTitle(context.getString(R.string.project_label))
+        actionBar.setTitle(context.getString(R.string.project_label))
         presenter?.project?.let { project ->
             projectName?.text = project.name
             projectDescription?.text = project.description
@@ -69,7 +70,7 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
                 slidingTabLayout?.setViewPager(it)
             }
             layoutInflater?.let { inflater ->
-                if (project.images.size === 0) {
+                if (project.images.size == 0) {
                     projectImages?.visibility = GONE
                 }
 
@@ -101,6 +102,9 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
     }
 
     private fun showImage(view: View, imageMetadata: ImageMetadata) {
+
+        //todo handle image metadata
+
         val imageView = ImageView(context)
         val oldImageView = view as ImageView
 

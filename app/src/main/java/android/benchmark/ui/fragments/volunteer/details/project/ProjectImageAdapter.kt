@@ -15,8 +15,8 @@ class ProjectImageAdapter(val context: Context, val layoutInflater: LayoutInflat
         val itemView = layoutInflater.inflate(R.layout.project_image_item, container, false)
 
         itemView?.let {
-            var imageView = it.findViewById(R.id.image_view) as ImageView
-            var titleView = it.findViewById(R.id.title_view) as TextView
+            var imageView = it.findViewById(R.id.image_view) as ImageView?
+            var titleView = it.findViewById(R.id.title_view) as TextView?
 
             imageView?.let {
                 it.tag = image

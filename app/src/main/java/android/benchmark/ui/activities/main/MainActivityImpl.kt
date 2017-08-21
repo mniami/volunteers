@@ -4,11 +4,11 @@ import android.benchmark.R
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
+import android.benchmark.ui.fragments.VolunteersFragmentPresenter
 import android.benchmark.ui.fragments.settings.AuthenticationFragmentImpl
 import android.benchmark.ui.fragments.settings.SettingsFragment
 import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
 import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFragment
-import android.benchmark.ui.fragments.volunteer.list.VolunteerListFragment
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
 import android.os.Bundle
@@ -23,9 +23,18 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
     var presenter: MainPresenter? = null
+    val fragmentChanger = FragmentChanger(supportFragmentManager, Services.instance.dataSourceContainer)
 
     override fun goBack() {
         supportFragmentManager.popBackStack()
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount <= 1) {
+            finishAffinity()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +45,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         setSupportActionBar(myToolbar)
 
         if (presenter == null) {
-            presenter = MainPresenter(this, Services.instance.dataService)
+            presenter = MainPresenter(this)
         }
         presenter?.onCreate()
     }
@@ -77,38 +86,12 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         }
     }
 
-    override fun openSettings() = changeFragment(SettingsFragment(), "settings")
-    override fun openAuthentication() = changeFragment(AuthenticationFragmentImpl(), "authentication")
-    override fun showVolunteerList() = changeFragment(VolunteerListFragment(), "volunteerList")
-    override fun openHome() {
-        supportFragmentManager.popBackStack("volunteerList", R.id.fragmentContainer)
-    }
-
-    override fun showProject(project: Project) {
-        val bundle = Bundle()
-        bundle.putSerializable("project", project)
-
-        val projectDetailsFragment = ProjectDetailsFragment()
-        projectDetailsFragment.arguments = bundle
-
-        changeFragment(projectDetailsFragment, "project")
-    }
-    override fun showVolunteer(volunteer: Volunteer) {
-        val bundle = Bundle()
-        bundle.putSerializable("volunteer", volunteer)
-
-        val volunteerDetailsFragment = VolunteerDetailsFragment()
-        volunteerDetailsFragment.arguments = bundle
-
-        changeFragment(volunteerDetailsFragment, "volunteers")
-    }
-
-    private fun changeFragment(fragment : Fragment, name : String){
-        supportFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .setCustomAnimations(R.anim.abc_fade_in, R.anim.abc_fade_out)
-                .replace(R.id.fragmentContainer, fragment, name)
-                .commit()
-    }
+    override fun openSettings() = fragmentChanger.openSettings()
+    override fun openAuthentication() = fragmentChanger.openAuthentication()
+    override fun showVolunteerList() = fragmentChanger.showVolunteerList()
+    override fun openHome() = fragmentChanger.openHome()
+    override fun showProject(project: Project) = fragmentChanger.showProject(project)
+    override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
 }
+
 

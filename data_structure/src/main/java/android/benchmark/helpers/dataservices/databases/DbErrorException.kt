@@ -1,4 +1,4 @@
-package android.benchmark.helpers.databases
+package android.benchmark.helpers.dataservices.databases
 
 class DbErrorException(val code: Int, val detailError: Any) : Exception() {
     companion object {
