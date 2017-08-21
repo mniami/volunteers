@@ -1,3 +1,5 @@
 package android.benchmark.ui.fragments.settings
 
-interface AuthenticationFragment
+interface AuthenticationFragment {
+
+}

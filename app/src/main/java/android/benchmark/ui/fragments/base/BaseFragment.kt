@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
+import java.io.Serializable
 
 open class BaseFragment<T : IPresenter> : Fragment() {
     var presenter: T? = null
@@ -73,7 +74,7 @@ open class BaseFragment<T : IPresenter> : Fragment() {
 }
 
 class FragmentConfiguration(val toolbar: ToolbarConfiguration = ToolbarConfiguration(),
-                            var layoutResourceId: Int? = null) {
+                            var layoutResourceId: Int? = null){
     companion object {
         fun withLayout(layoutResourceId: Int): Builder {
             return Builder().withLayout(layoutResourceId)
@@ -108,7 +109,4 @@ class FragmentConfiguration(val toolbar: ToolbarConfiguration = ToolbarConfigura
     }
 }
 
-class ToolbarConfiguration {
-    var titleResourceId: Int? = null
-    var showBackArrow: Boolean? = null
-}
+class ToolbarConfiguration(var titleResourceId: Int? = null, var showBackArrow: Boolean? = null) : Serializable

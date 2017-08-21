@@ -5,15 +5,10 @@ import android.benchmark.helpers.Services
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.util.Log
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import kotlinx.android.synthetic.main.authentication_fragment.*
 
 class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), AuthenticationFragment {
@@ -23,7 +18,7 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
                 .title(R.string.authentication)
                 .showBackArrow()
                 .create()
-        presenter = AuthenticationPresenter(Services.instance.dataService, this, Services.instance.dataCache)
+        presenter = AuthenticationPresenter(this, Services.instance.dataCache)
     }
 
     override fun onResume() {
@@ -47,4 +42,3 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
         })
     }
 }
-

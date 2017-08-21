@@ -1,8 +1,7 @@
 package android.benchmark.ui.activities.main
 
-import android.benchmark.helpers.dataservices.DataService
 
-internal class MainPresenter(val mainActivity: MainActivity, val dataService: DataService) :
+internal class MainPresenter(val mainActivity: MainActivity) :
         IMainPresenter {
     override fun onAuthenticationClick() = mainActivity.openAuthentication()
 

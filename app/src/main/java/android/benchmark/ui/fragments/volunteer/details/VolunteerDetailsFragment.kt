@@ -11,6 +11,9 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.volunteer_details_fragment.*
 
 class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVolunteerDetailsFragment {
+    companion object {
+        val VOLUNTEER_ARG = "volunteer"
+    }
     init {
         presenter = VolunteerDetailsPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.volunteer_details_fragment).showBackArrow().create()
@@ -65,7 +68,7 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         presenter?.let {
-            it.volunteer = args?.get("volunteer") as Volunteer
+            it.volunteer = args?.get(VOLUNTEER_ARG) as Volunteer
         }
     }
 }
