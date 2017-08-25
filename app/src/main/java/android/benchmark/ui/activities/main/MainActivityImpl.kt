@@ -52,7 +52,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
 
         setContentView(R.layout.activity_main)
 
-        val myToolbar = findViewById(R.id.toolbar) as Toolbar
+        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(myToolbar)
 
         if (presenter == null) {
