@@ -18,7 +18,6 @@ open class BaseFragment<T : IPresenter> : Fragment() {
     var configuration: FragmentConfiguration = FragmentConfiguration()
     var mainActivity: MainActivity = EmptyMainActivity(EmptyActionBarTool())
     var actionBar: ActionBarTool = EmptyActionBarTool()
-    var layoutInflater: LayoutInflater? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -29,7 +28,6 @@ open class BaseFragment<T : IPresenter> : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        layoutInflater = inflater
         configuration.layoutResourceId?.let {
             return inflater.inflate(it, container, false)
         }
