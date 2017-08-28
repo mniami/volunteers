@@ -7,15 +7,12 @@ import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.AttributeSet
-import android.view.*
-import kotlinx.android.synthetic.main.activity_main.*
+import android.view.Menu
+import android.view.MenuItem
 
 internal class MainActivityImpl : AppCompatActivity(), MainView {
 
