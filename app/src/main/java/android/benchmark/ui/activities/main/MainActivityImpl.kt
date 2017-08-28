@@ -103,8 +103,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
     override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
 
     override fun updateUserStatus(signInResult: SignInAuthResult) {
-        tvUserName.text = signInResult.name
-        tvUserEmail.text = signInResult.email
+        // NO OP at this time
     }
 }
 
