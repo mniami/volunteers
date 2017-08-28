@@ -1,35 +1,40 @@
 package android.benchmark.ui.fragments.settings
 
-import android.benchmark.helpers.cache.LocalDataCache
+import android.benchmark.auth.GoogleAuth
+import android.benchmark.auth.SignInAuthResult
 import android.benchmark.ui.fragments.base.Presenter
+import android.support.v4.app.FragmentActivity
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
 import com.facebook.login.LoginResult
+import io.reactivex.Observable
 
 class AuthenticationPresenter(
         val authenticationFragment: AuthenticationFragment,
-        val dataCache: LocalDataCache) :
+        val googleAuth: GoogleAuth) :
         Presenter() {
-    companion object {
-        val NOT_SIGNED_UP = 1
-        val NOT_SIGNED_IN = 2
-        val SIGNED_IN = 3
-        val UNKNOWN_STATE = 0
+
+    fun isSignedIn(): Boolean {
+        return googleAuth.isSignedIn()
     }
-    var state = UNKNOWN_STATE
 
-    fun needsToSignUp() = state == NOT_SIGNED_UP
+    fun singIn(fragmentActivity: FragmentActivity): Observable<SignInAuthResult> {
+        return googleAuth.signIn(fragmentActivity)
+    }
 
-    fun needsToSignIn() = state == NOT_SIGNED_IN
+    fun createFacebookCallback(): FacebookCallback<LoginResult> {
+        return object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
 
-    fun signedIn() = state == SIGNED_IN
+            }
 
-    override fun onCreate() {
-        super.onCreate()
-        if (state == UNKNOWN_STATE) {
+            override fun onCancel() {
 
+            }
+
+            override fun onError(var1: FacebookException) {
+
+            }
         }
-    }
-
-    fun onAuthenticationSuccess(loginResult: LoginResult) {
-
     }
 }

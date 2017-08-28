@@ -1,24 +1,20 @@
 package android.benchmark.ui.activities.main
 
 import android.benchmark.R
+import android.benchmark.auth.SignInAuthResult
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
-import android.benchmark.ui.fragments.VolunteersFragmentPresenter
-import android.benchmark.ui.fragments.settings.AuthenticationFragmentImpl
-import android.benchmark.ui.fragments.settings.SettingsFragment
-import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
-import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFragment
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 
-internal class MainActivityImpl : AppCompatActivity(), MainActivity {
+internal class MainActivityImpl : AppCompatActivity(), MainView {
 
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
@@ -37,15 +33,25 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data?.let {
+            Services.instance.googleAuth.onActivityResult(requestCode, it)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Services.instance.googleAuth.init(this)
+
         setContentView(R.layout.activity_main)
 
-        val myToolbar = findViewById(R.id.toolbar) as Toolbar
+        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(myToolbar)
 
         if (presenter == null) {
-            presenter = MainPresenter(this)
+            presenter = MainPresenter(this, Services.instance.googleAuth, this)
         }
         presenter?.onCreate()
     }
@@ -92,6 +98,10 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
     override fun openHome() = fragmentChanger.openHome()
     override fun showProject(project: Project) = fragmentChanger.showProject(project)
     override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
+
+    override fun updateUserStatus(signInResult: SignInAuthResult) {
+        // NO OP at this time
+    }
 }
 
 

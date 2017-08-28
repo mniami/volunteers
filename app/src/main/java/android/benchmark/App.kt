@@ -1,16 +1,20 @@
 package android.benchmark
 
 import android.app.Application
+import android.benchmark.auth.GoogleAuthImpl
 import android.benchmark.eventbus.EventBusContainer
+
 import android.benchmark.helpers.Services
 import android.benchmark.helpers.ServicesImpl
 import android.benchmark.helpers.authentication.FacebookAuthentication
 import android.benchmark.helpers.cache.AndroidLocalDataCache
 import android.benchmark.helpers.content.AndroidResourceManager
+
 import android.benchmark.helpers.databases.FirebaseDatabaseImpl
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainerImpl
 import android.benchmark.helpers.dataservices.datasource.UserDataSource
 import android.benchmark.helpers.dataservices.datasource.VolunteersDataSource
+
 import android.benchmark.ui.utils.AppVersionProviderImpl
 
 class App : Application() {
@@ -25,7 +29,8 @@ class App : Application() {
                 appVersionProvider = AppVersionProviderImpl(packageManager, packageName),
                 facebookAuthentication = FacebookAuthentication(),
                 eventBusContainer = EventBusContainer(),
-                dataSourceContainer = DataSourceContainerImpl())
+                dataSourceContainer = DataSourceContainerImpl(),
+                googleAuth = GoogleAuthImpl())
 
         val dataSources = listOf(
                 VolunteersDataSource(resourceManager),

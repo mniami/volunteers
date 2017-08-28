@@ -2,7 +2,6 @@ package android.benchmark.ui.fragments.volunteer.details.project
 
 import android.benchmark.R
 import android.benchmark.domain.Project
-import android.support.v4.app.FragmentManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -30,9 +29,9 @@ class ProjectListAdapter(val data: List<Project>, val onClickListener: (Project)
 
     class ViewHolder(itemView: View?, val onClickListener: (Project) -> Unit) : RecyclerView.ViewHolder(itemView) {
         fun update(project: Project) {
-            val nameView = itemView.findViewById(R.id.name) as TextView
-            val descriptionView = itemView.findViewById(R.id.description) as TextView
-            val imageView = itemView.findViewById(R.id.image) as ImageView
+            val nameView = itemView.findViewById<TextView>(R.id.name)
+            val descriptionView = itemView.findViewById<TextView>(R.id.description)
+            val imageView = itemView.findViewById<ImageView>(R.id.image)
 
             nameView.tag = project
             descriptionView.tag = project

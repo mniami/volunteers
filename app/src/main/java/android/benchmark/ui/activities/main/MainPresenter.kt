@@ -1,14 +1,27 @@
 package android.benchmark.ui.activities.main
 
+import android.benchmark.auth.GoogleAuth
+import android.support.v4.app.FragmentActivity
+import io.reactivex.rxkotlin.subscribeBy
 
-internal class MainPresenter(val mainActivity: MainActivity) :
+
+internal class MainPresenter(val mainView: MainView, val googleAuth: GoogleAuth, val fragmentActivity: FragmentActivity) :
         IMainPresenter {
-    override fun onAuthenticationClick() = mainActivity.openAuthentication()
+    override fun onAuthenticationClick() = mainView.openAuthentication()
 
-    override fun onSettingsClick() = mainActivity.openSettings()
+    override fun onSettingsClick() = mainView.openSettings()
 
     override fun onCreate() {
-        mainActivity.showVolunteerList()
+        mainView.showVolunteerList()
+        authenticate()
+    }
+
+    private fun authenticate() {
+        googleAuth.signIn(fragmentActivity).subscribeBy(
+            onNext = {
+                mainView.updateUserStatus(it)
+            }
+        )
     }
 }
 
