@@ -1,25 +1,23 @@
 package android.benchmark.ui.activities.main
 
 import android.benchmark.R
+import android.benchmark.auth.SignInAuthResult
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
-import android.benchmark.ui.fragments.VolunteersFragmentPresenter
-import android.benchmark.ui.fragments.settings.AuthenticationFragmentImpl
-import android.benchmark.ui.fragments.settings.SettingsFragment
-import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
-import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFragment
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
+import android.util.AttributeSet
+import android.view.*
+import kotlinx.android.synthetic.main.activity_main.*
 
-internal class MainActivityImpl : AppCompatActivity(), MainActivity {
+internal class MainActivityImpl : AppCompatActivity(), MainView {
 
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
@@ -56,7 +54,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
         setSupportActionBar(myToolbar)
 
         if (presenter == null) {
-            presenter = MainPresenter(this)
+            presenter = MainPresenter(this, Services.instance.googleAuth, this)
         }
         presenter?.onCreate()
     }
@@ -103,6 +101,11 @@ internal class MainActivityImpl : AppCompatActivity(), MainActivity {
     override fun openHome() = fragmentChanger.openHome()
     override fun showProject(project: Project) = fragmentChanger.showProject(project)
     override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
+
+    override fun updateUserStatus(signInResult: SignInAuthResult) {
+        tvUserName.text = signInResult.name
+        tvUserEmail.text = signInResult.email
+    }
 }
 
 

@@ -2,13 +2,20 @@ package android.benchmark.auth
 
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
+import io.reactivex.Observable
 
 class GoogleAuthEmpty : GoogleAuth {
-    override fun onActivityResult(requestCode: Int, data : Intent) {
+    override fun signIn(fragmentActivity: FragmentActivity): Observable<SignInAuthResult> {
+        return Observable.create {
+            it.onComplete()
+        }
     }
 
-    override fun signIn(fragmentActivity: FragmentActivity) {
+    override fun isSignedIn(): Boolean {
+        return false
+    }
 
+    override fun onActivityResult(requestCode: Int, data : Intent) {
     }
 
     override fun init(fragmentActivity: FragmentActivity) {
