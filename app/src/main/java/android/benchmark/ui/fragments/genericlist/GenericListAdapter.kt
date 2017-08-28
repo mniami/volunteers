@@ -26,9 +26,9 @@ class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (G
 
     class ViewHolder(itemView: View?, val onClickListener: (GenericItem<*>?) -> Unit) : RecyclerView.ViewHolder(itemView) {
         fun update(item : GenericItem<*>?) {
-            val titleView = itemView.findViewById<TextView>(R.id.title)
-            val subtitleView = itemView.findViewById<TextView>(R.id.subtitle)
-            val imageView = itemView.findViewById<ImageView>(R.id.image)
+            val titleView = itemView.findViewById(R.id.title) as TextView
+            val subtitleView = itemView.findViewById(R.id.subtitle) as TextView
+            val imageView = itemView.findViewById(R.id.image) as ImageView
 
             titleView.text = item?.title
 
