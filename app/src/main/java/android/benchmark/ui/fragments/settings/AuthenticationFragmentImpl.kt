@@ -46,11 +46,11 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
         signedLayout.visibility = if (result.success) View.VISIBLE else View.GONE
         signInLayout.visibility = if (result.success) View.GONE else View.VISIBLE
 
-        tvHeader.text = if (result.success) result.name else ""
-        tvShortDescription.text = if (result.success) result.email else ""
+        tvHeader.text = if (result.success) result.authUser.name else ""
+        tvShortDescription.text = if (result.success) result.authUser.email else ""
 
         if (result.success) {
-            Picasso.with(context).load(result.photoUrl).into(ivImage)
+            Picasso.with(context).load(result.authUser.photoUrl).into(ivImage)
         }
     }
 }

@@ -102,7 +102,6 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
     }
 
     private fun showImage(view: View, imageMetadata: ImageMetadata) {
-
         //todo handle image metadata
 
         val imageView = ImageView(context)

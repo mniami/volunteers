@@ -51,9 +51,14 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
         setSupportActionBar(myToolbar)
 
         if (presenter == null) {
-            presenter = MainPresenter(this, Services.instance.googleAuth, this)
+            presenter = MainPresenter(this, Services.instance.googleAuth, Services.instance.database, this)
         }
         presenter?.onCreate()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.onStart()
     }
 
     override fun getResourceText(id: Int): String {

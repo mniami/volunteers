@@ -4,7 +4,6 @@ import android.benchmark.auth.SignInAuthResult
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.ui.views.actionbar.ActionBarTool
-import com.google.android.gms.auth.api.signin.GoogleSignInResult
 
 interface MainActivity {
     val actionBarTool: ActionBarTool

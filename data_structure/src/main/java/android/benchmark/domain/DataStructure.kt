@@ -130,6 +130,4 @@ class Address(
 open class AddressType : Serializable
 class LiveAddress : AddressType()
 
-class TravelDestination (val name : String, val difficultyLevel : Level){
-
-}
+class TravelDestination (val name : String, val difficultyLevel : Level)
