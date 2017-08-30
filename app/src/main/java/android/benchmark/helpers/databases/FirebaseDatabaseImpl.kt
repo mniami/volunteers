@@ -54,12 +54,14 @@ class FirebaseDatabaseImpl : Database {
 
     private fun signIn(signInAuthResult : SignInAuthResult, emitter : ObservableEmitter<DatabaseUser>){
         val credential = GoogleAuthProvider.getCredential(signInAuthResult.authUser.idToken, null)
-        auth?.signInWithCredential(credential)?.addOnCompleteListener(executorService, OnCompleteListener<AuthResult> { task ->
+        val task = auth?.signInWithCredential(credential)
+
+        task?.addOnCompleteListener(executorService, OnCompleteListener<AuthResult> { task ->
             if (task.isSuccessful) {
                 authResult = task.result
                 emitter.onNext(convert(task.result))
-                emitter.onComplete()
             }
+            emitter.onComplete()
         })
     }
 

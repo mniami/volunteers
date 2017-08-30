@@ -1,6 +1,6 @@
 package android.benchmark.ui.fragments.genericlist
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.helpers.Services
 import android.benchmark.helpers.dataservices.datasource.DataSourceId
 import android.benchmark.helpers.dataservices.datasource.ObservableDataSource

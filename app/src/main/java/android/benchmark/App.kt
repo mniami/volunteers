@@ -1,4 +1,4 @@
-package android.benchmark
+package android.androidkotlinbenchmark
 
 import android.app.Application
 import android.benchmark.auth.AuthImpl

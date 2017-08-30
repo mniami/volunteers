@@ -1,6 +1,6 @@
 package android.benchmark.ui.activities.main
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.auth.SignInAuthResult
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer

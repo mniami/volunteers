@@ -1,6 +1,6 @@
 package android.benchmark.ui.fragments
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
 import android.benchmark.helpers.android.fromSerializable

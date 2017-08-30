@@ -1,6 +1,6 @@
 package android.benchmark.ui.fragments.volunteer.details.project
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Project
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

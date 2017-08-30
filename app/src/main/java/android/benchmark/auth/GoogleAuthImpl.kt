@@ -1,5 +1,6 @@
 package android.benchmark.auth
 
+import android.androidkotlinbenchmark.R
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
 import android.util.Log
@@ -24,7 +25,9 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
     override fun init(fragmentActivity: FragmentActivity) {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestIdToken(fragmentActivity.getString(R.string.default_web_client_id))
                 .build()
+
         apiClient = GoogleApiClient.Builder(fragmentActivity)
                 .enableAutoManage(fragmentActivity, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -70,7 +73,7 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
                 val email = result.signInAccount?.email ?: ""
                 val photoUrl = result.signInAccount?.photoUrl.toString()
                 val id = result.signInAccount?.id ?: ""
-                val idToken = "AAAAur7r6CA:APA91bHH5N7GApStTXB5jcuYCMZZicyFMWtLNv9dKUi4DZ2fSKbvyUeX8Y5IdTJn-tqhohGq5rUZatS_TgVGJSm7D-NILI85IVmMYYA3in8iD4B8N7uGj_4mK3CuHJMT5lHYomaTNNTg"
+                val idToken = result.signInAccount?.idToken ?: ""
 
                 auth.authUser = AuthUser(lDisplayName, photoUrl, email, id, idToken)
 

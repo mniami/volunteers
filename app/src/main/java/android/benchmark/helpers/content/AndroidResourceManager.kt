@@ -1,6 +1,6 @@
 package android.benchmark.helpers.content
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.content.Context
 
 class AndroidResourceManager (val context : Context): ResourceManager {

@@ -1,6 +1,6 @@
 package android.benchmark.ui.activities.main
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainer
