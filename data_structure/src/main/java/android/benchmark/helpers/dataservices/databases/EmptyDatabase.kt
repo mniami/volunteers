@@ -1,10 +1,9 @@
 package android.benchmark.helpers.dataservices.databases
 
-import android.benchmark.auth.SignInAuthResult
 import android.benchmark.domain.User
 import io.reactivex.Observable
 
-class EmptyDatabase : Database{
+class EmptyDatabase : Database {
     override fun addListener(databaseListener: IDatabaseListener) {
     }
 
@@ -12,18 +11,12 @@ class EmptyDatabase : Database{
     }
 
     override fun getUser(name: String): Observable<User> {
-        return Observable.create {
-            emitter -> emitter.onComplete()
+        return Observable.create { emitter ->
+            emitter.onComplete()
         }
     }
 
     override fun initAuth() {
-    }
-
-    override fun signIn(signInAuthResult: SignInAuthResult): Observable<DatabaseUser> {
-        return Observable.create {
-            emitter -> emitter.onComplete()
-        }
     }
 
     override fun signOut() {

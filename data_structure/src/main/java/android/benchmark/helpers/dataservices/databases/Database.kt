@@ -9,6 +9,5 @@ interface Database {
     fun removeListener(databaseListener: IDatabaseListener)
     fun getUser(name: String): Observable<User>
     fun initAuth()
-    fun signIn(signInAuthResult : SignInAuthResult): Observable<DatabaseUser>
     fun signOut()
 }

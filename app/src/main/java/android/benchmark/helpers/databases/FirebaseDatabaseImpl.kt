@@ -1,10 +1,12 @@
 package android.benchmark.helpers.databases
 
+import android.benchmark.auth.Auth
 import android.benchmark.auth.SignInAuthResult
 import android.benchmark.domain.User
 import android.benchmark.helpers.dataservices.databases.Database
 import android.benchmark.helpers.dataservices.databases.DatabaseUser
 import android.benchmark.helpers.dataservices.databases.IDatabaseListener
+import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -15,27 +17,24 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
+import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.Executors
 
-class FirebaseDatabaseImpl : Database {
+class FirebaseDatabaseImpl(val authentication: Auth) : Database {
+    private val TAG = "FirebaseDatabaseImpl"
     private var databaseListener: IDatabaseListener? = null
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private var auth : FirebaseAuth? = null
+    private var firebaseAuth: FirebaseAuth? = null
     private val executorService = Executors.newCachedThreadPool()
     private var authResult : AuthResult? = null
+    private var user : User? = null
 
     override fun initAuth(){
-        auth = FirebaseAuth.getInstance()
-    }
-
-    override fun signIn(signInAuthResult : SignInAuthResult) : Observable<DatabaseUser>{
-        return Observable.create { emitter ->
-            signIn(signInAuthResult, emitter)
-        }
+        firebaseAuth = FirebaseAuth.getInstance()
     }
 
     override fun signOut(){
-        auth?.signOut()
+        firebaseAuth?.signOut()
     }
 
     override fun addListener(databaseListener: IDatabaseListener) {
@@ -48,21 +47,33 @@ class FirebaseDatabaseImpl : Database {
 
     override fun getUser(name: String): Observable<User> {
         return Observable.create { emitter ->
-            getUser(name, emitter)
+            if (user == null){
+                signIn().subscribeBy(
+                    onComplete = {
+                        getUser(name, emitter)
+                    }
+                )
+            }
+            else {
+                emitter.onNext(user!!)
+            }
         }
     }
 
-    private fun signIn(signInAuthResult : SignInAuthResult, emitter : ObservableEmitter<DatabaseUser>){
-        val credential = GoogleAuthProvider.getCredential(signInAuthResult.authUser.idToken, null)
-        val task = auth?.signInWithCredential(credential)
+    private fun signIn() : Observable<DatabaseUser>{
+        return Observable.create { emitter ->
+            val credential = GoogleAuthProvider.getCredential(authentication.authUser.idToken, null)
 
-        task?.addOnCompleteListener(executorService, OnCompleteListener<AuthResult> { task ->
-            if (task.isSuccessful) {
-                authResult = task.result
-                emitter.onNext(convert(task.result))
-            }
-            emitter.onComplete()
-        })
+            firebaseAuth?.signInWithCredential(credential)?.addOnCompleteListener(executorService, OnCompleteListener<AuthResult> { task ->
+                Log.d(TAG, "sign in " + task.isSuccessful)
+
+                if (task.isSuccessful) {
+                    authResult = task.result
+                    emitter.onNext(convert(task.result))
+                }
+                emitter.onComplete()
+            })
+        }
     }
 
     private fun convert(result: AuthResult): DatabaseUser {
@@ -80,6 +91,7 @@ class FirebaseDatabaseImpl : Database {
             override fun onDataChange(var1: DataSnapshot) {
                 val user = var1.getValue(User::class.java)
                 if (user != null) {
+                    this@FirebaseDatabaseImpl.user = user
                     emitter.onNext(user)
                 }
                 ref.removeEventListener(this)

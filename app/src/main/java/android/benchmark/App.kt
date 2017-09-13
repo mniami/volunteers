@@ -35,7 +35,7 @@ class App : Application() {
                 eventBusContainer = EventBusContainer(),
                 dataSourceContainer = DataSourceContainerImpl(),
                 googleAuth = GoogleAuthImpl(auth, SignInAuthResult.createEmpty()),
-                database = FirebaseDatabaseImpl(),
+                database = FirebaseDatabaseImpl(auth),
                 auth = auth)
 
         val dataSources = listOf(
