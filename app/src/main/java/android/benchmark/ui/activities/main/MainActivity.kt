@@ -1,6 +1,6 @@
 package android.benchmark.ui.activities.main
 
-import android.benchmark.auth.SignInAuthResult
+import android.benchmark.domain.Person
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.ui.views.actionbar.ActionBarTool
@@ -15,8 +15,5 @@ interface MainActivity {
     fun openAuthentication()
     fun showVolunteerList()
     fun showProject(project: Project)
-}
-
-interface MainView : MainActivity {
-    fun updateUserStatus(signInResult: SignInAuthResult)
+    fun openEditUserDetails(person: Person)
 }

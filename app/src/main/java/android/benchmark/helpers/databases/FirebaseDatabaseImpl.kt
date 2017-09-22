@@ -1,7 +1,6 @@
 package android.benchmark.helpers.databases
 
 import android.benchmark.auth.Auth
-import android.benchmark.auth.SignInAuthResult
 import android.benchmark.domain.User
 import android.benchmark.helpers.dataservices.databases.Database
 import android.benchmark.helpers.dataservices.databases.DatabaseUser
@@ -50,7 +49,7 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
             if (user == null){
                 signIn().subscribeBy(
                     onComplete = {
-                        getUser(name, emitter)
+                        getUserAsync(name, emitter)
                     }
                 )
             }
@@ -85,14 +84,18 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
                 "")
     }
 
-    private fun getUser(name: String, emitter: ObservableEmitter<User>){
+    private fun getUserAsync(name: String, emitter: ObservableEmitter<User>){
         val ref = database.reference.child("users").child(name)
         val eventListener = object : ValueEventListener {
             override fun onDataChange(var1: DataSnapshot) {
                 val user = var1.getValue(User::class.java)
                 if (user != null) {
                     this@FirebaseDatabaseImpl.user = user
+                    Log.d(TAG, "user found '${user.name}'")
                     emitter.onNext(user)
+                }
+                else {
+                    Log.d(TAG, "user not found")
                 }
                 ref.removeEventListener(this)
                 emitter.onComplete()

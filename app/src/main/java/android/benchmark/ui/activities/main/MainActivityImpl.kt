@@ -2,6 +2,7 @@ package android.benchmark.ui.activities.main
 
 import android.androidkotlinbenchmark.R
 import android.benchmark.auth.SignInAuthResult
+import android.benchmark.domain.Person
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
@@ -103,6 +104,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
     override fun openHome() = fragmentChanger.openHome()
     override fun showProject(project: Project) = fragmentChanger.showProject(project)
     override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
+    override fun openEditUserDetails(person: Person) = fragmentChanger.openEditUserDetails(person)
 
     override fun updateUserStatus(signInResult: SignInAuthResult) {
         // NO OP at this time

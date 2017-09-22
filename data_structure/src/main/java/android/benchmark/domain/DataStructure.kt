@@ -3,6 +3,7 @@ package android.benchmark.domain
 import java.io.Serializable
 
 class Volunteer(val needies: List<Needy> = emptyList(),
+                privilege: Privilege = Privilege.USER,
                 name: String = "",
                 surname: String = "",
                 avatarImageUri: String = "",
@@ -13,9 +14,10 @@ class Volunteer(val needies: List<Needy> = emptyList(),
                 activity : Activity = Activity(),
                 projects: MutableList<Project> = mutableListOf(),
                 addresses: MutableList<Address> = mutableListOf()) :
-        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, activity, projects, addresses)
+        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, activity, projects, addresses)
 
 class Needy(val volunteers: List<Volunteer> = emptyList(),
+            privilege: Privilege = Privilege.USER,
             name: String = "",
             surname: String = "",
             avatarImageUri: String = "",
@@ -26,9 +28,10 @@ class Needy(val volunteers: List<Volunteer> = emptyList(),
             activity : Activity = Activity(),
             projects: MutableList<Project> = mutableListOf(),
             addresses: MutableList<Address> = mutableListOf()) :
-        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, activity, projects, addresses)
+        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, activity, projects, addresses)
 
 open class Person(
+        val privilege: Privilege = Privilege.USER,
         val name: String = "",
         val surname: String = "",
         val avatarImageUri: String = "",
@@ -41,6 +44,7 @@ open class Person(
         val addresses: MutableList<Address> = mutableListOf()) : Serializable
 
 class User(val volunteers: MutableList<Volunteer> = mutableListOf(),
+           privilege: Privilege = Privilege.USER,
            name: String = "",
            surname: String = "",
            avatarImageUri: String = "",
@@ -51,7 +55,7 @@ class User(val volunteers: MutableList<Volunteer> = mutableListOf(),
            activity : Activity = Activity(),
            projects: MutableList<Project> = mutableListOf(),
            addresses: MutableList<Address> = mutableListOf()) :
-        Person(name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, activity, projects, addresses)
+        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, activity, projects, addresses)
 
 class ActionDate (val value : Long = 0)
 class Action (val name : String = "", val date : ActionDate = ActionDate())
@@ -131,3 +135,8 @@ open class AddressType : Serializable
 class LiveAddress : AddressType()
 
 class TravelDestination (val name : String, val difficultyLevel : Level)
+
+enum class Privilege {
+    ADMIN,
+    USER
+}

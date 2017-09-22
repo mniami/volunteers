@@ -3,8 +3,6 @@ package android.benchmark.ui.activities.main
 import android.benchmark.auth.GoogleAuth
 import android.benchmark.helpers.dataservices.databases.Database
 import android.support.v4.app.FragmentActivity
-import com.google.firebase.auth.FirebaseAuth
-import io.reactivex.rxkotlin.subscribeBy
 
 internal class MainPresenter(
         val mainView: MainView,

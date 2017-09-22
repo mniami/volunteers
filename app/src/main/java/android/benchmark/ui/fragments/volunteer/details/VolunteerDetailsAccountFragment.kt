@@ -4,8 +4,8 @@ import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Volunteer
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
+import android.benchmark.ui.fragments.volunteer.details.presenters.VolunteerDetailsPresenter
 import android.os.Bundle
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.volunteer_details_account.*
 
 class VolunteerDetailsAccountFragment : BaseFragment<VolunteerDetailsPresenter>(), IVolunteerDetailsFragment{
