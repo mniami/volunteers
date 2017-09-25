@@ -9,6 +9,7 @@ import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -24,9 +25,23 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
     private var databaseListener: IDatabaseListener? = null
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var firebaseAuth: FirebaseAuth? = null
-    private val executorService = Executors.newCachedThreadPool()
-    private var authResult : AuthResult? = null
-    private var user : User? = null
+
+    override fun getCurrentUserAsync() : Observable<User> {
+        return Observable.create { emitter ->
+            val firebaseAuthInstance = firebaseAuth
+            if (firebaseAuthInstance == null){
+                emitter.onComplete()
+                return@create
+            }
+            val user = firebaseAuthInstance.currentUser
+            if (user != null && user.uid.isNotBlank()) {
+                getUserAsync(user.uid, emitter)
+            }
+            else {
+                emitter.onComplete()
+            }
+        }
+    }
 
     override fun initAuth(){
         if (firebaseAuth == null){
@@ -48,46 +63,8 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
 
     override fun getUser(name: String): Observable<User> {
         return Observable.create { emitter ->
-            if (user == null){
-                signInWithCredential().subscribeBy(
-                    onComplete = {
-                        getUserAsync(name, emitter)
-                    }
-                )
-            }
-            else {
-                emitter.onNext(user!!)
-            }
+            getUserAsync(name, emitter)
         }
-    }
-
-    override fun signIn(): Observable<User> {
-        return getUser(authentication.authUser.id)
-    }
-
-    private fun signInWithCredential() : Observable<DatabaseUser>{
-        return Observable.create { emitter ->
-            val credential = GoogleAuthProvider.getCredential(authentication.authUser.idToken, null)
-
-            firebaseAuth?.signInWithCredential(credential)?.addOnCompleteListener(executorService, OnCompleteListener<AuthResult> { task ->
-                Log.d(TAG, "sign in " + task.isSuccessful)
-
-                if (task.isSuccessful) {
-                    authResult = task.result
-                    emitter.onNext(convert(task.result))
-                }
-                emitter.onComplete()
-            })
-        }
-    }
-
-    private fun convert(result: AuthResult): DatabaseUser {
-        return DatabaseUser(
-                result.user.uid,
-                result.user.providerId,
-                result.user.displayName,
-                result.user.email,
-                "")
     }
 
     private fun getUserAsync(name: String, emitter: ObservableEmitter<User>){
@@ -96,7 +73,6 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
             override fun onDataChange(var1: DataSnapshot) {
                 val user = var1.getValue(User::class.java)
                 if (user != null) {
-                    this@FirebaseDatabaseImpl.user = user
                     Log.d(TAG, "user found '${user.name}'")
                     emitter.onNext(user)
                 }

@@ -25,7 +25,9 @@ internal class MainPresenter(
     }
 
     private fun authenticate() {
-        googleAuth.signIn(fragmentActivity).subscribeBy(onComplete = { database.signIn() })
+        googleAuth.signIn(fragmentActivity).subscribeBy(onComplete = {
+            mainView.onAuthenticated()
+        })
     }
 }
 

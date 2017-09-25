@@ -16,11 +16,14 @@ import android.view.Menu
 import android.view.MenuItem
 
 internal class MainActivityImpl : AppCompatActivity(), MainView {
+    override fun onAuthenticated() {
+        // do nothing
+    }
 
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
-    var presenter: MainPresenter? = null
-    val fragmentChanger = FragmentChanger(supportFragmentManager, Services.instance.dataSourceContainer)
+    private var presenter: MainPresenter? = null
+    private val fragmentChanger = FragmentChanger(supportFragmentManager, Services.instance.dataSourceContainer)
 
     override fun goBack() {
         supportFragmentManager.popBackStack()

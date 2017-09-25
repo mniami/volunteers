@@ -13,7 +13,7 @@ class UserDataSource(val database: Database, val auth : Auth) : ObservableDataSo
 
     override val data: ObservableData<User>
         get() {
-            return ObservableDataImpl(database.getUser(auth.authUser.id))
+            return ObservableDataImpl(database.getCurrentUserAsync())
         }
     override val id: DataSourceId
         get() {

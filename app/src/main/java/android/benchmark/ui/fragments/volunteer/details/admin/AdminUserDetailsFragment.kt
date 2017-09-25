@@ -6,10 +6,8 @@ import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.benchmark.ui.fragments.volunteer.details.presenters.UserPresenter
 import android.os.Bundle
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.admin_user_details.*
-import android.widget.TabHost.TabSpec
-
-
 
 class AdminUserDetailsFragment: BaseFragment<UserPresenter>() {
     companion object {
@@ -20,8 +18,8 @@ class AdminUserDetailsFragment: BaseFragment<UserPresenter>() {
         configuration = FragmentConfiguration.withLayout(R.layout.admin_user_details).showBackArrow().create()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         tabHost?.let {
             it.setup()
 
@@ -37,15 +35,22 @@ class AdminUserDetailsFragment: BaseFragment<UserPresenter>() {
 
             it.addTab(tab2)
         }
-    }
+        presenter?.person?.let{
+            Picasso.with(context).load(it.avatarImageUri).into(imageView)
+            etName?.setText(it.name)
+            etEmail?.setText(it.email)
 
-    override fun onResume() {
-        super.onResume()
-        tabHost?.let {
-            val tab1 = it.newTabSpec("First Tab")
-            val tab2 = it.newTabSpec("Second Tab")
+            val addressEntry = it.addresses.entries.firstOrNull()
+            if (addressEntry != null){
+                val address = addressEntry.value
+                etCity?.setText(address.city)
+                etPostCode?.setText(address.zip)
+                etAddress?.setText(String.format("%s %s/%s", address.street, address.house, address.flat))
+            }
+            etDescription?.setText(it.description)
         }
     }
+
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         presenter?.let {

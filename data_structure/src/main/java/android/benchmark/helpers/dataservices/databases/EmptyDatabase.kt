@@ -3,8 +3,8 @@ package android.benchmark.helpers.dataservices.databases
 import android.benchmark.domain.User
 import io.reactivex.Observable
 
-class EmptyDatabase : Database {
-    override fun signIn(): Observable<User> {
+class EmptyDatabase() : Database {
+    override fun getCurrentUserAsync(): Observable<User> {
         return Observable.create { emitter ->
             emitter.onComplete()
         }

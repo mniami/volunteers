@@ -10,11 +10,12 @@ class Volunteer(val needies: List<Needy> = emptyList(),
                 shortDescription: String = "",
                 description: String = "",
                 volunteerType: String = "",
+                email: String = "",
                 skills: Skills = Skills(),
                 activity : Activity = Activity(),
-                projects: MutableList<Project> = mutableListOf(),
-                addresses: MutableList<Address> = mutableListOf()) :
-        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, activity, projects, addresses)
+                projects: Map<String, Project> = hashMapOf(),
+                addresses: Map<String, Address> = hashMapOf()) :
+        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, email, skills, activity, projects, addresses)
 
 class Needy(val volunteers: List<Volunteer> = emptyList(),
             privilege: Privilege = Privilege.USER,
@@ -24,11 +25,12 @@ class Needy(val volunteers: List<Volunteer> = emptyList(),
             shortDescription: String = "",
             description: String = "",
             volunteerType: String = "",
+            email: String = "",
             skills: Skills = Skills(),
             activity : Activity = Activity(),
-            projects: MutableList<Project> = mutableListOf(),
-            addresses: MutableList<Address> = mutableListOf()) :
-        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, activity, projects, addresses)
+            projects: Map<String, Project> = hashMapOf(),
+            addresses: Map<String, Address> = hashMapOf()) :
+        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, email, skills, activity, projects, addresses)
 
 open class Person(
         val privilege: Privilege = Privilege.USER,
@@ -38,10 +40,11 @@ open class Person(
         val shortDescription: String = "",
         val description: String = "",
         val volunteerType: String = "",
+        val email: String = "",
         val skills: Skills = Skills(),
         val activity : Activity = Activity(),
-        val projects: MutableList<Project> = mutableListOf(),
-        val addresses: MutableList<Address> = mutableListOf()) : Serializable
+        val projects: Map<String, Project> = hashMapOf(),
+        val addresses: Map<String, Address> = hashMapOf()) : Serializable
 
 class User(val volunteers: MutableList<Volunteer> = mutableListOf(),
            privilege: Privilege = Privilege.USER,
@@ -51,11 +54,12 @@ class User(val volunteers: MutableList<Volunteer> = mutableListOf(),
            shortDescription: String = "",
            description: String = "",
            volunteerType: String = "",
+           email: String = "",
            skills: Skills = Skills(),
            activity : Activity = Activity(),
-           projects: MutableList<Project> = mutableListOf(),
-           addresses: MutableList<Address> = mutableListOf()) :
-        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, skills, activity, projects, addresses)
+           projects: Map<String, Project> = hashMapOf(),
+           addresses: Map<String, Address> = hashMapOf()) :
+        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, email, skills, activity, projects, addresses)
 
 class ActionDate (val value : Long = 0)
 class Action (val name : String = "", val date : ActionDate = ActionDate())

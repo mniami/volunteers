@@ -29,7 +29,7 @@ class VolunteerProjectListFragment : BaseFragment<VolunteerProjectListPresenter>
             rv.setHasFixedSize(true)
             rv.layoutManager = LinearLayoutManager(context)
             presenter?.let {
-                rv.adapter = ProjectListAdapter(it.volunteer.projects) { project ->
+                rv.adapter = ProjectListAdapter(it.volunteer.projects.map { pair -> pair.value }) { project ->
                     mainActivity.showProject(project)
                 }
             }
