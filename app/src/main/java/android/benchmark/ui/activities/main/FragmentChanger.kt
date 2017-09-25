@@ -1,6 +1,7 @@
 package android.benchmark.ui.activities.main
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
+import android.benchmark.domain.Person
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainer
@@ -8,6 +9,7 @@ import android.benchmark.ui.fragments.VolunteersFragmentPresenter
 import android.benchmark.ui.fragments.settings.AuthenticationFragmentImpl
 import android.benchmark.ui.fragments.settings.SettingsFragment
 import android.benchmark.ui.fragments.volunteer.details.VolunteerDetailsFragment
+import android.benchmark.ui.fragments.volunteer.details.admin.AdminUserDetailsFragment
 import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -47,5 +49,15 @@ class FragmentChanger (val supportFragmentManager: FragmentManager, val dataSour
         volunteerDetailsFragment.arguments = bundle
 
         changeFragment(volunteerDetailsFragment, FragmentNames.VOLUNTEER)
+    }
+
+    fun openEditUserDetails(person: Person) {
+        val bundle = Bundle()
+        bundle.putSerializable(AdminUserDetailsFragment.PERSON_ARG, person)
+
+        val fragment = AdminUserDetailsFragment()
+        fragment.arguments = bundle
+
+        changeFragment(fragment, FragmentNames.EDIT_PERSON)
     }
 }

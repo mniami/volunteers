@@ -1,6 +1,6 @@
 package android.benchmark.ui.fragments.volunteer.details.project
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.domain.ImageMetadata
 import android.content.Context
 import android.view.LayoutInflater

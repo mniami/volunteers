@@ -1,40 +1,56 @@
 package android.benchmark.helpers.databases
 
+import android.benchmark.auth.Auth
 import android.benchmark.domain.User
 import android.benchmark.helpers.dataservices.databases.Database
+import android.benchmark.helpers.dataservices.databases.DatabaseUser
 import android.benchmark.helpers.dataservices.databases.IDatabaseListener
+import android.util.Log
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
+import io.reactivex.ObservableEmitter
+import io.reactivex.rxkotlin.subscribeBy
+import java.util.concurrent.Executors
 
-class FirebaseDatabaseImpl : Database {
+class FirebaseDatabaseImpl(val authentication: Auth) : Database {
+    private val TAG = "FirebaseDatabaseImpl"
     private var databaseListener: IDatabaseListener? = null
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private var snapshot: DataSnapshot? = null
+    private var firebaseAuth: FirebaseAuth? = null
 
-    override fun getUser(name: String): Observable<User> {
-        return Observable.create { emitter -> run {
-                val ref = database.reference.child("users").child(name)
-                val eventListener = object : ValueEventListener {
-                    override fun onDataChange(var1: DataSnapshot) {
-                        emitter.onNext(var1.getValue(User::class.java))
-                        emitter.onComplete()
-                        ref.removeEventListener(this)
-                    }
-
-                    override fun onCancelled(var1: DatabaseError) {
-                        emitter.onError(var1.createReadException())
-                        ref.removeEventListener(this)
-                    }
-                }
-                emitter.setCancellable {
-                    ref.removeEventListener(eventListener)
-                }
-                ref.addValueEventListener(eventListener)
+    override fun getCurrentUserAsync() : Observable<User> {
+        return Observable.create { emitter ->
+            val firebaseAuthInstance = firebaseAuth
+            if (firebaseAuthInstance == null){
+                emitter.onComplete()
+                return@create
+            }
+            val user = firebaseAuthInstance.currentUser
+            if (user != null && user.uid.isNotBlank()) {
+                getUserAsync(user.uid, emitter)
+            }
+            else {
+                emitter.onComplete()
             }
         }
+    }
+
+    override fun initAuth(){
+        if (firebaseAuth == null){
+            firebaseAuth = FirebaseAuth.getInstance()
+        }
+    }
+
+    override fun signOut(){
+        firebaseAuth?.signOut()
     }
 
     override fun addListener(databaseListener: IDatabaseListener) {
@@ -43,5 +59,35 @@ class FirebaseDatabaseImpl : Database {
 
     override fun removeListener(databaseListener: IDatabaseListener) {
         this.databaseListener = databaseListener
+    }
+
+    override fun getUser(name: String): Observable<User> {
+        return Observable.create { emitter ->
+            getUserAsync(name, emitter)
+        }
+    }
+
+    private fun getUserAsync(name: String, emitter: ObservableEmitter<User>){
+        val ref = database.reference.child("users").child(name)
+        val eventListener = object : ValueEventListener {
+            override fun onDataChange(var1: DataSnapshot) {
+                val user = var1.getValue(User::class.java)
+                if (user != null) {
+                    Log.d(TAG, "user found '${user.name}'")
+                    emitter.onNext(user)
+                }
+                else {
+                    Log.d(TAG, "user not found")
+                }
+                ref.removeEventListener(this)
+                emitter.onComplete()
+            }
+
+            override fun onCancelled(var1: DatabaseError) {
+                ref.removeEventListener(this)
+                emitter.onComplete()
+            }
+        }
+        ref.addValueEventListener(eventListener)
     }
 }

@@ -1,10 +1,10 @@
 package android.benchmark.ui.fragments.volunteer.details
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Volunteer
-import android.benchmark.helpers.Services
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
+import android.benchmark.ui.fragments.volunteer.details.presenters.VolunteerProjectListPresenter
 import android.benchmark.ui.fragments.volunteer.details.project.ProjectListAdapter
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -29,7 +29,7 @@ class VolunteerProjectListFragment : BaseFragment<VolunteerProjectListPresenter>
             rv.setHasFixedSize(true)
             rv.layoutManager = LinearLayoutManager(context)
             presenter?.let {
-                rv.adapter = ProjectListAdapter(it.volunteer.projects) { project ->
+                rv.adapter = ProjectListAdapter(it.volunteer.projects.map { pair -> pair.value }) { project ->
                     mainActivity.showProject(project)
                 }
             }

@@ -1,7 +1,8 @@
 package android.benchmark.ui.activities.main
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.auth.SignInAuthResult
+import android.benchmark.domain.Person
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
@@ -15,11 +16,14 @@ import android.view.Menu
 import android.view.MenuItem
 
 internal class MainActivityImpl : AppCompatActivity(), MainView {
+    override fun onAuthenticated() {
+        // do nothing
+    }
 
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
-    var presenter: MainPresenter? = null
-    val fragmentChanger = FragmentChanger(supportFragmentManager, Services.instance.dataSourceContainer)
+    private var presenter: MainPresenter? = null
+    private val fragmentChanger = FragmentChanger(supportFragmentManager, Services.instance.dataSourceContainer)
 
     override fun goBack() {
         supportFragmentManager.popBackStack()
@@ -51,9 +55,14 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
         setSupportActionBar(myToolbar)
 
         if (presenter == null) {
-            presenter = MainPresenter(this, Services.instance.googleAuth, this)
+            presenter = MainPresenter(this, Services.instance.googleAuth, Services.instance.database, this)
         }
         presenter?.onCreate()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter?.onStart()
     }
 
     override fun getResourceText(id: Int): String {
@@ -98,6 +107,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
     override fun openHome() = fragmentChanger.openHome()
     override fun showProject(project: Project) = fragmentChanger.showProject(project)
     override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
+    override fun openEditUserDetails(person: Person) = fragmentChanger.openEditUserDetails(person)
 
     override fun updateUserStatus(signInResult: SignInAuthResult) {
         // NO OP at this time

@@ -1,6 +1,6 @@
 package android.benchmark.ui.fragments.genericlist
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View

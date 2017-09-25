@@ -1,6 +1,6 @@
 package android.benchmark.ui.fragments.volunteer.details.project
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.domain.ImageMetadata
 import android.benchmark.domain.Project
 import android.benchmark.ui.fragments.base.BaseFragment
@@ -102,7 +102,6 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
     }
 
     private fun showImage(view: View, imageMetadata: ImageMetadata) {
-
         //todo handle image metadata
 
         val imageView = ImageView(context)

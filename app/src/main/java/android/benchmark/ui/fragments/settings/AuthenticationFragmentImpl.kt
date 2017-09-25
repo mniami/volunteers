@@ -1,12 +1,10 @@
 package android.benchmark.ui.fragments.settings
 
-import android.benchmark.R
-import android.benchmark.auth.SignInAuthResult
+import android.androidkotlinbenchmark.R
 import android.benchmark.helpers.Services
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.view.View
-import com.facebook.CallbackManager
 import com.squareup.picasso.Picasso
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.authentication_fragment.*
@@ -17,40 +15,27 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
                 .title(R.string.authentication)
                 .showBackArrow()
                 .create()
-        presenter = AuthenticationPresenter(this, Services.instance.googleAuth)
+        presenter = AuthenticationPresenter(this, Services.instance.googleAuth, Services.instance.database)
     }
 
     override fun onResume() {
         super.onResume()
-
-        signIn()
-
-        presenter?.let {
-            googleLoginButton?.setOnClickListener {
-                signIn()
-            }
-            facebookLoginButton?.setReadPermissions("email", "public_profile")
-            facebookLoginButton?.registerCallback(CallbackManager.Factory.create(), it.createFacebookCallback())
-        }
+        updateUi()
     }
 
-    private fun signIn(){
-        presenter?.singIn(activity)?.subscribeBy(
-                onNext = {
-                    updateUi(it)
-                }
-        )
-    }
+    private fun updateUi() {
+        Services.instance.database.getCurrentUserAsync().subscribeBy(
+                onNext = { currentUser ->
+                    signedLayout.visibility = if (currentUser != null) View.VISIBLE else View.GONE
 
-    private fun updateUi(result: SignInAuthResult) {
-        signedLayout.visibility = if (result.success) View.VISIBLE else View.GONE
-        signInLayout.visibility = if (result.success) View.GONE else View.VISIBLE
+                    if (currentUser != null) {
+                        tvHeader.text = currentUser.name
+                        tvShortDescription.text = currentUser.email
 
-        tvHeader.text = if (result.success) result.name else ""
-        tvShortDescription.text = if (result.success) result.email else ""
-
-        if (result.success) {
-            Picasso.with(context).load(result.photoUrl).into(ivImage)
-        }
+                        if (currentUser.avatarImageUri.isNotBlank()) {
+                            Picasso.with(context).load(currentUser.avatarImageUri).into(ivImage)
+                        }
+                    }
+                })
     }
 }

@@ -1,6 +1,6 @@
 package android.benchmark.ui.fragments.settings
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.benchmark.domain.User
 import android.benchmark.helpers.Services
 import android.benchmark.ui.fragments.base.BaseFragment

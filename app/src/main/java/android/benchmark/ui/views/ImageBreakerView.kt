@@ -1,6 +1,6 @@
 package android.benchmark.ui.views
 
-import android.benchmark.R
+import android.androidkotlinbenchmark.R
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas

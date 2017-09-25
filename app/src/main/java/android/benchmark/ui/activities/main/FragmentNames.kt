@@ -7,6 +7,6 @@ interface FragmentNames {
         val SETTINGS = "settings"
         val PROJECT = "project"
         val VOLUNTEER = "volunteer"
-
+        val EDIT_PERSON= "edit_person"
     }
 }
