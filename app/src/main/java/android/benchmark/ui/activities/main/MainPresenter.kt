@@ -3,6 +3,7 @@ package android.benchmark.ui.activities.main
 import android.benchmark.auth.GoogleAuth
 import android.benchmark.helpers.dataservices.databases.Database
 import android.support.v4.app.FragmentActivity
+import io.reactivex.rxkotlin.subscribeBy
 
 internal class MainPresenter(
         val mainView: MainView,
@@ -19,12 +20,12 @@ internal class MainPresenter(
         database.initAuth()
     }
 
-    override fun onStart(){
+    override fun onStart() {
         authenticate()
     }
 
     private fun authenticate() {
-        googleAuth.signIn(fragmentActivity).run{}
+        googleAuth.signIn(fragmentActivity).subscribeBy(onComplete = { database.signIn() })
     }
 }
 

@@ -4,6 +4,12 @@ import android.benchmark.domain.User
 import io.reactivex.Observable
 
 class EmptyDatabase : Database {
+    override fun signIn(): Observable<User> {
+        return Observable.create { emitter ->
+            emitter.onComplete()
+        }
+    }
+
     override fun addListener(databaseListener: IDatabaseListener) {
     }
 

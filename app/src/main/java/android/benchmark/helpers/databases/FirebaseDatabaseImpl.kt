@@ -29,7 +29,9 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
     private var user : User? = null
 
     override fun initAuth(){
-        firebaseAuth = FirebaseAuth.getInstance()
+        if (firebaseAuth == null){
+            firebaseAuth = FirebaseAuth.getInstance()
+        }
     }
 
     override fun signOut(){
@@ -47,7 +49,7 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
     override fun getUser(name: String): Observable<User> {
         return Observable.create { emitter ->
             if (user == null){
-                signIn().subscribeBy(
+                signInWithCredential().subscribeBy(
                     onComplete = {
                         getUserAsync(name, emitter)
                     }
@@ -59,7 +61,11 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
         }
     }
 
-    private fun signIn() : Observable<DatabaseUser>{
+    override fun signIn(): Observable<User> {
+        return getUser(authentication.authUser.id)
+    }
+
+    private fun signInWithCredential() : Observable<DatabaseUser>{
         return Observable.create { emitter ->
             val credential = GoogleAuthProvider.getCredential(authentication.authUser.idToken, null)
 
