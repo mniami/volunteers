@@ -15,9 +15,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 
-class FragmentChanger (val supportFragmentManager: FragmentManager, val dataSourceContainer: DataSourceContainer){
+class FragmentChanger (val supportFragmentManager: FragmentManager, val dataSourceContainer: DataSourceContainer, var paused : Boolean = false){
 
     fun changeFragment(fragment: Fragment, name: String) {
+        if (paused){
+            return
+        }
         supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
@@ -26,10 +29,12 @@ class FragmentChanger (val supportFragmentManager: FragmentManager, val dataSour
     }
     fun openSettings() = changeFragment(SettingsFragment(), FragmentNames.SETTINGS)
     fun openAuthentication() = changeFragment(AuthenticationFragmentImpl(), FragmentNames.AUTHENTICATION)
-    fun showVolunteerList() {
-        changeFragment(VolunteersFragmentPresenter().createFragment(dataSourceContainer) { showVolunteer(it) }, FragmentNames.VOLUNTEERS_LIST)
-    }
+    fun showVolunteerList() = changeFragment(VolunteersFragmentPresenter().createFragment(dataSourceContainer) { showVolunteer(it) }, FragmentNames.VOLUNTEERS_LIST)
+
     fun openHome() {
+        if (paused){
+            return
+        }
         supportFragmentManager.popBackStack(FragmentNames.VOLUNTEERS_LIST, R.id.fragmentContainer)
     }
     fun showProject(project: Project) {

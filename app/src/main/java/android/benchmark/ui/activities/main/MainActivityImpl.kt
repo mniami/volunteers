@@ -65,6 +65,16 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
         presenter?.onStart()
     }
 
+    override fun onPause() {
+        super.onPause()
+        fragmentChanger.paused = true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fragmentChanger.paused = false
+    }
+
     override fun getResourceText(id: Int): String {
         return getString(id)
     }
