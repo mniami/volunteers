@@ -2,6 +2,7 @@ package android.benchmark.helpers.dataservices.databases
 
 import android.benchmark.auth.SignInAuthResult
 import android.benchmark.domain.User
+import android.benchmark.domain.Volunteer
 import io.reactivex.Observable
 
 interface Database {
@@ -9,6 +10,7 @@ interface Database {
     fun addListener(databaseListener: IDatabaseListener)
     fun removeListener(databaseListener: IDatabaseListener)
     fun getUser(name: String): Observable<User>
-    fun initAuth()
+    fun getVolunteers() : Observable<Volunteer>
+    fun init()
     fun signOut()
 }

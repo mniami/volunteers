@@ -16,8 +16,8 @@ internal class MainPresenter(
     override fun onSettingsClick() = mainView.openSettings()
 
     override fun onCreate() {
+        database.init()
         mainView.showVolunteerList()
-        database.initAuth()
     }
 
     override fun onStart() {

@@ -10,18 +10,35 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 
 class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (GenericItem<*>?) -> Unit) : RecyclerView.Adapter<GenericListAdapter.ViewHolder>() {
+    var filteredList = list
+
+    fun filter(text : String){
+        if (text.isBlank()){
+            filteredList = list
+        }
+        else {
+            filteredList = list.filter { item ->
+                if (item.title.contains(text, true) || item.subTitle.contains(text, true)) {
+                    return@filter true
+                }
+                return@filter false
+            }
+        }
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): GenericListAdapter.ViewHolder {
         return GenericListAdapter.ViewHolder(LayoutInflater.from(parent?.context)
                 .inflate(R.layout.generic_item, parent, false), onClickListener)
     }
 
     override fun onBindViewHolder(holder: GenericListAdapter.ViewHolder?, position: Int) {
-        val item = list[position]
+        val item = filteredList[position]
         holder?.update(item)
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return filteredList.size
     }
 
     class ViewHolder(itemView: View?, val onClickListener: (GenericItem<*>?) -> Unit) : RecyclerView.ViewHolder(itemView) {

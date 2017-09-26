@@ -26,6 +26,7 @@ class App : Application() {
 
         val resourceManager = AndroidResourceManager(this)
         val auth = AuthImpl(AuthUser.createEmpty())
+        val database = FirebaseDatabaseImpl(auth)
 
         Services.instance = ServicesImpl(
                 resourceManager = resourceManager,
@@ -35,11 +36,11 @@ class App : Application() {
                 eventBusContainer = EventBusContainer(),
                 dataSourceContainer = DataSourceContainerImpl(),
                 googleAuth = GoogleAuthImpl(auth, SignInAuthResult.createEmpty()),
-                database = FirebaseDatabaseImpl(auth),
+                database = database,
                 auth = auth)
 
         val dataSources = listOf(
-                VolunteersDataSource(resourceManager),
+                VolunteersDataSource(resourceManager, database),
                 UserDataSource(Services.instance.database, Services.instance.auth))
 
         for (dataSource in dataSources) {

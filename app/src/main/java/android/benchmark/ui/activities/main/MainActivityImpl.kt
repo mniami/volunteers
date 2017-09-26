@@ -10,7 +10,9 @@ import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -81,6 +83,19 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            override fun onQueryTextChange(text: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(text: String?): Boolean {
+                return true
+            }
+        })
         return true
     }
 
@@ -95,9 +110,6 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
                 presenter?.onAuthenticationClick()
                 return true
             }
-
-            R.id.action_favorite ->
-                return true
 
             android.R.id.home -> {
                 if (!actionBarTool.backPressed()) {

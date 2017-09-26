@@ -2,6 +2,7 @@ package android.benchmark.helpers.databases
 
 import android.benchmark.auth.Auth
 import android.benchmark.domain.User
+import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.dataservices.databases.Database
 import android.benchmark.helpers.dataservices.databases.DatabaseUser
 import android.benchmark.helpers.dataservices.databases.IDatabaseListener
@@ -11,16 +12,14 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.rxkotlin.subscribeBy
 import java.util.concurrent.Executors
 
 class FirebaseDatabaseImpl(val authentication: Auth) : Database {
+
     private val TAG = "FirebaseDatabaseImpl"
     private var databaseListener: IDatabaseListener? = null
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -43,7 +42,7 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
         }
     }
 
-    override fun initAuth(){
+    override fun init(){
         if (firebaseAuth == null){
             firebaseAuth = FirebaseAuth.getInstance()
         }
@@ -89,5 +88,52 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
             }
         }
         ref.addValueEventListener(eventListener)
+    }
+
+    override fun getVolunteers(): Observable<Volunteer> {
+        return Observable.create { emitter ->
+            val ref = database.reference.child("volunteers")
+            ref.addChildEventListener(object : ChildEventListener {
+                override fun onCancelled(p0: DatabaseError?) {
+
+                }
+
+                override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
+
+                }
+
+                override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+
+                }
+
+                override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
+
+                }
+
+                override fun onChildRemoved(p0: DataSnapshot?) {
+
+                }
+            })
+
+            val eventListener = object : ValueEventListener {
+                override fun onDataChange(var1: DataSnapshot) {
+                    for (volunteerData in var1.children){
+                        val volunteer = var1.getValue(Volunteer::class.java)
+                        if (volunteer != null) {
+                            emitter.onNext(volunteer)
+                        }
+                    }
+                    ref.removeEventListener(this)
+                    emitter.onComplete()
+                }
+
+                override fun onCancelled(var1: DatabaseError) {
+                    ref.removeEventListener(this)
+                    emitter.onComplete()
+                }
+            }
+            ref.addListenerForSingleValueEvent(eventListener)
+            ref.addValueEventListener(eventListener)
+        }
     }
 }

@@ -1,9 +1,16 @@
 package android.benchmark.helpers.dataservices.databases
 
 import android.benchmark.domain.User
+import android.benchmark.domain.Volunteer
 import io.reactivex.Observable
 
 class EmptyDatabase() : Database {
+    override fun getVolunteers(): Observable<Volunteer> {
+        return Observable.create { emitter ->
+            emitter.onComplete()
+        }
+    }
+
     override fun getCurrentUserAsync(): Observable<User> {
         return Observable.create { emitter ->
             emitter.onComplete()
@@ -22,7 +29,7 @@ class EmptyDatabase() : Database {
         }
     }
 
-    override fun initAuth() {
+    override fun init() {
     }
 
     override fun signOut() {

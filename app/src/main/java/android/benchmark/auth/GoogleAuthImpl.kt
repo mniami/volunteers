@@ -27,15 +27,17 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
     private var googleSignInAccount: GoogleSignInAccount? = null
 
     override fun init(fragmentActivity: FragmentActivity) {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestIdToken(fragmentActivity.getString(R.string.default_web_client_id))
-                .build()
+        if (apiClient == null) {
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestIdToken(fragmentActivity.getString(R.string.default_web_client_id))
+                    .build()
 
-        apiClient = GoogleApiClient.Builder(fragmentActivity)
-                .enableAutoManage(fragmentActivity, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build()
+            apiClient = GoogleApiClient.Builder(fragmentActivity)
+                    .enableAutoManage(fragmentActivity, this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build()
+        }
     }
 
     override fun isSignedIn(): Boolean {
