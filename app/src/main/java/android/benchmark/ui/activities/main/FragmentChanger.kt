@@ -18,9 +18,9 @@ import android.support.v4.app.FragmentManager
 class FragmentChanger (val supportFragmentManager: FragmentManager, val dataSourceContainer: DataSourceContainer, var paused : Boolean = false){
 
     fun changeFragment(fragment: Fragment, name: String) {
-        if (paused){
-            return
-        }
+//        if (paused){
+//            return
+//        }
         supportFragmentManager.beginTransaction()
                 .addToBackStack(null)
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)

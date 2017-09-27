@@ -18,9 +18,6 @@ import android.view.Menu
 import android.view.MenuItem
 
 internal class MainActivityImpl : AppCompatActivity(), MainView {
-    override fun onAuthenticated() {
-        // do nothing
-    }
 
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
@@ -63,6 +60,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
     }
 
     override fun onStart() {
+        fragmentChanger.paused = false
         super.onStart()
         presenter?.onStart()
     }
@@ -74,7 +72,6 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
 
     override fun onResume() {
         super.onResume()
-        fragmentChanger.paused = false
     }
 
     override fun getResourceText(id: Int): String {

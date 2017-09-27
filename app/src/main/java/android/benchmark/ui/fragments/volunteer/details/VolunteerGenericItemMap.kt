@@ -12,9 +12,7 @@ class VolunteerGenericItemMap : GenericItemMap {
     override fun map(observable: Observable<*>): Observable<GenericItem<*>>? {
         val obs = observable as Observable<Volunteer>?
         if (obs != null) {
-            return obs.observeOn(Schedulers.newThread())
-                    .subscribeOn(Schedulers.newThread())
-                    .map({
+            return obs.map({
                         GenericItemImpl(it.name + " " + it.surname, it.shortDescription, it.avatarImageUri, it)
                     })
         }

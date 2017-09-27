@@ -17,16 +17,11 @@ internal class MainPresenter(
 
     override fun onCreate() {
         database.init()
-        mainView.showVolunteerList()
     }
 
     override fun onStart() {
-        authenticate()
-    }
-
-    private fun authenticate() {
         googleAuth.signIn(fragmentActivity).subscribeBy(onComplete = {
-            mainView.onAuthenticated()
+            mainView.showVolunteerList()
         })
     }
 }

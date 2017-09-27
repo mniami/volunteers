@@ -4,5 +4,4 @@ import android.benchmark.auth.SignInAuthResult
 
 interface MainView : MainActivity {
     fun updateUserStatus(signInResult: SignInAuthResult)
-    fun onAuthenticated()
 }

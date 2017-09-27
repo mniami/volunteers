@@ -4,51 +4,47 @@ import android.benchmark.auth.Auth
 import android.benchmark.domain.User
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.dataservices.databases.Database
-import android.benchmark.helpers.dataservices.databases.DatabaseUser
 import android.benchmark.helpers.dataservices.databases.IDatabaseListener
 import android.util.Log
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
-import io.reactivex.rxkotlin.subscribeBy
-import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
-class FirebaseDatabaseImpl(val authentication: Auth) : Database {
+class FirebaseDatabaseImpl(val authentication: Auth, val TIMEOUT: Long = 10000) : Database {
 
     private val TAG = "FirebaseDatabaseImpl"
     private var databaseListener: IDatabaseListener? = null
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var firebaseAuth: FirebaseAuth? = null
 
-    override fun getCurrentUserAsync() : Observable<User> {
-        return Observable.create { emitter ->
+    override fun getCurrentUserAsync(): Observable<User> {
+        return Observable.create<User>({ emitter ->
             val firebaseAuthInstance = firebaseAuth
-            if (firebaseAuthInstance == null){
+            if (firebaseAuthInstance == null) {
                 emitter.onComplete()
                 return@create
             }
             val user = firebaseAuthInstance.currentUser
             if (user != null && user.uid.isNotBlank()) {
                 getUserAsync(user.uid, emitter)
-            }
-            else {
+            } else {
                 emitter.onComplete()
             }
-        }
+        }).timeout(TIMEOUT, TimeUnit.MILLISECONDS)
     }
 
-    override fun init(){
-        if (firebaseAuth == null){
+    override fun init() {
+        if (firebaseAuth == null) {
             firebaseAuth = FirebaseAuth.getInstance()
         }
     }
 
-    override fun signOut(){
+    override fun signOut() {
         firebaseAuth?.signOut()
     }
 
@@ -66,7 +62,7 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
         }
     }
 
-    private fun getUserAsync(name: String, emitter: ObservableEmitter<User>){
+    private fun getUserAsync(name: String, emitter: ObservableEmitter<User>) {
         val ref = database.reference.child("users").child(name)
         val eventListener = object : ValueEventListener {
             override fun onDataChange(var1: DataSnapshot) {
@@ -74,8 +70,7 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
                 if (user != null) {
                     Log.d(TAG, "user found '${user.name}'")
                     emitter.onNext(user)
-                }
-                else {
+                } else {
                     Log.d(TAG, "user not found")
                 }
                 ref.removeEventListener(this)
@@ -88,37 +83,33 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
             }
         }
         ref.addValueEventListener(eventListener)
+//        val vref = database.reference.child("volunteers")
+//        val veventListener = object : ValueEventListener {
+//            override fun onDataChange(var1: DataSnapshot) {
+//                for (volunteerData in var1.children) {
+//                    val volunteer = var1.getValue(Volunteer::class.java)
+//                    if (volunteer != null) {
+//                        volunteer.toString()
+//                    }
+//                }
+//                vref.removeEventListener(this)
+//            }
+//
+//            override fun onCancelled(var1: DatabaseError) {
+//                vref.removeEventListener(this)
+//            }
+//        }
+//        vref.addListenerForSingleValueEvent(veventListener)
+//        vref.addValueEventListener(veventListener)
     }
 
     override fun getVolunteers(): Observable<Volunteer> {
-        return Observable.create { emitter ->
+        val obs = Observable.create<Volunteer> { emitter ->
             val ref = database.reference.child("volunteers")
-            ref.addChildEventListener(object : ChildEventListener {
-                override fun onCancelled(p0: DatabaseError?) {
-
-                }
-
-                override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
-
-                }
-
-                override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-
-                }
-
-                override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-
-                }
-
-                override fun onChildRemoved(p0: DataSnapshot?) {
-
-                }
-            })
-
             val eventListener = object : ValueEventListener {
                 override fun onDataChange(var1: DataSnapshot) {
-                    for (volunteerData in var1.children){
-                        val volunteer = var1.getValue(Volunteer::class.java)
+                    for (volunteerData in var1.children) {
+                        val volunteer = volunteerData.getValue(Volunteer::class.java)
                         if (volunteer != null) {
                             emitter.onNext(volunteer)
                         }
@@ -135,5 +126,6 @@ class FirebaseDatabaseImpl(val authentication: Auth) : Database {
             ref.addListenerForSingleValueEvent(eventListener)
             ref.addValueEventListener(eventListener)
         }
+        return obs.timeout(TIMEOUT, TimeUnit.MILLISECONDS)
     }
 }

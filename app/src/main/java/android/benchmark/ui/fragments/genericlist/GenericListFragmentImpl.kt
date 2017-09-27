@@ -13,15 +13,17 @@ import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import bolts.Task
+import android.widget.Toast
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.generic_view.*
 import java.io.Serializable
 
 class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFragment {
     private val dataSourceContainer = Services.instance.dataSourceContainer
     private val eventBusContainer = Services.instance.eventBusContainer
-    private var eventClickId : Serializable? = null
+    private var eventClickId: Serializable? = null
 
     init {
         presenter = GenericPresenter(this)
@@ -40,25 +42,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
 
     override fun onResume() {
         super.onResume()
-
-        recyclerView?.let { rv ->
-            presenter?.let {
-                it.items?.let {
-                    val list = it.toList().blockingGet()
-                    if (list != null) {
-                        rv.adapter = GenericListAdapter(list) { item ->
-
-                            if (item != null) {
-                                eventClickId?.let { ds ->
-                                    val eventBus = eventBusContainer.get<GenericItemClickEvent>(ds)
-                                    eventBus.post(GenericItemClickEvent(item))
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        initAdapter()
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -74,7 +58,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as SearchView
 
-        searchView?.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(text: String?): Boolean {
                 return false
             }
@@ -89,10 +73,40 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
         })
     }
 
+    private fun initAdapter() {
+        val adapter = recyclerView?.adapter
+        if (adapter == null) {
+            refreshAdapter()
+        }
+    }
+
+    private fun refreshAdapter() {
+        val items = presenter?.items
+        if (items != null) {
+            items.observeOn(AndroidSchedulers.mainThread())
+                    .toList()
+                    .onErrorReturn({ listOf() })
+                    .subscribeBy(
+                            onError = {
+                                Toast.makeText(this@GenericListFragmentImpl.context, "Ups", Toast.LENGTH_SHORT)
+                            },
+                            onSuccess = { list ->
+                                recyclerView?.adapter = GenericListAdapter(list) { item ->
+                                    if (item != null) {
+                                        eventClickId?.let { ds ->
+                                            val eventBus = eventBusContainer.get<GenericItemClickEvent>(ds)
+                                            eventBus.post(GenericItemClickEvent(item))
+                                        }
+                                    }
+                                }
+                            })
+        }
+    }
+
     private fun loadArguments() {
         val configurationArg = arguments?.get(GenericListFragment.TOOLBAR_CONFIGURATION) as ToolbarConfiguration?
 
-        if (configurationArg != null){
+        if (configurationArg != null) {
             this.configuration.toolbar.titleResourceId = configurationArg.titleResourceId
             this.configuration.toolbar.showBackArrow = configurationArg.showBackArrow
         }
@@ -109,15 +123,14 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                 var observableDataSource = dataSource as ObservableDataSource<*>
 
                 observableDataSource?.let {
-                    if (mapperClassName != null){
+                    if (mapperClassName != null) {
                         val mapperInstance = Class.forName(mapperClassName).newInstance()
-                        if (mapperInstance is GenericItemMap){
+                        if (mapperInstance is GenericItemMap) {
                             presenter?.items = mapperInstance.map(it.data.observable)
                         }
-                    }
-                    else {
+                    } else {
                         val items = observableDataSource.data.observable as Observable<GenericItem<*>>?
-                        if (items != null){
+                        if (items != null) {
                             presenter?.items = items
                         }
                     }

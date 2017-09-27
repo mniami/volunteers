@@ -15,7 +15,6 @@ import io.reactivex.ObservableEmitter
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import java.util.*
 
-
 class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInAuthResult: SignInAuthResult) : GoogleAuth, GoogleApiClient.OnConnectionFailedListener {
     private class SingingProcess(val observableEmitter: ObservableEmitter<SignInAuthResult>)
 
@@ -25,6 +24,7 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
     private var apiClient: GoogleApiClient? = null
     private var singingProcess: SingingProcess? = null
     private var googleSignInAccount: GoogleSignInAccount? = null
+    private var authenticationObservable : Observable<SignInAuthResult>? = null
 
     override fun init(fragmentActivity: FragmentActivity) {
         if (apiClient == null) {
@@ -45,16 +45,23 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
     }
 
     override fun signIn(fragmentActivity: FragmentActivity): Observable<SignInAuthResult> {
-        return Observable.create { emitter ->
-            val singInResult = signInAuthResult
+        var authObs = authenticationObservable
+        if (authObs == null){
+            authObs = Observable.create { emitter ->
+                val singInResult = signInAuthResult
 
-            if (singInResult.success) {
-                emitter.onNext(singInResult)
-                emitter.onComplete()
-            } else {
-                startSignInProcess(fragmentActivity, emitter)
+                if (singInResult.success) {
+                    emitter.onNext(singInResult)
+                    emitter.onComplete()
+                    authenticationObservable = null
+                } else {
+                    startSignInProcess(fragmentActivity, emitter)
+                }
             }
+            authenticationObservable = authObs
+            return authObs
         }
+        return authObs
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
@@ -94,6 +101,8 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
 
                 it.onNext(lSingInResult)
                 it.onComplete()
+
+                authenticationObservable = null
             }
         }
     }
