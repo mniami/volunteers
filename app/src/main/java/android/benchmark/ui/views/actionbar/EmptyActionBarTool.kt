@@ -1,6 +1,10 @@
 package android.benchmark.ui.views.actionbar
 
 class EmptyActionBarTool : ActionBarTool {
+    override fun dispose() {
+
+    }
+
     override fun hideOptions() {
 
     }

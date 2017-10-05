@@ -9,4 +9,5 @@ interface ActionBarTool {
     fun backPressed() : Boolean
     fun hideOptions()
     fun showOptions()
+    fun dispose()
 }

@@ -83,24 +83,6 @@ class FirebaseDatabaseImpl(val authentication: Auth, val TIMEOUT: Long = 10000) 
             }
         }
         ref.addValueEventListener(eventListener)
-//        val vref = database.reference.child("volunteers")
-//        val veventListener = object : ValueEventListener {
-//            override fun onDataChange(var1: DataSnapshot) {
-//                for (volunteerData in var1.children) {
-//                    val volunteer = var1.getValue(Volunteer::class.java)
-//                    if (volunteer != null) {
-//                        volunteer.toString()
-//                    }
-//                }
-//                vref.removeEventListener(this)
-//            }
-//
-//            override fun onCancelled(var1: DatabaseError) {
-//                vref.removeEventListener(this)
-//            }
-//        }
-//        vref.addListenerForSingleValueEvent(veventListener)
-//        vref.addValueEventListener(veventListener)
     }
 
     override fun getVolunteers(): Observable<Volunteer> {

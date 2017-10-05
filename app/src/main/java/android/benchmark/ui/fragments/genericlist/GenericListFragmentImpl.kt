@@ -1,6 +1,8 @@
 package android.benchmark.ui.fragments.genericlist
 
 import android.androidkotlinbenchmark.R
+import android.benchmark.domain.Privilege
+import android.benchmark.domain.User
 import android.benchmark.helpers.Services
 import android.benchmark.helpers.dataservices.datasource.DataSourceId
 import android.benchmark.helpers.dataservices.datasource.ObservableDataSource
@@ -24,6 +26,8 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
     private val dataSourceContainer = Services.instance.dataSourceContainer
     private val eventBusContainer = Services.instance.eventBusContainer
     private var eventClickId: Serializable? = null
+    private val database = Services.instance.database
+    private var currentUser = User()
 
     init {
         presenter = GenericPresenter(this)
@@ -42,7 +46,16 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
 
     override fun onResume() {
         super.onResume()
-        initAdapter()
+        database.getCurrentUserAsync()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(onNext = { user ->
+            currentUser = user
+
+            if (user.privilege == Privilege.ADMIN){
+                tbAdmin.visibility = View.VISIBLE
+            }
+            initAdapter()
+        })
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {

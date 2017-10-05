@@ -2,8 +2,7 @@ package android.benchmark.ui.views.actionbar
 
 import android.benchmark.ui.activities.main.MainActivityImpl
 
-internal class ActionBarToolImpl(val mainActivityImpl: MainActivityImpl) : ActionBarTool {
-    val actionBar by lazy { mainActivityImpl.supportActionBar }
+internal class ActionBarToolImpl(var mainActivityImpl: MainActivityImpl?) : ActionBarTool {
 
     override fun clearOnBackPressed() {
         onBackPressed = fun() : Boolean { return false }
@@ -12,37 +11,28 @@ internal class ActionBarToolImpl(val mainActivityImpl: MainActivityImpl) : Actio
     override fun backPressed(): Boolean = onBackPressed()
 
     override fun showBackArrow() {
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.setDisplayShowHomeEnabled(true)
+        mainActivityImpl?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        mainActivityImpl?.supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     override fun hideBackArrow() {
-        actionBar?.setDisplayHomeAsUpEnabled(false)
-        actionBar?.setDisplayShowHomeEnabled(false)
+        mainActivityImpl?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        mainActivityImpl?.supportActionBar?.setDisplayShowHomeEnabled(false)
     }
 
     override fun setTitle(title: String) {
-        actionBar?.title = title
+        mainActivityImpl?.supportActionBar?.title = title
     }
 
     override fun hideOptions() {
-        changeOptionsVisibility(false)
     }
 
     override fun showOptions() {
-        changeOptionsVisibility(true)
     }
 
     override var onBackPressed = fun(): Boolean { return false }
 
-    private fun changeOptionsVisibility (visible : Boolean){
-        //TODO("menu")
-//        actionBar?.let {
-//            val menu = mainActivityImpl.findViewById(R.menu.menu)
-//            val favorite = menu.findViewById(R.id.action_favorite)
-//            favorite?.let {
-//                it.visibility = if (visible) View.VISIBLE else View.INVISIBLE
-//            }
-//        }
+    override fun dispose() {
+        mainActivityImpl = null
     }
 }

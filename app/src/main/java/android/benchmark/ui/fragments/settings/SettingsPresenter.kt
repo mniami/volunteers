@@ -14,7 +14,6 @@ class SettingsPresenter(val appVersionProvider: AppVersionProvider,
                         var mainView: MainActivity,
                         val dataSourceContainer: DataSourceContainer) : Presenter() {
     var view: ISettingsFragment? = null
-    var userRef: Disposable? = null
 
     override fun onResume() {
         super.onResume()
@@ -22,24 +21,11 @@ class SettingsPresenter(val appVersionProvider: AppVersionProvider,
             mainView.goBack()
             true
         }
-        val userDataSource = dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
         view?.setAppVersion(appVersionProvider.getAppVersion())
-        if (userDataSource != null) {
-            userRef = Observable.wrap(userDataSource.data.observable)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { user ->
-                        view?.showUserData(user)
-                    }
-        }
     }
 
     override fun onPause() {
         super.onPause()
         mainView.actionBarTool.clearOnBackPressed()
-        userRef?.let {
-            it.dispose()
-            userRef = null
-        }
     }
 }

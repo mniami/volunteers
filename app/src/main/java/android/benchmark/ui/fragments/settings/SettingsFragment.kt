@@ -30,10 +30,4 @@ class SettingsFragment : BaseFragment<SettingsPresenter>(), ISettingsFragment {
     override fun setAppVersion(appVersion: String) {
         tvAppVersion.text = appVersion
     }
-
-    override fun showUserData(user: User?) {
-        user?.let {
-
-        }
-    }
 }
