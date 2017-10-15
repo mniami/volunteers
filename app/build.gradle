@@ -1,9 +1,11 @@
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
+
     signingConfigs {
         config {
             Properties properties = new Properties()
@@ -15,8 +17,6 @@ android {
             keyPassword properties.getProperty('keyPassword')
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "android.androidkotlinbenchmark"
         minSdkVersion 17
@@ -57,12 +57,13 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile 'com.intuit.sdp:sdp-android:1.0.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.getbase:floatingactionbutton:1.10.1'
 
     compile 'com.google.firebase:firebase-database:11.2.0'
     compile 'com.google.firebase:firebase-auth:11.2.0'
     compile 'com.firebaseui:firebase-ui-auth:2.3.0'
 
-    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+    compile 'com.facebook.android:facebook-android-sdk:4.27.0'
 
     compile 'com.google.android:flexbox:0.3.0'
     compile 'com.google.android.gms:play-services-auth:11.2.0'

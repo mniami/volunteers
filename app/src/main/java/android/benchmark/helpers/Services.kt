@@ -7,11 +7,13 @@ import android.benchmark.helpers.cache.EmptyLocalDataCache
 import android.benchmark.helpers.cache.LocalDataCache
 import android.benchmark.helpers.content.EmptyResourceManager
 import android.benchmark.helpers.content.ResourceManager
-import android.benchmark.helpers.databases.FirebaseDatabaseImpl
 import android.benchmark.helpers.dataservices.databases.Database
 import android.benchmark.helpers.dataservices.databases.EmptyDatabase
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainer
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainerImpl
+import android.benchmark.ui.activities.main.EmptyFragmentChanger
+import android.benchmark.ui.activities.main.FragmentChanger
+import android.benchmark.ui.fragments.genericlist.MapperInstanceProvider
 import android.benchmark.ui.utils.AppVersionProvider
 import android.benchmark.ui.utils.EmptyAppVersionProvider
 
@@ -20,11 +22,13 @@ interface IServices {
     val facebookAuthentication: FacebookAuthentication
     val dataCache: LocalDataCache
     val appVersionProvider: AppVersionProvider
-    val googleAuth : GoogleAuth
+    val googleAuth: GoogleAuth
     val eventBusContainer: EventBusContainer
     val dataSourceContainer: DataSourceContainer
-    val auth : Auth
-    val database : Database
+    val auth: Auth
+    val database: Database
+    val mapperInstanceProvider: MapperInstanceProvider
+    val fragmentChanger: FragmentChanger
 }
 
 class EmptyServices : IServices {
@@ -37,6 +41,8 @@ class EmptyServices : IServices {
     override val dataSourceContainer: DataSourceContainer = DataSourceContainerImpl()
     override val auth: Auth = AuthImpl(AuthUser.createEmpty())
     override val database: Database = EmptyDatabase()
+    override val mapperInstanceProvider: MapperInstanceProvider = MapperInstanceProvider()
+    override val fragmentChanger: FragmentChanger = EmptyFragmentChanger()
 }
 
 class Services {
@@ -54,4 +60,6 @@ class ServicesImpl(
         override val eventBusContainer: EventBusContainer,
         override val dataSourceContainer: DataSourceContainer,
         override val auth: Auth,
-        override val database : Database) : IServices
+        override val database: Database,
+        override val mapperInstanceProvider: MapperInstanceProvider,
+        override val fragmentChanger: FragmentChanger) : IServices

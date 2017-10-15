@@ -3,6 +3,8 @@ package android.benchmark.ui.fragments.volunteer.details.project
 import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
+import android.benchmark.helpers.Services
+import android.benchmark.ui.fragments.KnownMappers
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.benchmark.ui.fragments.genericlist.GenericListAdapter
@@ -15,6 +17,7 @@ import io.reactivex.ObservableEmitter
 import kotlinx.android.synthetic.main.project_details_volunteers_fragment.*
 
 class ProjectDetailsVolunteersFragment : BaseFragment<ProjectDetailsPresenter>(), IProjectDetailsFragment {
+    val mapperInstanceProvider = Services.instance.mapperInstanceProvider
     init {
         presenter = ProjectDetailsPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.project_details_volunteers_fragment).showBackArrow().create()
@@ -36,7 +39,9 @@ class ProjectDetailsVolunteersFragment : BaseFragment<ProjectDetailsPresenter>()
                     }
                     emitter.onComplete()
                 }
-                val genericItemsObs = VolunteerGenericItemMap().map(obs)
+                val volunteerGenericItemMap = mapperInstanceProvider.get<VolunteerGenericItemMap>(KnownMappers
+                        .volunteer)
+                val genericItemsObs = volunteerGenericItemMap?.map(obs)
                 if (genericItemsObs != null) {
                     val genericItems = genericItemsObs.toList().blockingGet()
                     rv.adapter = GenericListAdapter(genericItems) { genericItem ->

@@ -28,6 +28,8 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
     private var eventClickId: Serializable? = null
     private val database = Services.instance.database
     private var currentUser = User()
+    private var itemMap : GenericItemMap = EmptyGenericItemMap()
+    private val mapperInstanceProvider = Services.instance.mapperInstanceProvider
 
     init {
         presenter = GenericPresenter(this)
@@ -49,13 +51,14 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
         database.getCurrentUserAsync()
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(onNext = { user ->
-            currentUser = user
+                    currentUser = user
 
-            if (user.privilege == Privilege.ADMIN){
-                tbAdmin.visibility = View.VISIBLE
-            }
-            initAdapter()
-        })
+                    if (user.privilege == Privilege.ADMIN) {
+                        tbAdmin.visibility = View.VISIBLE
+                        actionButton.visibility = View.VISIBLE
+                    }
+                    initAdapter()
+                })
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -64,6 +67,11 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
         recyclerView?.let { rv ->
             rv.setHasFixedSize(true)
             rv.layoutManager = LinearLayoutManager(context)
+        }
+        actionButton?.setOnClickListener {
+            if (currentUser?.privilege == Privilege.ADMIN) {
+                itemMap.addItem()
+            }
         }
     }
 
@@ -87,65 +95,52 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
     }
 
     private fun initAdapter() {
-        val adapter = recyclerView?.adapter
-        if (adapter == null) {
+        if (recyclerView?.adapter == null) {
             refreshAdapter()
         }
     }
 
     private fun refreshAdapter() {
-        val items = presenter?.items
-        if (items != null) {
-            items.observeOn(AndroidSchedulers.mainThread())
-                    .toList()
-                    .onErrorReturn({ listOf() })
-                    .subscribeBy(
-                            onError = {
-                                Toast.makeText(this@GenericListFragmentImpl.context, "Ups", Toast.LENGTH_SHORT)
-                            },
-                            onSuccess = { list ->
-                                recyclerView?.adapter = GenericListAdapter(list) { item ->
-                                    if (item != null) {
-                                        eventClickId?.let { ds ->
-                                            val eventBus = eventBusContainer.get<GenericItemClickEvent>(ds)
-                                            eventBus.post(GenericItemClickEvent(item))
-                                        }
-                                    }
-                                }
-                            })
-        }
+        presenter?.items?.observeOn(AndroidSchedulers.mainThread())?.toList()?.onErrorReturn({ listOf() })?.subscribeBy(
+                onError = {
+                    Toast.makeText(this@GenericListFragmentImpl.context, "Ups", Toast.LENGTH_SHORT)
+                },
+                onSuccess = { list ->
+                    recyclerView?.adapter = GenericListAdapter(list) { item ->
+                        val lEventClickId = eventClickId
+                        if (item != null && lEventClickId != null) {
+                            val eventBus = eventBusContainer.get<GenericItemClickEvent>(lEventClickId)
+                            eventBus.post(GenericItemClickEvent(item))
+                        }
+                    }
+                })
     }
 
     private fun loadArguments() {
-        val configurationArg = arguments?.get(GenericListFragment.TOOLBAR_CONFIGURATION) as ToolbarConfiguration?
+        val toolbarConfiguration = arguments?.get(GenericListFragment.TOOLBAR_CONFIGURATION)
+        val dataSourceId = arguments?.get(GenericListFragment.DATA_SOURCE_ID)
+        val mapperClassName = arguments?.get(GenericListFragment.MAPPER_CLASS_NAME)
+        val eventClickId = arguments?.get(GenericListFragment.EVENT_CLICK_ID)
 
-        if (configurationArg != null) {
-            this.configuration.toolbar.titleResourceId = configurationArg.titleResourceId
-            this.configuration.toolbar.showBackArrow = configurationArg.showBackArrow
+        if (toolbarConfiguration is ToolbarConfiguration) {
+            this.configuration.toolbar.titleResourceId = toolbarConfiguration.titleResourceId
+            this.configuration.toolbar.showBackArrow = toolbarConfiguration.showBackArrow
         }
 
-        val dataSourceId = arguments?.get(GenericListFragment.DATA_SOURCE_ID) as DataSourceId?
-        eventClickId = arguments?.get(GenericListFragment.EVENT_CLICK_ID) as Serializable?
+        if (dataSourceId is DataSourceId && mapperClassName is String && eventClickId is Serializable) {
+            val dataSource = dataSourceContainer.getDataSource(dataSourceId)
 
-        val mapperClassName = arguments?.get(GenericListFragment.MAPPER_CLASS_NAME) as String?
-
-        dataSourceId?.let {
-            val dataSource = dataSourceContainer.getDataSource(it)
-
-            if (dataSource != null && dataSource.isObservableDataSource()) {
-                var observableDataSource = dataSource as ObservableDataSource<*>
-
-                observableDataSource?.let {
-                    if (mapperClassName != null) {
-                        val mapperInstance = Class.forName(mapperClassName).newInstance()
-                        if (mapperInstance is GenericItemMap) {
-                            presenter?.items = mapperInstance.map(it.data.observable)
-                        }
-                    } else {
-                        val items = observableDataSource.data.observable as Observable<GenericItem<*>>?
-                        if (items != null) {
-                            presenter?.items = items
-                        }
+            if (dataSource != null && dataSource.isObservableDataSource() && dataSource is ObservableDataSource<*>) {
+                if (mapperClassName != null) {
+                    val mapperInstance = mapperInstanceProvider.get<GenericItemMap>(mapperClassName)
+                    if (mapperInstance != null) {
+                        itemMap = mapperInstance
+                        presenter?.items = itemMap.map(dataSource.data.observable)
+                    }
+                } else {
+                    val items = dataSource.data.observable as Observable<GenericItem<*>>?
+                    if (items != null) {
+                        presenter?.items = items
                     }
                 }
             }

@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 /**
  * To be used with ViewPager to provide a tab indicator component which give constant feedback as to
- * the user's scroll progress.
+ * the person's scroll progress.
  * <p>
  * To use the component, simply add it to your view hierarchy. Then in your
  * {@link android.app.Activity} or {@link android.support.v4.app.Fragment} call

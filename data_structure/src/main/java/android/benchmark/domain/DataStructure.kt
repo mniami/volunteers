@@ -1,5 +1,6 @@
 package android.benchmark.domain
 
+import android.benchmark.annotations.Required
 import java.io.Serializable
 
 class Volunteer(val needies: List<Needy> = emptyList(),
@@ -9,13 +10,13 @@ class Volunteer(val needies: List<Needy> = emptyList(),
                 avatarImageUri: String = "",
                 shortDescription: String = "",
                 description: String = "",
-                volunteerType: String = "",
+                val volunteerType: String = "",
                 email: String = "",
                 skills: Skills = Skills(),
                 activity : Activity = Activity(),
                 projects: Map<String, Project> = hashMapOf(),
                 addresses: Map<String, Address> = hashMapOf()) :
-        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, email, skills, activity, projects, addresses)
+        Person(privilege, name, surname, avatarImageUri, shortDescription, description, email, skills, activity, projects, addresses)
 
 class Needy(val volunteers: List<Volunteer> = emptyList(),
             privilege: Privilege = Privilege.USER,
@@ -30,21 +31,24 @@ class Needy(val volunteers: List<Volunteer> = emptyList(),
             activity : Activity = Activity(),
             projects: Map<String, Project> = hashMapOf(),
             addresses: Map<String, Address> = hashMapOf()) :
-        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, email, skills, activity, projects, addresses)
+        Person(privilege, name, surname, avatarImageUri, shortDescription, description, email, skills, activity,
+                projects, addresses)
 
 open class Person(
         val privilege: Privilege = Privilege.USER,
+        @Required
         val name: String = "",
         val surname: String = "",
         val avatarImageUri: String = "",
         val shortDescription: String = "",
         val description: String = "",
-        val volunteerType: String = "",
+        @Required
         val email: String = "",
         val skills: Skills = Skills(),
         val activity : Activity = Activity(),
         val projects: Map<String, Project> = hashMapOf(),
-        val addresses: Map<String, Address> = hashMapOf()) : Serializable
+        val addresses: Map<String, Address> = hashMapOf(),
+        var key : String = "") : Serializable
 
 class User(val volunteers: MutableList<Volunteer> = mutableListOf(),
            privilege: Privilege = Privilege.USER,
@@ -59,7 +63,7 @@ class User(val volunteers: MutableList<Volunteer> = mutableListOf(),
            activity : Activity = Activity(),
            projects: Map<String, Project> = hashMapOf(),
            addresses: Map<String, Address> = hashMapOf()) :
-        Person(privilege, name, surname, avatarImageUri, shortDescription, description, volunteerType, email, skills, activity, projects, addresses)
+        Person(privilege, name, surname, avatarImageUri, shortDescription, description, email, skills, activity, projects, addresses)
 
 class ActionDate (val value : Long = 0)
 class Action (val name : String = "", val date : ActionDate = ActionDate())

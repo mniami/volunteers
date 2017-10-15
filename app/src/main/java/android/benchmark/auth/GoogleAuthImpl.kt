@@ -12,7 +12,6 @@ import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import java.util.*
 
 class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInAuthResult: SignInAuthResult) : GoogleAuth, GoogleApiClient.OnConnectionFailedListener {

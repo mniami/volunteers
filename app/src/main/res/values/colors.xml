@@ -8,4 +8,6 @@
     <color name="descriptionTextColor">#505050</color>
     <color name="headerTextColor">#505050</color>
     <color name="shortDescriptionTextColor">#505050</color>
+    <color name="pink">#e91e63</color>
+    <color name="pink_pressed">#ec407a</color>
 </resources>

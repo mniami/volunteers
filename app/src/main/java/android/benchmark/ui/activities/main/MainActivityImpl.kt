@@ -10,7 +10,6 @@ import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.view.MenuItemCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
@@ -22,7 +21,7 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
     private var presenter: MainPresenter? = null
-    private val fragmentChanger = FragmentChanger(supportFragmentManager, Services.instance.dataSourceContainer)
+    private val fragmentChanger = Services.instance.fragmentChanger
 
     override fun goBack() {
         supportFragmentManager.popBackStack()
@@ -44,6 +43,8 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        fragmentChanger.supportFragmentManager = supportFragmentManager
+
         super.onCreate(savedInstanceState)
 
         Services.instance.googleAuth.init(this)
@@ -68,10 +69,6 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
     override fun onPause() {
         super.onPause()
         fragmentChanger.paused = true
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun getResourceText(id: Int): String {

@@ -6,7 +6,7 @@ import android.benchmark.helpers.cache.LocalDataCache
 import android.benchmark.helpers.dataservices.databases.Database
 import io.reactivex.Observable
 
-class UserDataSource(val database: Database, val auth : Auth) : ObservableDataSource<User>{
+class UserDataSource(private val database: Database, private val auth : Auth) : ObservableDataSource<User>{
     companion object {
         val ID = KeyDataSourceId("current.user.name")
     }
@@ -19,4 +19,9 @@ class UserDataSource(val database: Database, val auth : Auth) : ObservableDataSo
         get() {
             return ID
         }
+
+    fun setUser(user : User) : Observable<User>{
+        return database.setUser(user)
+    }
+
 }
