@@ -5,8 +5,8 @@ import android.content.Intent
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -22,8 +22,8 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
 
     private var apiClient: GoogleApiClient? = null
     private var singingProcess: SingingProcess? = null
-    private var googleSignInAccount: GoogleSignInAccount? = null
-    private var authenticationObservable : Observable<SignInAuthResult>? = null
+    private var googleSignInAccount: IdpResponse? = null
+    private var authenticationObservable: Observable<SignInAuthResult>? = null
 
     override fun init(fragmentActivity: FragmentActivity) {
         if (apiClient == null) {
@@ -45,7 +45,7 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
 
     override fun signIn(fragmentActivity: FragmentActivity): Observable<SignInAuthResult> {
         var authObs = authenticationObservable
-        if (authObs == null){
+        if (authObs == null) {
             authObs = Observable.create { emitter ->
                 val singInResult = signInAuthResult
 
@@ -73,35 +73,34 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
 
     override fun onActivityResult(requestCode: Int, data: Intent) {
         if (requestCode == RC_SIGN_IN) {
-            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            if (result == null){
+
+            val result = data.extras["extra_idp_response"]
+            if (result is IdpResponse) {
+                Log.d(TAG, "handleSignInResult: true")
+
+                googleSignInAccount = result
+
+                singingProcess?.observableEmitter?.let {
+                    val lDisplayName = result.user.name ?: ""
+                    val email = result.email ?: ""
+                    val photoUrl = result.user.photoUri.toString()
+                    val id = result.idpSecret ?: ""
+                    val idToken = result.idpToken ?: ""
+
+                    auth.authUser = AuthUser(lDisplayName, photoUrl, email, id, idToken)
+
+                    val lSingInResult = SignInAuthResult(true, auth.authUser)
+
+                    signInAuthResult = lSingInResult
+                    singingProcess = null
+
+                    it.onNext(lSingInResult)
+                    it.onComplete()
+
+                    authenticationObservable = null
+                }
+            } else {
                 singingProcess?.observableEmitter?.onComplete()
-                return
-            }
-            Log.d(TAG, "handleSignInResult:" + result.isSuccess)
-
-            if (result.isSuccess && result.signInAccount != null) {
-                googleSignInAccount = result.signInAccount
-            }
-
-            singingProcess?.observableEmitter?.let {
-                val lDisplayName = result.signInAccount?.displayName ?: ""
-                val email = result.signInAccount?.email ?: ""
-                val photoUrl = result.signInAccount?.photoUrl.toString()
-                val id = result.signInAccount?.id ?: ""
-                val idToken = result.signInAccount?.idToken ?: ""
-
-                auth.authUser = AuthUser(lDisplayName, photoUrl, email, id, idToken)
-
-                val lSingInResult = SignInAuthResult(result.isSuccess, auth.authUser)
-
-                signInAuthResult = lSingInResult
-                singingProcess = null
-
-                it.onNext(lSingInResult)
-                it.onComplete()
-
-                authenticationObservable = null
             }
         }
     }

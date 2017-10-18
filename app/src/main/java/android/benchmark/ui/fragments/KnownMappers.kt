@@ -1,5 +1,5 @@
 package android.benchmark.ui.fragments
 
 object KnownMappers {
-    val volunteer = Object()
+    val volunteers = "volunteers"
 }

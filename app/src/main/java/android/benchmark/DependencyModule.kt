@@ -30,7 +30,7 @@ class DependencyModule {
         val dataContainer = DataSourceContainerImpl()
         val fragmentChanger = FragmentChangerImpl(dataSourceContainer = dataContainer)
 
-        mapperInstanceProvider.register(KnownMappers.volunteer, VolunteerGenericItemMap(fragmentChanger))
+        mapperInstanceProvider.register(KnownMappers.volunteers, VolunteerGenericItemMap(fragmentChanger))
 
         Services.instance = ServicesImpl(
                 resourceManager,

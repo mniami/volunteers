@@ -81,7 +81,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
 
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(text: String?): Boolean {
-                val genericAdapter = recyclerView?.adapter as GenericListAdapter
+                val genericAdapter = recyclerView?.adapter as GenericListAdapter?
                 if (text != null) {
                     genericAdapter?.filter(text)
                 }

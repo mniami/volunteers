@@ -47,7 +47,9 @@ class AdminUserDetailsFragment: BaseFragment<UserPresenter>() {
             it.addTab(tab2)
         }
         presenter?.person?.let{
-            Picasso.with(context).load(it.avatarImageUri).into(imageView)
+            if (it.avatarImageUri.isNotEmpty()) {
+                Picasso.with(context).load(it.avatarImageUri).into(imageView)
+            }
             etName?.setText(it.name)
             etEmail?.setText(it.email)
 

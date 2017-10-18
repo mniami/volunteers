@@ -20,9 +20,11 @@ internal class MainPresenter(
     }
 
     override fun onStart() {
-        googleAuth.signIn(fragmentActivity).subscribeBy(onComplete = {
-            mainView.showVolunteerList()
-        })
+        if (!googleAuth.isSignedIn()) {
+            googleAuth.signIn(fragmentActivity).subscribeBy(onComplete = {
+                mainView.showVolunteerList()
+            })
+        }
     }
 }
 

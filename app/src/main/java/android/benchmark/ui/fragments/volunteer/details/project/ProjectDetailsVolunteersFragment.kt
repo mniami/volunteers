@@ -40,7 +40,7 @@ class ProjectDetailsVolunteersFragment : BaseFragment<ProjectDetailsPresenter>()
                     emitter.onComplete()
                 }
                 val volunteerGenericItemMap = mapperInstanceProvider.get<VolunteerGenericItemMap>(KnownMappers
-                        .volunteer)
+                        .volunteers)
                 val genericItemsObs = volunteerGenericItemMap?.map(obs)
                 if (genericItemsObs != null) {
                     val genericItems = genericItemsObs.toList().blockingGet()

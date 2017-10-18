@@ -11,7 +11,6 @@ import android.benchmark.ui.fragments.base.ToolbarConfiguration
 import android.benchmark.ui.fragments.genericlist.GenericItemClickEvent
 import android.benchmark.ui.fragments.genericlist.GenericListFragment
 import android.benchmark.ui.fragments.genericlist.GenericListFragmentImpl
-import android.benchmark.ui.fragments.volunteer.details.VolunteerGenericItemMap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 
@@ -21,7 +20,7 @@ class VolunteersFragmentPresenter {
         var bundle = Bundle()
                 .fromSerializable(GenericListFragment.TOOLBAR_CONFIGURATION, ToolbarConfiguration(titleResourceId = R.string.volunteers_title, showBackArrow = false))
                 .withStringValue(GenericListFragment.EVENT_CLICK_ID, VolunteersDataSource.ID.key)
-                .withStringValue(GenericListFragment.MAPPER_CLASS_NAME, VolunteerGenericItemMap::class.java.name)
+                .withStringValue(GenericListFragment.MAPPER_CLASS_NAME, KnownMappers.volunteers)
         if (dataSource != null){
             bundle = bundle.fromSerializable(GenericListFragment.DATA_SOURCE_ID, dataSource.id)
         }
