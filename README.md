@@ -10,6 +10,9 @@ At the very first I would like to learn Kotlin and the second is to write some v
 # Technologies
 
 **Kotlin** I'm using Kotlin as a main language.
+
 **Material Design** Trying to use Material Design in some places, ultimately I would like to have all app layouts written using Material Design standard.
+
 **Firebase Database** Using Firebase database I can easily manage incoming data.
+
 **Firebase authentication** Using Firebase authentication I can easily create accounts for the user and authenticate them without my custom server. 
