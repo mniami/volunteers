@@ -15,4 +15,4 @@ At the very first I would like to learn Kotlin and the second is to write some v
 
 **Firebase Database** Using Firebase database I can easily manage incoming data.
 
-**Firebase authentication** Using Firebase authentication I can easily create accounts for the user and authenticate them without my custom server. 
+**Firebase authentication** Using Firebase authentication I can easily create accounts for the user and authenticate them without creating custom server. 
