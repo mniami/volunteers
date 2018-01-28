@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.authentication_fragment.*
 class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), AuthenticationFragment {
     init {
         configuration = FragmentConfiguration.withLayout(R.layout.authentication_fragment)
-                .title(R.string.authentication)
+                .title(R.string.user_not_signed_in_menu_item)
                 .showBackArrow()
                 .create()
         presenter = AuthenticationPresenter(this, Services.instance.googleAuth, Services.instance.database)
@@ -53,18 +53,17 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
     }
 
     private fun updateUi() {
-        Services.instance.database.getCurrentUserAsync().subscribeBy(
-                onNext = { currentUser ->
-                    signedLayout.visibility = if (currentUser != null) View.VISIBLE else View.GONE
+        val authUser = Services.instance.googleAuth.signInAuthResult.authUser
+        signedLayout.visibility = if (authUser != null) View.VISIBLE else View.GONE
 
-                    if (currentUser != null) {
-                        tvHeader.text = currentUser.name
-                        tvShortDescription.text = currentUser.email
+        if (authUser != null) {
+            tvHeader.text = authUser.name
+            tvShortDescription.text =
+                    String.format(getString(R.string.authenticated_user_short_description), authUser.email)
 
-                        if (currentUser.avatarImageUri.isNotBlank()) {
-                            Picasso.with(context).load(currentUser.avatarImageUri).into(ivImage)
-                        }
-                    }
-                })
+            if (authUser.photoUrl.isNotBlank()) {
+                Picasso.with(context).load(authUser.photoUrl).into(ivImage)
+            }
+        }
     }
 }

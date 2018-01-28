@@ -11,8 +11,8 @@ import android.benchmark.helpers.dataservices.databases.Database
 import android.benchmark.helpers.dataservices.databases.EmptyDatabase
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainer
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainerImpl
-import android.benchmark.ui.activities.main.EmptyFragmentChanger
-import android.benchmark.ui.activities.main.FragmentChanger
+import android.benchmark.ui.activities.main.fragments.EmptyFragmentChanger
+import android.benchmark.ui.activities.main.fragments.FragmentChanger
 import android.benchmark.ui.fragments.genericlist.MapperInstanceProvider
 import android.benchmark.ui.utils.AppVersionProvider
 import android.benchmark.ui.utils.EmptyAppVersionProvider

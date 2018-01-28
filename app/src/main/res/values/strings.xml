@@ -4,7 +4,7 @@
     <string name="volunteer_item_description">Bydgoszcz Volunteer</string>
     <string name="action_favorite">Favourite</string>
     <string name="action_settings">Settings</string>
-    <string name="authentication">Log in</string>
+    <string name="user_not_signed_in_menu_item">Log in</string>
     <string name="facebook_application_id">191882514194298</string>
     <string name="facebook_secret">19b78b0b2170a7746cc19f266f452c1c</string>
     <string name="fb_login_protocol_scheme">19b78b0b2170a7746cc19f266f452c1c</string>
@@ -98,4 +98,13 @@ proguardFiles(proGuardFileCollection)</pre></div>
         ]]>
     </string>
     <string name="volunteers_title">Volunteers</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="error_title">Please noticed</string>
+    <string name="no_internet_connection_message" formatted="false">
+        <![CDATA[
+        Offline mode<p> Please turn it on, application cannot work without internet connection for just now</p>
+        ]]></string>
+    <string name="no_internet_connection_title">No internet connection</string>
+    <string name="user_signed_in_menu_item">My account</string>
+    <string name="authenticated_user_short_description">Email: %s</string>
 </resources>

@@ -3,11 +3,24 @@ package android.benchmark.ui.activities.main
 import android.benchmark.domain.Person
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
+import android.benchmark.helpers.dataservices.errors.ErrorMessage
 import android.benchmark.ui.views.actionbar.ActionBarTool
 
 class EmptyMainActivity(override val actionBarTool: ActionBarTool) : MainActivity {
-    override fun openEditUserDetails(person: Person) {
+    override fun addListener(listener: MainActivityListener) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun removeListener(listener: MainActivityListener) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showError(errorMessage: ErrorMessage) {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun openEditUserDetails(person: Person) {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showProject(project: Project) {

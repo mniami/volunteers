@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import io.reactivex.Observable
@@ -46,6 +47,16 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
         loadArguments()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.string.menu_refresh -> {
+                swipeRefresh.isRefreshing = true
+                refreshAdapter()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onResume() {
         super.onResume()
         database.getCurrentUserAsync()
@@ -53,7 +64,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                 .subscribeBy(onNext = { user ->
                     currentUser = user
 
-                    if (user.privilege == Privilege.ADMIN) {
+                    if (user.person.privilege == Privilege.ADMIN) {
                         tbAdmin.visibility = View.VISIBLE
                         actionButton.visibility = View.VISIBLE
                     }
@@ -69,15 +80,18 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
             rv.layoutManager = LinearLayoutManager(context)
         }
         actionButton?.setOnClickListener {
-            if (currentUser?.privilege == Privilege.ADMIN) {
+            if (currentUser?.person.privilege == Privilege.ADMIN) {
                 itemMap.addItem()
             }
+        }
+        swipeRefresh?.setOnRefreshListener {
+            refreshAdapter()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         val searchItem = menu?.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as SearchView
+        val searchView = searchItem?.actionView as SearchView?
 
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(text: String?): Boolean {
@@ -113,6 +127,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                             eventBus.post(GenericItemClickEvent(item))
                         }
                     }
+                    swipeRefresh?.isRefreshing = false
                 })
     }
 

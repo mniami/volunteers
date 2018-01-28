@@ -1,7 +1,7 @@
 package android.benchmark.ui.fragments.volunteer.details
 
 import android.benchmark.domain.Volunteer
-import android.benchmark.ui.activities.main.FragmentChangerImpl
+import android.benchmark.ui.activities.main.fragments.FragmentChangerImpl
 import android.benchmark.ui.fragments.genericlist.GenericItem
 import android.benchmark.ui.fragments.genericlist.GenericItemImpl
 import android.benchmark.ui.fragments.genericlist.GenericItemMap
@@ -10,7 +10,7 @@ import io.reactivex.Observable
 class VolunteerGenericItemMap(val fragmentChanger: FragmentChangerImpl) : GenericItemMap {
     override fun addItem() {
         val volunteer = Volunteer()
-        fragmentChanger.openEditUserDetails(volunteer)
+        fragmentChanger.openEditUserDetails(volunteer.person)
     }
 
     override fun removeItem(items: List<GenericItem<*>>) {
@@ -21,7 +21,8 @@ class VolunteerGenericItemMap(val fragmentChanger: FragmentChangerImpl) : Generi
         val obs = observable as Observable<Volunteer>?
         if (obs != null) {
             return obs.map({
-                        GenericItemImpl(it.name + " " + it.surname, it.shortDescription, it.avatarImageUri, it)
+                        GenericItemImpl(it.person.name + " " + it.person.surname, it.person.shortDescription, it
+                                .person.avatarImageUri, it)
                     })
         }
         return null

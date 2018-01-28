@@ -1,8 +1,11 @@
 package android.benchmark.ui.views.actionbar
 
-import android.benchmark.ui.activities.main.MainActivityImpl
+import android.benchmark.ui.activities.main.base.BaseMainActivityImpl
+import android.text.Html
+import android.text.Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE
+import android.text.SpannedString
 
-internal class ActionBarToolImpl(var mainActivityImpl: MainActivityImpl?) : ActionBarTool {
+internal class ActionBarToolImpl(var mainActivityImpl: BaseMainActivityImpl?) : ActionBarTool {
 
     override fun clearOnBackPressed() {
         onBackPressed = fun() : Boolean { return false }
@@ -21,7 +24,7 @@ internal class ActionBarToolImpl(var mainActivityImpl: MainActivityImpl?) : Acti
     }
 
     override fun setTitle(title: String) {
-        mainActivityImpl?.supportActionBar?.title = title
+        mainActivityImpl?.supportActionBar?.title = Html.fromHtml(title)
     }
 
     override fun hideOptions() {

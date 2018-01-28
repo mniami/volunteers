@@ -1,4 +1,4 @@
-package android.benchmark.ui.fragments.volunteer.details.admin
+package android.benchmark.ui.fragments.volunteer.details.users
 
 import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Person
@@ -7,7 +7,6 @@ import android.benchmark.helpers.Services
 import android.benchmark.helpers.dataservices.datasource.UserDataSource
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
-import android.benchmark.ui.fragments.volunteer.details.presenters.UserPresenter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -15,14 +14,14 @@ import android.widget.Button
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.admin_user_details.*
 
-class AdminUserDetailsFragment: BaseFragment<UserPresenter>() {
+class EditableUserDetailsFragment : BaseFragment<EditableUserPresenter>() {
     private val usersDataSource : UserDataSource
 
     companion object {
         val PERSON_ARG = "person"
     }
     init {
-        presenter = UserPresenter()
+        presenter = EditableUserPresenter()
         configuration = FragmentConfiguration.withLayout(R.layout.admin_user_details).showBackArrow().create()
         usersDataSource = Services.instance.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource
     }
@@ -73,8 +72,10 @@ class AdminUserDetailsFragment: BaseFragment<UserPresenter>() {
         if (checkButton is Button){
             checkButton.setOnClickListener {
                 val person = presenter?.person
-                if (person is User) {
-                    usersDataSource.setUser(person)
+                if (person is Person) {
+                    val user = usersDataSource.data.observable.blockingFirst()
+                    val newUser = User(user.id, user.volunteers, person)
+                    usersDataSource.setUser(newUser)
                 }
             }
         }

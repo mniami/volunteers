@@ -1,6 +1,5 @@
-package android.benchmark.ui.fragments.volunteer.details
+package android.benchmark.ui.fragments.volunteer.details.users
 
-import android.androidkotlinbenchmark.App
 import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Privilege
 import android.benchmark.domain.Volunteer
@@ -8,7 +7,7 @@ import android.benchmark.helpers.Services
 import android.benchmark.helpers.dataservices.datasource.UserDataSource
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
-import android.benchmark.ui.fragments.volunteer.details.presenters.VolunteerDetailsPresenter
+import android.benchmark.ui.fragments.volunteer.details.VolunteerProjectListFragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
@@ -35,18 +34,18 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
         actionBar.hideOptions()
         presenter?.volunteer?.let { v ->
             actionBar.setTitle("Volunteers Details")
-            tvSubHeader?.text = "${v.name} ${v.surname}"
+            tvSubHeader?.text = "${v.person.name} ${v.person.surname}"
             tvHeader?.text = v.volunteerType
-            Picasso.with(context).load(v.avatarImageUri).into(ivImage)
-            tvShortDescription?.text = v.shortDescription
+            Picasso.with(context).load(v.person.avatarImageUri).into(ivImage)
+            tvShortDescription?.text = v.person.shortDescription
 
             val userDataSource = Services.instance.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
             userDataSource?.let {
                 it.data.observable.subscribeBy (onNext = { currentUser ->
-                    if (currentUser.privilege == Privilege.ADMIN) {
+                    if (currentUser.person.privilege == Privilege.ADMIN) {
                         tbAdmin?.visibility = View.VISIBLE
                         btEdit?.setOnClickListener {
-                            mainActivity.openEditUserDetails(v)
+                            mainActivity.openEditUserDetails(v.person)
                         }
                     }
                 })

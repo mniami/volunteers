@@ -15,7 +15,7 @@ import android.benchmark.helpers.databases.FirebaseDatabaseImpl
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainerImpl
 import android.benchmark.helpers.dataservices.datasource.UserDataSource
 import android.benchmark.helpers.dataservices.datasource.VolunteersDataSource
-import android.benchmark.ui.activities.main.FragmentChangerImpl
+import android.benchmark.ui.activities.main.fragments.FragmentChangerImpl
 import android.benchmark.ui.fragments.KnownMappers
 import android.benchmark.ui.fragments.genericlist.MapperInstanceProvider
 import android.benchmark.ui.fragments.volunteer.details.VolunteerGenericItemMap

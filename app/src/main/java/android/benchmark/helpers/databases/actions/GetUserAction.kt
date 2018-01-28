@@ -17,8 +17,7 @@ class GetUserAction(private val database : FirebaseDatabase) {
             override fun onDataChange(var1: DataSnapshot) {
                 val user = var1.getValue(User::class.java)
                 if (user != null) {
-                    user.key = var1.key
-                    Log.d(TAG, "person found '${user.name}'")
+                    Log.d(TAG, "person found '${user.person.name}'")
                     emitter.onNext(user)
                 } else {
                     Log.d(TAG, "person not found")

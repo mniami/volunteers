@@ -28,12 +28,12 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
     override fun init(fragmentActivity: FragmentActivity) {
         if (apiClient == null) {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
+                    .requestProfile()
                     .requestIdToken(fragmentActivity.getString(R.string.default_web_client_id))
                     .build()
 
             apiClient = GoogleApiClient.Builder(fragmentActivity)
-                    .enableAutoManage(fragmentActivity, this)
+                    //.enableAutoManage(fragmentActivity, this)
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build()
         }
@@ -81,9 +81,14 @@ class GoogleAuthImpl(val auth: android.benchmark.auth.Auth, override var signInA
                 googleSignInAccount = result
 
                 singingProcess?.observableEmitter?.let {
-                    val lDisplayName = result.user.name ?: ""
+                    if (result.idpToken == null){
+                        it.onError(AuthException())
+                        authenticationObservable = null
+                        return;
+                    }
+                    val lDisplayName = ""
                     val email = result.email ?: ""
-                    val photoUrl = result.user.photoUri.toString()
+                    val photoUrl = ""
                     val id = result.idpSecret ?: ""
                     val idToken = result.idpToken ?: ""
 

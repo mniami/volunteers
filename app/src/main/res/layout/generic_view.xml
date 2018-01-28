@@ -41,13 +41,20 @@
                 android:text="Add"/>
         </android.support.v7.widget.Toolbar>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/_2sdp"
-            android:paddingTop="@dimen/_2sdp">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/_2sdp"
+                android:paddingTop="@dimen/_2sdp">
+            </android.support.v7.widget.RecyclerView>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
@@ -57,8 +64,8 @@
         android:layout_gravity="bottom|right"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
+        android:visibility="gone"
         fab:fab_colorNormal="@color/pink"
         fab:fab_colorPressed="@color/pink_pressed"
-        fab:fab_icon="@drawable/ic_fab_plus"
-        android:visibility="gone"/>
+        fab:fab_icon="@drawable/ic_fab_plus"/>
 </FrameLayout>

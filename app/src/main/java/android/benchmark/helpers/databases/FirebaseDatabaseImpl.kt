@@ -4,7 +4,7 @@ import android.benchmark.auth.Auth
 import android.benchmark.domain.User
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.databases.actions.GetUserAction
-import android.benchmark.helpers.databases.actions.GetVolunteersAction
+import android.benchmark.helpers.databases.actions.GetVolunteersActionImpl
 import android.benchmark.helpers.databases.actions.SetUserAction
 import android.benchmark.helpers.dataservices.databases.Database
 import android.benchmark.helpers.dataservices.databases.IDatabaseListener
@@ -19,7 +19,7 @@ class FirebaseDatabaseImpl(val authentication: Auth, val timeout: Long = 10000) 
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var firebaseAuth: FirebaseAuth? = null
     private val getUserAction = GetUserAction(database)
-    private val getVolunteersAction = GetVolunteersAction(database, timeout)
+    private val getVolunteersAction = GetVolunteersActionImpl(database, timeout)
     private val setUserAction = SetUserAction(database)
 
     override fun getCurrentUserAsync(): Observable<User> {

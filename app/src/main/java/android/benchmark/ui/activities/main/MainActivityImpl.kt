@@ -5,35 +5,27 @@ import android.benchmark.auth.SignInAuthResult
 import android.benchmark.domain.Person
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
+import android.benchmark.helpers.dataservices.errors.ErrorMessage
 import android.benchmark.helpers.Services
+import android.benchmark.ui.activities.main.base.BaseMainActivityImpl
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.support.v7.view.menu.MenuItemImpl
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 
-internal class MainActivityImpl : AppCompatActivity(), MainView {
+internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
+    private var menu: Menu? = null
     private var presenter: MainPresenter? = null
     private val fragmentChanger = Services.instance.fragmentChanger
-
-    override fun goBack() {
-        supportFragmentManager.popBackStack()
-    }
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount <= 1) {
-            finishAffinity()
-        } else {
-            super.onBackPressed()
-        }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -78,10 +70,12 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
 
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
+        this.menu = menu
 
-        searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView?
+
+        searchView?.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
             override fun onQueryTextChange(text: String?): Boolean {
                 return false
             }
@@ -90,31 +84,31 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
                 return true
             }
         })
+        refreshMenu()
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_settings -> {
+            R.string.action_settings -> {
                 presenter?.onSettingsClick()
                 return true
             }
-
             R.id.action_authentication -> {
                 presenter?.onAuthenticationClick()
-                return true
-            }
-
-            android.R.id.home -> {
-                if (!actionBarTool.backPressed()) {
-                    supportFragmentManager.popBackStack()
-                }
                 return true
             }
             else -> {
                 return super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    override fun refreshMenu() {
+        val logInMenuItem = menu?.findItem(R.id.action_authentication)
+        val logInTextId = if (Services.instance.googleAuth.isSignedIn()) R.string.user_signed_in_menu_item else R.string.user_not_signed_in_menu_item
+
+        logInMenuItem?.title = getString(logInTextId)
     }
 
     override fun openSettings() = fragmentChanger.openSettings()
@@ -124,10 +118,8 @@ internal class MainActivityImpl : AppCompatActivity(), MainView {
     override fun showProject(project: Project) = fragmentChanger.showProject(project)
     override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
     override fun openEditUserDetails(person: Person) = fragmentChanger.openEditUserDetails(person)
-
-    override fun updateUserStatus(signInResult: SignInAuthResult) {
-        // NO OP at this time
-    }
+    override fun updateUserStatus(signInResult: SignInAuthResult) { }
+    override fun showError(errorMessage: ErrorMessage) = fragmentChanger.showError(errorMessage)
 }
 
 

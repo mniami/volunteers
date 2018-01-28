@@ -2,6 +2,8 @@ package android.benchmark.ui.activities.main
 
 import android.benchmark.auth.GoogleAuth
 import android.benchmark.helpers.dataservices.databases.Database
+import android.benchmark.helpers.dataservices.errors.ErrorMessage
+import android.benchmark.helpers.dataservices.errors.ErrorType
 import android.support.v4.app.FragmentActivity
 import io.reactivex.rxkotlin.subscribeBy
 
@@ -21,9 +23,14 @@ internal class MainPresenter(
 
     override fun onStart() {
         if (!googleAuth.isSignedIn()) {
-            googleAuth.signIn(fragmentActivity).subscribeBy(onComplete = {
-                mainView.showVolunteerList()
-            })
+            googleAuth.signIn(fragmentActivity).subscribeBy(
+                    onComplete = {
+                        mainView.refreshMenu()
+                        mainView.showVolunteerList()
+                    },
+                    onError = { ex ->
+                        mainView.showError(ErrorMessage(ErrorType.NO_INTERNET_CONNECTION))
+                    })
         }
     }
 }

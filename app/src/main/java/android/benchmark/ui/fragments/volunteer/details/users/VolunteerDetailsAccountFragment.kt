@@ -1,14 +1,13 @@
-package android.benchmark.ui.fragments.volunteer.details
+package android.benchmark.ui.fragments.volunteer.details.users
 
 import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Volunteer
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
-import android.benchmark.ui.fragments.volunteer.details.presenters.VolunteerDetailsPresenter
 import android.os.Bundle
 import kotlinx.android.synthetic.main.volunteer_details_account.*
 
-class VolunteerDetailsAccountFragment : BaseFragment<VolunteerDetailsPresenter>(), IVolunteerDetailsFragment{
+class VolunteerDetailsAccountFragment : BaseFragment<VolunteerDetailsPresenter>(), IVolunteerDetailsFragment {
     init {
         presenter = VolunteerDetailsPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.volunteer_details_account).showBackArrow().create()
@@ -21,7 +20,7 @@ class VolunteerDetailsAccountFragment : BaseFragment<VolunteerDetailsPresenter>(
 
     private fun updateView() {
         presenter?.volunteer?.let { v ->
-            tvDescription?.text = v.description
+            tvDescription?.text = v.person.description
         }
     }
 
