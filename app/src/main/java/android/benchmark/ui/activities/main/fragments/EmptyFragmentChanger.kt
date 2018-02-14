@@ -34,6 +34,6 @@ class EmptyFragmentChanger(override var paused: Boolean = false,
     override fun showVolunteer(volunteer: Volunteer) {
     }
 
-    override fun openEditUserDetails(person: Person) {
+    override fun openEditUserDetails(volunteer: Volunteer) {
     }
 }

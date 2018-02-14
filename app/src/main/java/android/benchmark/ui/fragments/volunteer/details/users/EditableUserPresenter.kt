@@ -1,26 +1,15 @@
 package android.benchmark.ui.fragments.volunteer.details.users
 
 import android.benchmark.domain.Person
+import android.benchmark.domain.Volunteer
 import android.benchmark.ui.fragments.base.BasicPresenter
 
-class EditableUserPresenter(private var originalPerson: Person? = null) : BasicPresenter() {
-    var person: Person? = null
-        set(value) {
-            originalPerson = value
-            field = value
-        }
+class EditableUserPresenter(var volunteer: Volunteer? = null) : BasicPresenter() {
+    var person: Person?
+        get() = volunteer?.person
+        private set(_) {}
 
     override fun onPause() {
         super.onPause()
-        updateChanges()
-    }
-
-    private fun updateChanges() {
-        val currentPerson = person
-        val currentOriginalPerson = originalPerson
-
-        if (currentPerson != currentOriginalPerson) {
-            //volunteersDataSource.
-        }
     }
 }

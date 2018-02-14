@@ -4,22 +4,30 @@ import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Privilege
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
+import android.benchmark.helpers.databases.actions.AddVolunteer
 import android.benchmark.helpers.dataservices.datasource.UserDataSource
+import android.benchmark.helpers.dataservices.errors.ErrorMessage
+import android.benchmark.helpers.dataservices.errors.ErrorType
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.benchmark.ui.fragments.volunteer.details.VolunteerProjectListFragment
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import com.squareup.picasso.Picasso
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.volunteer_details_fragment.*
+import java.net.URL
 
 class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVolunteerDetailsFragment {
     companion object {
         val VOLUNTEER_ARG = "volunteer"
     }
+
     init {
         presenter = VolunteerDetailsPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.volunteer_details_fragment).showBackArrow().create()
@@ -30,22 +38,24 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
         updateView()
     }
 
-    fun updateView() {
+    private fun updateView() {
         actionBar.hideOptions()
         presenter?.volunteer?.let { v ->
             actionBar.setTitle("Volunteers Details")
             tvSubHeader?.text = "${v.person.name} ${v.person.surname}"
             tvHeader?.text = v.volunteerType
-            Picasso.with(context).load(v.person.avatarImageUri).into(ivImage)
+            if (v.person.avatarImageUri.isNotEmpty()){
+                Picasso.with(context).load(v.person.avatarImageUri).into(ivImage)
+            }
             tvShortDescription?.text = v.person.shortDescription
 
             val userDataSource = Services.instance.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
             userDataSource?.let {
-                it.data.observable.subscribeBy (onNext = { currentUser ->
+                it.data.observable.subscribeBy(onNext = { currentUser ->
                     if (currentUser.person.privilege == Privilege.ADMIN) {
                         tbAdmin?.visibility = View.VISIBLE
                         btEdit?.setOnClickListener {
-                            mainActivity.openEditUserDetails(v.person)
+                            mainActivity.openEditUserDetails(v)
                         }
                     }
                 })
@@ -87,7 +97,28 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         presenter?.let {
-            it.volunteer = args?.get(VOLUNTEER_ARG) as Volunteer
+            it.volunteer = args?.get(VOLUNTEER_ARG) as Volunteer?
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.clear()
+        inflater?.inflate(R.menu.volunteers_details_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+
+        val saveItem = menu?.findItem(R.id.action_save)
+
+        saveItem?.actionView?.setOnClickListener {
+            val v = presenter?.volunteer
+            if (v != null) {
+                AddVolunteer(v).execute(Services.instance.database,
+                        onFailure = {
+                            mainActivity.showError(ErrorMessage(ErrorType.UNKNOWN, it.localizedMessage))
+                        },
+                        onComplete = {
+                            mainActivity.goBack()
+                        })
+            }
         }
     }
 }

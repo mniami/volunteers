@@ -2,22 +2,21 @@ package android.benchmark.ui.activities.main
 
 import android.androidkotlinbenchmark.R
 import android.benchmark.auth.SignInAuthResult
-import android.benchmark.domain.Person
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
-import android.benchmark.helpers.dataservices.errors.ErrorMessage
 import android.benchmark.helpers.Services
+import android.benchmark.helpers.dataservices.errors.ErrorMessage
 import android.benchmark.ui.activities.main.base.BaseMainActivityImpl
 import android.benchmark.ui.views.actionbar.ActionBarTool
 import android.benchmark.ui.views.actionbar.ActionBarToolImpl
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.view.menu.MenuItemImpl
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_main.*
 
 internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
@@ -75,7 +74,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as SearchView?
 
-        searchView?.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(text: String?): Boolean {
                 return false
             }
@@ -117,9 +116,14 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
     override fun openHome() = fragmentChanger.openHome()
     override fun showProject(project: Project) = fragmentChanger.showProject(project)
     override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
-    override fun openEditUserDetails(person: Person) = fragmentChanger.openEditUserDetails(person)
-    override fun updateUserStatus(signInResult: SignInAuthResult) { }
-    override fun showError(errorMessage: ErrorMessage) = fragmentChanger.showError(errorMessage)
+    override fun openEditUserDetails(volunteer: Volunteer) = fragmentChanger.openEditUserDetails(volunteer)
+    override fun updateUserStatus(signInResult: SignInAuthResult) {}
+    override fun showError(errorMessage: ErrorMessage) {
+        val content = errorMessage.content
+        if (content != null) {
+            Snackbar.make(activity_main, content, Snackbar.LENGTH_LONG).show()
+        }
+    }
 }
 
 

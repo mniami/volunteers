@@ -18,6 +18,6 @@ interface FragmentChanger {
     fun openHome()
     fun showProject(project: Project)
     fun showVolunteer(volunteer: Volunteer)
-    fun openEditUserDetails(person: Person)
+    fun openEditUserDetails(volunteer: Volunteer)
     fun showError(errorMessage: ErrorMessage)
 }

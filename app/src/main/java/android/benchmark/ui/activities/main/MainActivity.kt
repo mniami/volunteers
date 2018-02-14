@@ -13,6 +13,6 @@ interface MainActivity : BaseMainActivity {
     fun openAuthentication()
     fun showVolunteerList()
     fun showProject(project: Project)
-    fun openEditUserDetails(person: Person)
+    fun openEditUserDetails(volunteer: Volunteer)
     fun showError(errorMessage: ErrorMessage)
 }

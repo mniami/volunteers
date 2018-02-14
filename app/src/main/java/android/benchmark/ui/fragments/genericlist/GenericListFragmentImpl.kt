@@ -66,8 +66,8 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
 
                     if (user.person.privilege == Privilege.ADMIN) {
                         tbAdmin.visibility = View.VISIBLE
-                        actionButton.visibility = View.VISIBLE
                     }
+                    actionButton.visibility = View.VISIBLE
                     initAdapter()
                 })
     }
@@ -80,9 +80,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
             rv.layoutManager = LinearLayoutManager(context)
         }
         actionButton?.setOnClickListener {
-            if (currentUser?.person.privilege == Privilege.ADMIN) {
-                itemMap.addItem()
-            }
+            itemMap.addItem()
         }
         swipeRefresh?.setOnRefreshListener {
             refreshAdapter()

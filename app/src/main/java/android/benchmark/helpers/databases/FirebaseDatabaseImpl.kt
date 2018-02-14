@@ -16,11 +16,11 @@ import java.util.concurrent.TimeUnit
 class FirebaseDatabaseImpl(val authentication: Auth, val timeout: Long = 10000) : Database {
     private val TAG = "FirebaseDatabaseImpl"
     private var databaseListener: IDatabaseListener? = null
-    private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+    val firebaseDb: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var firebaseAuth: FirebaseAuth? = null
-    private val getUserAction = GetUserAction(database)
-    private val getVolunteersAction = GetVolunteersActionImpl(database, timeout)
-    private val setUserAction = SetUserAction(database)
+    private val getUserAction = GetUserAction(firebaseDb)
+    private val getVolunteersAction = GetVolunteersActionImpl(firebaseDb, timeout)
+    private val setUserAction = SetUserAction(firebaseDb)
 
     override fun getCurrentUserAsync(): Observable<User> {
         return Observable.create<User>({ emitter ->

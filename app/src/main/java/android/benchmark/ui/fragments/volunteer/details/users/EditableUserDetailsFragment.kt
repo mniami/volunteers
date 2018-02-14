@@ -1,10 +1,12 @@
 package android.benchmark.ui.fragments.volunteer.details.users
 
 import android.androidkotlinbenchmark.R
-import android.benchmark.domain.Person
-import android.benchmark.domain.User
+import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.Services
+import android.benchmark.helpers.databases.actions.AddVolunteer
 import android.benchmark.helpers.dataservices.datasource.UserDataSource
+import android.benchmark.helpers.dataservices.errors.ErrorMessage
+import android.benchmark.helpers.dataservices.errors.ErrorType
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
 import android.os.Bundle
@@ -18,12 +20,17 @@ class EditableUserDetailsFragment : BaseFragment<EditableUserPresenter>() {
     private val usersDataSource : UserDataSource
 
     companion object {
-        val PERSON_ARG = "person"
+        val VOLUNTEER_ARG = "person"
     }
     init {
         presenter = EditableUserPresenter()
         configuration = FragmentConfiguration.withLayout(R.layout.admin_user_details).showBackArrow().create()
         usersDataSource = Services.instance.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onStart() {
@@ -68,22 +75,23 @@ class EditableUserDetailsFragment : BaseFragment<EditableUserPresenter>() {
         super.onCreateOptionsMenu(menu, inflater)
 
         val checkAction = menu?.findItem(R.id.action_check)
-        val checkButton = checkAction?.actionView
-        if (checkButton is Button){
-            checkButton.setOnClickListener {
-                val person = presenter?.person
-                if (person is Person) {
-                    val user = usersDataSource.data.observable.blockingFirst()
-                    val newUser = User(user.id, user.volunteers, person)
-                    usersDataSource.setUser(newUser)
-                }
+        checkAction?.actionView?.setOnClickListener {
+            val volunteer = presenter?.volunteer
+            if (volunteer is Volunteer) {
+                AddVolunteer(volunteer).execute(Services.instance.database,
+                        onFailure = {
+                            mainActivity.showError(ErrorMessage(ErrorType.UNKNOWN, it.localizedMessage))
+                        },
+                        onComplete = {
+                            mainActivity.goBack()
+                        })
             }
         }
     }
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         presenter?.let {
-            it.person = args?.get(PERSON_ARG) as Person?
+            it.volunteer = args?.get(VOLUNTEER_ARG) as Volunteer?
         }
     }
 }

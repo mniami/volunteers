@@ -10,7 +10,7 @@ import io.reactivex.Observable
 class VolunteerGenericItemMap(val fragmentChanger: FragmentChangerImpl) : GenericItemMap {
     override fun addItem() {
         val volunteer = Volunteer()
-        fragmentChanger.openEditUserDetails(volunteer.person)
+        fragmentChanger.openEditUserDetails(volunteer)
     }
 
     override fun removeItem(items: List<GenericItem<*>>) {

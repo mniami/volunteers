@@ -19,7 +19,7 @@ class EmptyMainActivity(override val actionBarTool: ActionBarTool) : MainActivit
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun openEditUserDetails(person: Person) {
+    override fun openEditUserDetails(volunteer: Volunteer) {
         //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

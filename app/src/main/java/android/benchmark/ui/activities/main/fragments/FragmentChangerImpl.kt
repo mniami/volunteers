@@ -1,12 +1,10 @@
 package android.benchmark.ui.activities.main.fragments
 
 import android.androidkotlinbenchmark.R
-import android.benchmark.domain.Person
 import android.benchmark.domain.Project
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.dataservices.errors.ErrorMessage
 import android.benchmark.helpers.dataservices.datasource.DataSourceContainer
-import android.benchmark.helpers.dataservices.errors.ErrorType
 import android.benchmark.ui.activities.main.FragmentNames
 import android.benchmark.ui.activities.main.base.BaseMainActivityImpl
 import android.benchmark.ui.fragments.ErrorFragmentImpl
@@ -67,9 +65,9 @@ class FragmentChangerImpl(override var supportFragmentManager: FragmentManager? 
         changeFragment(volunteerDetailsFragment, FragmentNames.VOLUNTEER)
     }
 
-    override fun openEditUserDetails(person: Person) {
+    override fun openEditUserDetails(volunteer: Volunteer) {
         val bundle = Bundle()
-        bundle.putSerializable(EditableUserDetailsFragment.PERSON_ARG, person)
+        bundle.putSerializable(EditableUserDetailsFragment.VOLUNTEER_ARG, volunteer)
 
         val fragment = EditableUserDetailsFragment()
         fragment.arguments = bundle
