@@ -7,16 +7,20 @@ import io.reactivex.ObservableEmitter
 class SetUserAction(private val database: FirebaseDatabase) {
     fun setUserAsync(updatedUser: User, emitter: ObservableEmitter<User>) {
         var user = updatedUser
+        var key = ""
+
         if (user.id.isEmpty()) {
-            val key = database.reference.child("users").push().key
-            user = user.copy(key, user.volunteers, user.person)
+            key = database.reference.child("users").push().key
         }
-        database.reference.child(user.id).setValue(user).addOnCompleteListener {
+        database.reference.child("users").child(key).setValue(user).addOnCompleteListener {
+            emitter.onNext(user)
             emitter.onComplete()
         }
     }
+
     fun updateUserAsync(user : User, emitter: ObservableEmitter<User>){
-        database.reference.child(user.id).setValue(user).addOnCompleteListener {
+        database.reference.child("users").child(user.id).setValue(user).addOnCompleteListener {
+            emitter.onNext(user)
             emitter.onComplete()
         }
     }

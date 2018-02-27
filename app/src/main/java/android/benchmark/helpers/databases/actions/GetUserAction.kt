@@ -11,19 +11,19 @@ import io.reactivex.ObservableEmitter
 class GetUserAction(private val database : FirebaseDatabase) {
     private val TAG = "GetUserAction"
 
-    fun getUserAsync(name: String, emitter: ObservableEmitter<User>) {
-        val ref = database.reference.child("users").child(name)
+    fun getUserAsync(user: User, emitter: ObservableEmitter<User>) {
+        val ref = database.reference.child("users").child(user.id)
         val eventListener = object : ValueEventListener {
             override fun onDataChange(var1: DataSnapshot) {
-                val user = var1.getValue(User::class.java)
-                if (user != null) {
-                    Log.d(TAG, "person found '${user.person.name}'")
-                    emitter.onNext(user)
+                val u = var1.getValue(User::class.java)
+                if (u != null) {
+                    Log.d(TAG, "person found '${u.person.name}'")
+                    emitter.onNext(u)
+                    emitter.onComplete()
                 } else {
-                    Log.d(TAG, "person not found")
+                    ref.removeEventListener(this)
+                    SetUserAction(database).setUserAsync(user, emitter)
                 }
-                ref.removeEventListener(this)
-                emitter.onComplete()
             }
 
             override fun onCancelled(var1: DatabaseError) {

@@ -1,6 +1,7 @@
 package android.benchmark.helpers.databases
 
 import android.benchmark.auth.Auth
+import android.benchmark.domain.Person
 import android.benchmark.domain.User
 import android.benchmark.domain.Volunteer
 import android.benchmark.helpers.databases.actions.GetUserAction
@@ -31,7 +32,7 @@ class FirebaseDatabaseImpl(val authentication: Auth, val timeout: Long = 10000) 
             }
             val user = firebaseAuthInstance.currentUser
             if (user != null && user.uid.isNotBlank()) {
-                getUserAction.getUserAsync(user.uid, emitter)
+                getUserAction.getUserAsync(User(id = user.uid, person = Person(name = user.displayName ?: "", email = user.email ?: "")), emitter)
             } else {
                 emitter.onComplete()
             }
@@ -57,10 +58,9 @@ class FirebaseDatabaseImpl(val authentication: Auth, val timeout: Long = 10000) 
     }
 
     override fun getUser(name: String): Observable<User> {
-        return Observable.create { emitter ->
-            getUserAction.getUserAsync(name, emitter)
-        }
+        return Observable.error { NotImplementedError() }
     }
+
     override fun setUser(user: User): Observable<User> {
         return Observable.create { emitter ->
             setUserAction.setUserAsync(user, emitter)

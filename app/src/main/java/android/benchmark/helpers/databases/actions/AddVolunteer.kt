@@ -7,18 +7,17 @@ import android.benchmark.helpers.dataservices.databases.Database
 class AddVolunteer(private val volunteer: Volunteer) {
     fun execute(database: Database, onFailure: (kotlin.Error) -> Unit, onComplete: (Volunteer) -> Unit) {
         if (database is FirebaseDatabaseImpl) {
-            var newVolunteer = volunteer
+            var id = ""
             if (volunteer.id.isEmpty()) {
-                val key = database.firebaseDb.reference.child("volunteers").push().key
-                newVolunteer = volunteer.copy(key, volunteer.needies, volunteer.volunteerType, volunteer.person)
+                id = database.firebaseDb.reference.child("volunteers").push().key
             }
 
-            database.firebaseDb.reference.child(newVolunteer.id).setValue(newVolunteer)
+            database.firebaseDb.reference.child("volunteers").child(id).setValue(volunteer)
                     .addOnFailureListener {
                         onFailure(Error(it.localizedMessage))
                     }
                     .addOnCompleteListener {
-                        onComplete(newVolunteer)
+                        onComplete(volunteer)
                     }
         }
     }
