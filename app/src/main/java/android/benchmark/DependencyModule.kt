@@ -12,9 +12,8 @@ import android.benchmark.helpers.authentication.FacebookAuthentication
 import android.benchmark.helpers.cache.AndroidLocalDataCache
 import android.benchmark.helpers.content.AndroidResourceManager
 import android.benchmark.helpers.databases.FirebaseDatabaseImpl
-import android.benchmark.helpers.dataservices.datasource.DataSourceContainerImpl
-import android.benchmark.helpers.dataservices.datasource.UserDataSource
-import android.benchmark.helpers.dataservices.datasource.VolunteersDataSource
+import android.benchmark.helpers.databases.MockDatabaseImpl
+import android.benchmark.helpers.dataservices.datasource.*
 import android.benchmark.ui.activities.main.FragmentChangerImpl
 import android.benchmark.ui.fragments.KnownMappers
 import android.benchmark.ui.fragments.genericlist.MapperInstanceProvider
@@ -32,22 +31,29 @@ class DependencyModule {
 
         mapperInstanceProvider.register(KnownMappers.volunteers, VolunteerGenericItemMap(fragmentChanger))
 
-        Services.instance = ServicesImpl(
-                resourceManager,
-                FacebookAuthentication(),
-                AndroidLocalDataCache(app.baseContext),
-                AppVersionProviderImpl(app.packageManager, app.packageName),
-                GoogleAuthImpl(auth, SignInAuthResult.createEmpty()),
-                EventBusContainer(),
-                dataContainer,
-                auth,
-                database,
-                mapperInstanceProvider,
-                fragmentChanger)
+//        Services.instance = ServicesImpl(
+//                resourceManager,
+//                FacebookAuthentication(),
+//                AndroidLocalDataCache(app.baseContext),
+//                AppVersionProviderImpl(app.packageManager, app.packageName),
+//                GoogleAuthImpl(auth, SignInAuthResult.createEmpty()),
+//                EventBusContainer(),
+//                dataContainer,
+//                auth,
+//                database,
+//                mapperInstanceProvider,
+//                fragmentChanger)
+        Services.instance.database = MockDatabaseImpl()
+        Services.instance.fragmentChanger = fragmentChanger
+        Services.instance.mapperInstanceProvider = mapperInstanceProvider
+        Services.instance.resourceManager = resourceManager
+        Services.instance.dataSourceContainer = dataContainer
 
         val dataSources = listOf(
-                VolunteersDataSource(database),
-                UserDataSource(Services.instance.database, Services.instance.auth))
+                //VolunteerDataSourceImpl(database),
+                MockVolunteersDataSource(),
+                //UserDataSourceImpl(Services.instance.database, Services.instance.auth)
+                MockUserDataSource())
 
         for (dataSource in dataSources) {
             Services.instance.dataSourceContainer.putDataSource(dataSource)

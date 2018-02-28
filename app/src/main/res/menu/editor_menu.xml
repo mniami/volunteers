@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_check"
         android:orderInCategory="200"
-        android:title="Search"
+        android:title="Save"
         android:icon="@drawable/ic_check"
         app:showAsAction="ifRoom"
         ></item>

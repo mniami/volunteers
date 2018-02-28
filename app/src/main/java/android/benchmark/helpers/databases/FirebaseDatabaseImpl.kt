@@ -61,6 +61,7 @@ class FirebaseDatabaseImpl(val authentication: Auth, val timeout: Long = 10000) 
             getUserAction.getUserAsync(name, emitter)
         }
     }
+
     override fun setUser(user: User): Observable<User> {
         return Observable.create { emitter ->
             setUserAction.setUserAsync(user, emitter)
@@ -69,5 +70,9 @@ class FirebaseDatabaseImpl(val authentication: Auth, val timeout: Long = 10000) 
 
     override fun getVolunteers(): Observable<Volunteer> {
         return getVolunteersAction.getVolunteers()
+    }
+
+    override fun updateVolunteer(volunteer: Volunteer): Observable<Volunteer> {
+        throw NotImplementedError()
     }
 }
