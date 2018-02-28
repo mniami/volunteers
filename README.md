@@ -1,4 +1,4 @@
-<img url="https://travis-ci.org/mniami/pl.bydgoszcz.guideme.volunteers.svg?branch=master"/>
+<img src="https://travis-ci.org/mniami/pl.bydgoszcz.guideme.volunteers.svg?branch=master"/>
 
 # Introduction
 This is my very first Android application written in Kotlin. 
