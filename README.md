@@ -1,3 +1,5 @@
+<img url="https://travis-ci.org/mniami/pl.bydgoszcz.guideme.volunteers.svg?branch=master"/>
+
 # Introduction
 This is my very first Android application written in Kotlin. 
 At the very first I would like to learn Kotlin and the second is to write some volunteers help application.
