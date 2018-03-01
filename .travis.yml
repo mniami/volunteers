@@ -19,6 +19,10 @@ branches:
   except:
     - gh-pages
 
+checkout:
+  post:
+    - cp travis.local.properties local.properties
+
 sudo: false
 
 before_cache:
