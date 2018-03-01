@@ -5,6 +5,7 @@ jdk:
 
 before_install:
  - chmod +x gradlew
+ - cp travis.local.properties local.properties
  
 install:
   - echo yes | sdkmanager "tools" &>/dev/null
@@ -18,10 +19,6 @@ script:
 branches:
   except:
     - gh-pages
-
-checkout:
-  post:
-    - cp travis.local.properties local.properties
 
 sudo: false
 
