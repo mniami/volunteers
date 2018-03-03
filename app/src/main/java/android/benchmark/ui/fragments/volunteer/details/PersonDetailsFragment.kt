@@ -2,22 +2,21 @@ package android.benchmark.ui.fragments.volunteer.details
 
 import android.androidkotlinbenchmark.R
 import android.benchmark.domain.Person
+import android.benchmark.domain.Privilege
 import android.benchmark.helpers.Services
 import android.benchmark.helpers.dataservices.datasource.UserDataSource
 import android.benchmark.helpers.dataservices.datasource.VolunteerDataSource
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
-import android.benchmark.ui.fragments.volunteer.details.presenters.UserPresenter
+import android.benchmark.ui.fragments.volunteer.details.presenters.PersonPresenter
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.admin_user_details.*
 
-class EditUserDetailsFragment : BaseFragment<UserPresenter>() {
+class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
     private val usersDataSource: UserDataSource?
 
     companion object {
@@ -29,7 +28,7 @@ class EditUserDetailsFragment : BaseFragment<UserPresenter>() {
         configuration = FragmentConfiguration.withLayout(R.layout.admin_user_details).showBackArrow().create()
         usersDataSource = container.getDataSource(UserDataSource.ID) as UserDataSource?
         val volunteersDataSource = container.getDataSource(VolunteerDataSource.ID) as VolunteerDataSource?
-        presenter = UserPresenter(
+        presenter = PersonPresenter(
                 userDataSource = usersDataSource,
                 volunteerDataSource = volunteersDataSource)
     }
@@ -85,15 +84,25 @@ class EditUserDetailsFragment : BaseFragment<UserPresenter>() {
         val checkAction = menu?.findItem(R.id.action_check)
 
         checkAction?.setOnMenuItemClickListener {
-            presenter?.onSave()
+            updatePerson()
             return@setOnMenuItemClickListener true
         }
+    }
+
+    private fun updatePerson() {
+        val sourcePerson = presenter?.person
+        presenter?.updatePerson(Person(
+                name = etName.text.toString(),
+                email = etEmail.text.toString(),
+                key = sourcePerson?.key?:"",
+                privilege = sourcePerson?.privilege?:Privilege.USER,
+                description = etDescription.text.toString(),
+                avatarImageUri = sourcePerson?.avatarImageUri?:""))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
             R.id.action_check ->{
-
                return true
             }
         }
@@ -103,6 +112,7 @@ class EditUserDetailsFragment : BaseFragment<UserPresenter>() {
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         presenter?.let {
+            // TODO should be cloned, do this after changed Person to data classes
             it.person = args?.get(PERSON_ARG) as Person?
         }
     }

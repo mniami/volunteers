@@ -10,17 +10,21 @@ import android.benchmark.ui.fragments.base.Presenter
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.subscribeBy
 
-class UserPresenter(var person: Person? = null,
-                    var userDataSource: UserDataSource? = null,
-                    var volunteerDataSource: VolunteerDataSource? = null,
-                    var mainActivity: MainActivity? = null) : Presenter() {
-    fun onSave() {
+class PersonPresenter(var person: Person? = null,
+                      var userDataSource: UserDataSource? = null,
+                      var volunteerDataSource: VolunteerDataSource? = null,
+                      var mainActivity: MainActivity? = null) : Presenter() {
+    fun updatePerson(newPerson : Person) {
         val p = person
         when (p) {
             is User ->
-                handleUpdate(userDataSource?.update(p))
+                handleUpdate(userDataSource?.update(User(
+                        name = newPerson.name,
+                        email = newPerson.email)))
             is Volunteer ->
-                handleUpdate(volunteerDataSource?.update(p))
+                handleUpdate(volunteerDataSource?.update(Volunteer(
+                        name = newPerson.name,
+                        email = newPerson.email)))
         }
     }
 
