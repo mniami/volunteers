@@ -70,4 +70,8 @@ class FirebaseDatabaseImpl(val authentication: Auth, val timeout: Long = 10000) 
     override fun getVolunteers(): Observable<Volunteer> {
         return getVolunteersAction.getVolunteers()
     }
+
+    override fun updateVolunteer(volunteer: Volunteer): Observable<Volunteer> {
+        throw NotImplementedError()
+    }
 }

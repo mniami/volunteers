@@ -16,6 +16,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -30,6 +31,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         data?.let {
             Services.instance.googleAuth.onActivityResult(requestCode, it)
         }

@@ -15,4 +15,5 @@ interface Database {
     fun init()
     fun signOut()
     fun setUser(user: User) : Observable<User>
+    fun updateVolunteer(volunteer: Volunteer): Observable<Volunteer>
 }

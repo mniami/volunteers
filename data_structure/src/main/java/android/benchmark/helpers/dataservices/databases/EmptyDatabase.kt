@@ -4,7 +4,13 @@ import android.benchmark.domain.User
 import android.benchmark.domain.Volunteer
 import io.reactivex.Observable
 
-class EmptyDatabase() : Database {
+class EmptyDatabase : Database {
+    override fun updateVolunteer(volunteer: Volunteer): Observable<Volunteer> {
+        return Observable.create {
+            it.onComplete()
+        }
+    }
+
     override fun setUser(user: User): Observable<User> {
         return Observable.create { emitter ->
             emitter.onComplete()

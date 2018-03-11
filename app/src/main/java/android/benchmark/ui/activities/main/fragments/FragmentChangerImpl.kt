@@ -11,8 +11,8 @@ import android.benchmark.ui.fragments.ErrorFragmentImpl
 import android.benchmark.ui.fragments.VolunteersFragmentPresenter
 import android.benchmark.ui.fragments.settings.AuthenticationFragmentImpl
 import android.benchmark.ui.fragments.settings.SettingsFragment
+import android.benchmark.ui.fragments.volunteer.details.PersonDetailsFragment
 import android.benchmark.ui.fragments.volunteer.details.users.VolunteerDetailsFragment
-import android.benchmark.ui.fragments.volunteer.details.users.EditableUserDetailsFragment
 import android.benchmark.ui.fragments.volunteer.details.project.ProjectDetailsFragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -67,9 +67,9 @@ class FragmentChangerImpl(override var supportFragmentManager: FragmentManager? 
 
     override fun openEditUserDetails(volunteer: Volunteer) {
         val bundle = Bundle()
-        bundle.putSerializable(EditableUserDetailsFragment.VOLUNTEER_ARG, volunteer)
+        bundle.putSerializable(PersonDetailsFragment.HUMAN_ARG, volunteer.person)
 
-        val fragment = EditableUserDetailsFragment()
+        val fragment = PersonDetailsFragment()
         fragment.arguments = bundle
 
         changeFragment(fragment, FragmentNames.EDIT_PERSON)

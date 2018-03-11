@@ -22,6 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.generic_view.*
 import java.io.Serializable
+import java.util.*
 
 class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFragment {
     private val dataSourceContainer = Services.instance.dataSourceContainer
@@ -29,7 +30,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
     private var eventClickId: Serializable? = null
     private val database = Services.instance.database
     private var currentUser = User()
-    private var itemMap : GenericItemMap = EmptyGenericItemMap()
+    private var itemMap: GenericItemMap = EmptyGenericItemMap()
     private val mapperInstanceProvider = Services.instance.mapperInstanceProvider
 
     init {
@@ -64,11 +65,10 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                 .subscribeBy(onNext = { user ->
                     currentUser = user
 
-                    if (user.person.privilege == Privilege.ADMIN) {
-                        tbAdmin.visibility = View.VISIBLE
-                    }
                     actionButton.visibility = View.VISIBLE
-                    initAdapter()
+                    if (recyclerView?.adapter == null) {
+                        refreshAdapter()
+                    }
                 })
     }
 
@@ -106,41 +106,46 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
         })
     }
 
-    private fun initAdapter() {
-        if (recyclerView?.adapter == null) {
-            refreshAdapter()
-        }
+    private fun refreshAdapter() {
+        var genericItems = LinkedList<GenericItem<*>>()
+        presenter?.items?.observeOn(AndroidSchedulers.mainThread())?.
+                subscribeBy(
+                        onNext = {
+                            genericItems.add(it)
+                        },
+                        onError = {
+                            Toast.makeText(this@GenericListFragmentImpl.context, "Ups", Toast.LENGTH_SHORT)
+                        },
+                        onComplete = {
+                            val gi = genericItems
+                            genericItems = LinkedList()
+                            updateAdapter(gi)
+                            swipeRefresh?.isRefreshing = false
+                        })
     }
 
-    private fun refreshAdapter() {
-        presenter?.items?.observeOn(AndroidSchedulers.mainThread())?.toList()?.onErrorReturn({ listOf() })?.subscribeBy(
-                onError = {
-                    Toast.makeText(this@GenericListFragmentImpl.context, "Ups", Toast.LENGTH_SHORT)
-                },
-                onSuccess = { list ->
-                    recyclerView?.adapter = GenericListAdapter(list) { item ->
-                        val lEventClickId = eventClickId
-                        if (item != null && lEventClickId != null) {
-                            val eventBus = eventBusContainer.get<GenericItemClickEvent>(lEventClickId)
-                            eventBus.post(GenericItemClickEvent(item))
-                        }
-                    }
-                    swipeRefresh?.isRefreshing = false
-                })
+    private fun updateAdapter(list: List<GenericItem<*>>) {
+        recyclerView?.adapter = GenericListAdapter(list) { item ->
+            val lEventClickId = eventClickId
+            if (item != null && lEventClickId != null) {
+                val eventBus = eventBusContainer.get<GenericItemClickEvent>(lEventClickId)
+                eventBus.post(GenericItemClickEvent(item))
+            }
+        }
+        recyclerView?.invalidate()
     }
 
     private fun loadArguments() {
         val toolbarConfiguration = arguments?.get(GenericListFragment.TOOLBAR_CONFIGURATION)
         val dataSourceId = arguments?.get(GenericListFragment.DATA_SOURCE_ID)
         val mapperClassName = arguments?.get(GenericListFragment.MAPPER_CLASS_NAME)
-        val eventClickId = arguments?.get(GenericListFragment.EVENT_CLICK_ID)
 
         if (toolbarConfiguration is ToolbarConfiguration) {
             this.configuration.toolbar.titleResourceId = toolbarConfiguration.titleResourceId
             this.configuration.toolbar.showBackArrow = toolbarConfiguration.showBackArrow
         }
 
-        if (dataSourceId is DataSourceId && mapperClassName is String && eventClickId is Serializable) {
+        if (dataSourceId is DataSourceId && mapperClassName is String) {
             val dataSource = dataSourceContainer.getDataSource(dataSourceId)
 
             if (dataSource != null && dataSource.isObservableDataSource() && dataSource is ObservableDataSource<*>) {
