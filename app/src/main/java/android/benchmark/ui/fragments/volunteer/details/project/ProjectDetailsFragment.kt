@@ -25,7 +25,7 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
         configuration = FragmentConfiguration.withLayout(R.layout.project_details_fragment).create()
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view?.let { updateView() }
     }
@@ -36,6 +36,11 @@ class ProjectDetailsFragment : BaseFragment<ProjectDetailsPresenter>(), IProject
     }
 
     private fun updateView() {
+        val context = this.context
+
+        if (context == null){
+            return;
+        }
         actionBar.setTitle(context.getString(R.string.project_label))
         presenter?.project?.let { project ->
             projectName?.text = project.name

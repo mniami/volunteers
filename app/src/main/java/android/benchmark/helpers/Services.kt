@@ -18,31 +18,31 @@ import android.benchmark.ui.utils.AppVersionProvider
 import android.benchmark.ui.utils.EmptyAppVersionProvider
 
 interface IServices {
-    val resourceManager: ResourceManager
-    val facebookAuthentication: FacebookAuthentication
-    val dataCache: LocalDataCache
-    val appVersionProvider: AppVersionProvider
-    val googleAuth: GoogleAuth
-    val eventBusContainer: EventBusContainer
-    val dataSourceContainer: DataSourceContainer
-    val auth: Auth
-    val database: Database
-    val mapperInstanceProvider: MapperInstanceProvider
-    val fragmentChanger: FragmentChanger
+    var resourceManager: ResourceManager
+    var facebookAuthentication: FacebookAuthentication
+    var dataCache: LocalDataCache
+    var appVersionProvider: AppVersionProvider
+    var googleAuth: GoogleAuth
+    var eventBusContainer: EventBusContainer
+    var dataSourceContainer: DataSourceContainer
+    var auth: Auth
+    var database: Database
+    var mapperInstanceProvider: MapperInstanceProvider
+    var fragmentChanger: FragmentChanger
 }
 
 class EmptyServices : IServices {
-    override val resourceManager: ResourceManager = EmptyResourceManager()
-    override val facebookAuthentication: FacebookAuthentication = FacebookAuthentication()
-    override val dataCache: LocalDataCache = EmptyLocalDataCache()
-    override val appVersionProvider: AppVersionProvider = EmptyAppVersionProvider()
-    override val googleAuth: GoogleAuth = GoogleAuthEmpty()
-    override val eventBusContainer: EventBusContainer = EventBusContainer()
-    override val dataSourceContainer: DataSourceContainer = DataSourceContainerImpl()
-    override val auth: Auth = AuthImpl(AuthUser.createEmpty())
-    override val database: Database = EmptyDatabase()
-    override val mapperInstanceProvider: MapperInstanceProvider = MapperInstanceProvider()
-    override val fragmentChanger: FragmentChanger = EmptyFragmentChanger()
+    override var resourceManager: ResourceManager = EmptyResourceManager()
+    override var facebookAuthentication: FacebookAuthentication = FacebookAuthentication()
+    override var dataCache: LocalDataCache = EmptyLocalDataCache()
+    override var appVersionProvider: AppVersionProvider = EmptyAppVersionProvider()
+    override var googleAuth: GoogleAuth = GoogleAuthEmpty()
+    override var eventBusContainer: EventBusContainer = EventBusContainer()
+    override var dataSourceContainer: DataSourceContainer = DataSourceContainerImpl()
+    override var auth: Auth = AuthImpl(AuthUser.createEmpty())
+    override var database: Database = EmptyDatabase()
+    override var mapperInstanceProvider: MapperInstanceProvider = MapperInstanceProvider()
+    override var fragmentChanger: FragmentChanger = EmptyFragmentChanger()
 }
 
 class Services {
@@ -52,14 +52,14 @@ class Services {
 }
 
 class ServicesImpl(
-        override val resourceManager: ResourceManager,
-        override val facebookAuthentication: FacebookAuthentication,
-        override val dataCache: LocalDataCache,
-        override val appVersionProvider: AppVersionProvider,
-        override val googleAuth: GoogleAuth,
-        override val eventBusContainer: EventBusContainer,
-        override val dataSourceContainer: DataSourceContainer,
-        override val auth: Auth,
-        override val database: Database,
-        override val mapperInstanceProvider: MapperInstanceProvider,
-        override val fragmentChanger: FragmentChanger) : IServices
+        override var resourceManager: ResourceManager,
+        override var facebookAuthentication: FacebookAuthentication,
+        override var dataCache: LocalDataCache,
+        override var appVersionProvider: AppVersionProvider,
+        override var googleAuth: GoogleAuth,
+        override var eventBusContainer: EventBusContainer,
+        override var dataSourceContainer: DataSourceContainer,
+        override var auth: Auth,
+        override var database: Database,
+        override var mapperInstanceProvider: MapperInstanceProvider,
+        override var fragmentChanger: FragmentChanger) : IServices

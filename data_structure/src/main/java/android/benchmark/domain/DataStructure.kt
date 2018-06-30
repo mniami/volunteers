@@ -6,11 +6,15 @@ import java.io.Serializable
 data class Volunteer(val id: String = "",
                      val needies: List<Needy> = emptyList(),
                      val volunteerType: String = "",
-                     val person: Person = Person()) : Serializable
+                     override val person: Person = Person()) : Human
 
 data class Needy(val id: String = "",
                  val volunteers: List<Volunteer> = emptyList(),
-                 val person: Person = Person()) : Serializable
+                 override val person: Person = Person()) : Human
+
+interface Human : Serializable {
+    val person : Person
+}
 
 data class Person(
         val privilege: Privilege = Privilege.USER,
@@ -31,7 +35,7 @@ data class Person(
 data class User(
         val id: String = "",
         val volunteers: MutableList<Volunteer> = mutableListOf(),
-        val person: Person = Person())
+        override val person: Person = Person()) : Human
 
 data class ActionDate(val value: Long = 0)
 data class Action(val name: String = "", val date: ActionDate = ActionDate())

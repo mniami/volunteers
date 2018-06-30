@@ -1,31 +1,37 @@
-package android.benchmark.ui.fragments.volunteer.details.users
+package android.benchmark.ui.fragments.volunteer.details
 
 import android.androidkotlinbenchmark.R
-import android.benchmark.domain.Volunteer
+import android.benchmark.domain.Human
+import android.benchmark.domain.Person
+import android.benchmark.domain.Privilege
 import android.benchmark.helpers.Services
-import android.benchmark.helpers.databases.actions.AddVolunteer
 import android.benchmark.helpers.dataservices.datasource.UserDataSource
-import android.benchmark.helpers.dataservices.errors.ErrorMessage
-import android.benchmark.helpers.dataservices.errors.ErrorType
+import android.benchmark.helpers.dataservices.datasource.VolunteerDataSource
 import android.benchmark.ui.fragments.base.BaseFragment
 import android.benchmark.ui.fragments.base.FragmentConfiguration
+import android.benchmark.ui.fragments.volunteer.details.presenters.PersonPresenter
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
-import android.widget.Button
+import android.view.MenuItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.admin_user_details.*
 
-class EditableUserDetailsFragment : BaseFragment<EditableUserPresenter>() {
-    private val usersDataSource : UserDataSource
+class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
+    private val usersDataSource: UserDataSource?
 
     companion object {
-        val VOLUNTEER_ARG = "person"
+        val HUMAN_ARG = "human"
     }
+
     init {
-        presenter = EditableUserPresenter()
+        val container = Services.instance.dataSourceContainer
         configuration = FragmentConfiguration.withLayout(R.layout.admin_user_details).showBackArrow().create()
-        usersDataSource = Services.instance.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource
+        usersDataSource = container.getDataSource(UserDataSource.ID) as UserDataSource?
+        val volunteersDataSource = container.getDataSource(VolunteerDataSource.ID) as VolunteerDataSource?
+        presenter = PersonPresenter(
+                userDataSource = usersDataSource,
+                volunteerDataSource = volunteersDataSource)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +41,7 @@ class EditableUserDetailsFragment : BaseFragment<EditableUserPresenter>() {
 
     override fun onStart() {
         super.onStart()
+        presenter?.mainActivity = mainActivity
         mainActivity.actionBarTool.hideBackArrow()
 
         tabHost?.let {
@@ -52,7 +59,7 @@ class EditableUserDetailsFragment : BaseFragment<EditableUserPresenter>() {
 
             it.addTab(tab2)
         }
-        presenter?.person?.let{
+        presenter?.human?.person?.let {
             if (it.avatarImageUri.isNotEmpty()) {
                 Picasso.with(context).load(it.avatarImageUri).into(imageView)
             }
@@ -60,7 +67,7 @@ class EditableUserDetailsFragment : BaseFragment<EditableUserPresenter>() {
             etEmail?.setText(it.email)
 
             val addressEntry = it.addresses.entries.firstOrNull()
-            if (addressEntry != null){
+            if (addressEntry != null) {
                 val address = addressEntry.value
                 etCity?.setText(address.city)
                 etPostCode?.setText(address.zip)
@@ -69,29 +76,45 @@ class EditableUserDetailsFragment : BaseFragment<EditableUserPresenter>() {
             etDescription?.setText(it.description)
         }
     }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         menu?.clear()
         inflater?.inflate(R.menu.editor_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
         val checkAction = menu?.findItem(R.id.action_check)
-        checkAction?.actionView?.setOnClickListener {
-            val volunteer = presenter?.volunteer
-            if (volunteer is Volunteer) {
-                AddVolunteer(volunteer).execute(Services.instance.database,
-                        onFailure = {
-                            mainActivity.showError(ErrorMessage(ErrorType.UNKNOWN, it.localizedMessage))
-                        },
-                        onComplete = {
-                            mainActivity.goBack()
-                        })
-            }
+
+        checkAction?.setOnMenuItemClickListener {
+            updatePerson()
+            return@setOnMenuItemClickListener true
         }
     }
+
+    private fun updatePerson() {
+        val sourcePerson = presenter?.human?.person
+        presenter?.updatePerson(Person(
+                name = etName.text.toString(),
+                email = etEmail.text.toString(),
+                key = sourcePerson?.key?:"",
+                privilege = sourcePerson?.privilege?:Privilege.USER,
+                description = etDescription.text.toString(),
+                avatarImageUri = sourcePerson?.avatarImageUri?:""))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.action_check ->{
+               return true
+            }
+        }
+        return false
+    }
+
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         presenter?.let {
-            it.volunteer = args?.get(VOLUNTEER_ARG) as Volunteer?
+            // TODO should be cloned, do this after changed Person to data classes
+            it.human = args?.get(HUMAN_ARG) as Human?
         }
     }
 }

@@ -64,7 +64,7 @@ class ErrorFragmentImpl : BaseFragment<BasicPresenter>(), BasicView {
         mainActivity.addListener(mainActivityListener)
         super.onResume()
 
-        val errorMessage = arguments.getSerializable(ERROR_MESSAGE)
+        val errorMessage = arguments?.getSerializable(ERROR_MESSAGE)
         if (errorMessage is ErrorMessage) {
             handleErrorType(errorMessage)
         }

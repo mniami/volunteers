@@ -8,11 +8,11 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import io.reactivex.ObservableEmitter
 
-class GetUserAction(private val database : FirebaseDatabase) {
+class GetUser(private val database : FirebaseDatabase) {
     private val TAG = "GetUserAction"
 
     fun getUserAsync(user: User, emitter: ObservableEmitter<User>) {
-        val ref = database.reference.child("users").child(user.id)
+        val ref = database.reference.child(DatabaseTables.USERS).child(user.id)
         val eventListener = object : ValueEventListener {
             override fun onDataChange(var1: DataSnapshot) {
                 val u = var1.getValue(User::class.java)
@@ -22,7 +22,7 @@ class GetUserAction(private val database : FirebaseDatabase) {
                     emitter.onComplete()
                 } else {
                     ref.removeEventListener(this)
-                    SetUserAction(database).setUserAsync(user, emitter)
+                    AddUser(database).update(user, emitter)
                 }
             }
 

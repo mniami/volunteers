@@ -22,7 +22,7 @@ class VolunteerProjectListFragment : BaseFragment<VolunteerProjectListPresenter>
         presenter?.volunteer = args?.get("volunteer") as Volunteer
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView?.let { rv ->
             rv.setHasFixedSize(true)

@@ -4,9 +4,9 @@ import android.benchmark.auth.Auth
 import android.benchmark.domain.Person
 import android.benchmark.domain.User
 import android.benchmark.domain.Volunteer
-import android.benchmark.helpers.databases.actions.GetUserAction
-import android.benchmark.helpers.databases.actions.GetVolunteersActionImpl
-import android.benchmark.helpers.databases.actions.SetUserAction
+import android.benchmark.helpers.databases.actions.GetUser
+import android.benchmark.helpers.databases.actions.GetVolunteersAction
+import android.benchmark.helpers.databases.actions.AddUser
 import android.benchmark.helpers.dataservices.databases.Database
 import android.benchmark.helpers.dataservices.databases.IDatabaseListener
 import com.google.firebase.auth.FirebaseAuth
@@ -19,9 +19,9 @@ class FirebaseDatabaseImpl(val authentication: Auth, val timeout: Long = 10000) 
     private var databaseListener: IDatabaseListener? = null
     val firebaseDb: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var firebaseAuth: FirebaseAuth? = null
-    private val getUserAction = GetUserAction(firebaseDb)
-    private val getVolunteersAction = GetVolunteersActionImpl(firebaseDb, timeout)
-    private val setUserAction = SetUserAction(firebaseDb)
+    private val getUserAction = GetUser(firebaseDb)
+    private val getVolunteersAction = GetVolunteersAction(firebaseDb, timeout)
+    private val setUserAction = AddUser(firebaseDb)
 
     override fun getCurrentUserAsync(): Observable<User> {
         return Observable.create<User>({ emitter ->
@@ -63,11 +63,15 @@ class FirebaseDatabaseImpl(val authentication: Auth, val timeout: Long = 10000) 
 
     override fun setUser(user: User): Observable<User> {
         return Observable.create { emitter ->
-            setUserAction.setUserAsync(user, emitter)
+            setUserAction.update(user, emitter)
         }
     }
 
     override fun getVolunteers(): Observable<Volunteer> {
         return getVolunteersAction.getVolunteers()
+    }
+
+    override fun updateVolunteer(volunteer: Volunteer): Observable<Volunteer> {
+        throw NotImplementedError()
     }
 }

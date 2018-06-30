@@ -7,10 +7,10 @@ class AuthUser (val name : String,
                 val idToken : String) {
     companion object {
         fun createEmpty() : AuthUser {
-            return AuthUser("","","", "", "")
+            return AuthUser("Janek","","janek@u.jana.pl", "0000", "0000")
         }
     }
     fun isEmpty() : Boolean {
-        return id.isEmpty()
+        return id == "0000"
     }
 }

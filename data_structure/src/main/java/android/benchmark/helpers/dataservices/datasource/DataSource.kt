@@ -2,6 +2,7 @@ package android.benchmark.helpers.dataservices.datasource
 
 import io.reactivex.Observable
 import java.io.Serializable
+import java.util.*
 
 interface Data : Serializable
 
@@ -31,6 +32,9 @@ interface DataSource {
 interface ObservableDataSource<T>: DataSource{
     override val id: DataSourceId
     override val data: ObservableData<T>
+}
+interface ModifiableDataSource<T> : ObservableDataSource<T>{
+    fun update(data : T) : Observable<T>
 }
 class ObservableDataImpl<T>(override val observable: Observable<T>) : ObservableData<T>()
 

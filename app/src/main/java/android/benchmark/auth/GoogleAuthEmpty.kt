@@ -11,12 +11,13 @@ class GoogleAuthEmpty : GoogleAuth {
 
     override fun signIn(fragmentActivity: FragmentActivity): Observable<SignInAuthResult> {
         return Observable.create {
+            it.onNext(SignInAuthResult.createEmpty())
             it.onComplete()
         }
     }
 
     override fun isSignedIn(): Boolean {
-        return false
+        return true
     }
 
     override fun onActivityResult(requestCode: Int, data : Intent) {
