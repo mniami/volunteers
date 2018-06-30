@@ -12,10 +12,10 @@
         android:text="Animations Benchmark"
         android:textColor="@color/colorPrimaryDark"/>
 
-    <android.benchmark.ui.views.ImageBreakerView
+    <guideme.volunteers.ui.views.ImageBreakerView
         android:id="@+id/imageBreakerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.benchmark.ui.views.ImageBreakerView>
+    </guideme.volunteers.ui.views.ImageBreakerView>
 </LinearLayout>

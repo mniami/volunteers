@@ -19,7 +19,7 @@ android {
         }
     }
     defaultConfig {
-        applicationId "android.androidkotlinbenchmark"
+        applicationId "guideme.volunteers"
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 1

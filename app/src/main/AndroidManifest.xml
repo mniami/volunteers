@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.androidkotlinbenchmark">
+    package="guideme.volunteers">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:name=".App">
 
-        <activity android:name="android.benchmark.ui.activities.main.MainActivityImpl">
+        <activity android:name="guideme.volunteers.ui.activities.main.MainActivityImpl">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
