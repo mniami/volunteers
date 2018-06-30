@@ -71,6 +71,7 @@ dependencies {
     compile "com.google.firebase:firebase-core:$firebase_version"
     compile "com.google.firebase:firebase-database:$firebase_version"
     compile "com.google.firebase:firebase-auth:$firebase_version"
+    compile 'com.firebaseui:firebase-ui-database:4.1.0'
     compile 'com.firebaseui:firebase-ui-auth:4.1.0'
     compile 'com.facebook.android:facebook-android-sdk:4.34.0'
     compile 'com.google.android:flexbox:0.3.0'

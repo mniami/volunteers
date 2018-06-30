@@ -8,39 +8,15 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:802067048480:android:764dfb7ee841eeba",
+        "mobilesdk_app_id": "1:802067048480:android:db773d60bdac40a6",
         "android_client_info": {
           "package_name": "guideme.volunteers"
         }
       },
       "oauth_client": [
         {
-          "client_id": "802067048480-6b9tdpfvcejhif6ll455e0s4bb8un8ps.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "guideme.volunteers",
-            "certificate_hash": "6948779bd0af641776f52914213c15d25cbd21cf"
-          }
-        },
-        {
-          "client_id": "802067048480-ofioclnlish0faufekufsb85k7u180f5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "guideme.volunteers",
-            "certificate_hash": "3d711a6aed14018328a3a3a28555e6c48e2e99c1"
-          }
-        },
-        {
-          "client_id": "802067048480-rpng9ciln2k5satkl5et3q9ver35uhs1.apps.googleusercontent.com",
+          "client_id": "802067048480-g8g47k2bb1mb3d0tda5h0865c3554vuv.apps.googleusercontent.com",
           "client_type": 3
-        },
-        {
-          "client_id": "802067048480-dpc6u5r5rdbev70n3jr8d5hqbmjfj3vq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "guideme.volunteers",
-            "certificate_hash": "493a1338513b99c843dc7c567de4a8105807353f"
-          }
         }
       ],
       "api_key": [
@@ -59,13 +35,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "802067048480-rpng9ciln2k5satkl5et3q9ver35uhs1.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
