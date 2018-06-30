@@ -3,7 +3,7 @@ package guideme.volunteers.ui.fragments.volunteer.details.users
 import guideme.volunteers.R
 import guideme.volunteers.domain.Privilege
 import guideme.volunteers.domain.Volunteer
-import guideme.volunteers.helpers.Services
+import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.databases.actions.AddVolunteer
 import guideme.volunteers.helpers.dataservices.datasource.UserDataSource
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
@@ -47,7 +47,7 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
             }
             tvShortDescription?.text = v.person.shortDescription
 
-            val userDataSource = Services.instance.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
+            val userDataSource = Container.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
             userDataSource?.let {
                 it.data.observable.subscribeBy(onNext = { currentUser ->
                     if (currentUser.person.privilege == Privilege.ADMIN) {
@@ -109,7 +109,7 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
         saveItem?.actionView?.setOnClickListener {
             val v = presenter?.volunteer
             if (v != null) {
-                AddVolunteer(v).execute(Services.instance.database,
+                AddVolunteer(v).execute(Container.database,
                         onFailure = {
                             mainActivity.showError(ErrorMessage(ErrorType.UNKNOWN, it.localizedMessage))
                         },

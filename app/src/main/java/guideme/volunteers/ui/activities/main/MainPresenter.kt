@@ -5,7 +5,7 @@ import guideme.volunteers.domain.Person
 import guideme.volunteers.domain.Privilege
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.domain.VolunteerType
-import guideme.volunteers.helpers.Services
+import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.databases.actions.AddVolunteer
 import guideme.volunteers.helpers.dataservices.databases.Database
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
@@ -58,7 +58,7 @@ internal class MainPresenter(
                         description = "The volunteer we need",
                         email = "d.szczepek@gmail.com",
                         privilege = Privilege.USER,
-                        shortDescription = "There is nth to say"))).execute(Services.instance.database,
+                        shortDescription = "There is nth to say"))).execute(Container.database,
                 onFailure = {},
                 onComplete = { onComplete() })
     }

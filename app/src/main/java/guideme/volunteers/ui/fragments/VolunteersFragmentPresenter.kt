@@ -2,7 +2,6 @@ package guideme.volunteers.ui.fragments
 
 import guideme.volunteers.R
 import guideme.volunteers.domain.Volunteer
-import guideme.volunteers.helpers.Services
 import guideme.volunteers.helpers.android.fromSerializable
 import guideme.volunteers.helpers.android.withStringValue
 import guideme.volunteers.helpers.dataservices.datasource.DataSourceContainer
@@ -13,6 +12,7 @@ import guideme.volunteers.ui.fragments.genericlist.GenericListFragment
 import guideme.volunteers.ui.fragments.genericlist.GenericListFragmentImpl
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import guideme.volunteers.helpers.Container
 
 class VolunteersFragmentPresenter {
     fun createFragment(dataSourceContainer : DataSourceContainer, onClick : (Volunteer) -> Unit) : Fragment {
@@ -26,7 +26,7 @@ class VolunteersFragmentPresenter {
         }
 
         val fragment = GenericListFragmentImpl()
-        Services.instance.eventBusContainer.get<GenericItemClickEvent>(VolunteerDataSource.ID.key).observe().subscribe { it ->
+        Container.eventBusContainer.get<GenericItemClickEvent>(VolunteerDataSource.ID.key).observe().subscribe { it ->
             val volunteer = it.item.data as Volunteer?
             if (volunteer != null) {
                 onClick(volunteer)

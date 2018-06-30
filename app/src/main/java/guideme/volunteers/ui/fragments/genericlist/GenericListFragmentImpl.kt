@@ -2,7 +2,7 @@ package guideme.volunteers.ui.fragments.genericlist
 
 import guideme.volunteers.R
 import guideme.volunteers.domain.User
-import guideme.volunteers.helpers.Services
+import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.dataservices.datasource.DataSourceId
 import guideme.volunteers.helpers.dataservices.datasource.ObservableDataSource
 import guideme.volunteers.ui.fragments.base.BaseFragment
@@ -24,13 +24,13 @@ import java.io.Serializable
 import java.util.*
 
 class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFragment {
-    private val dataSourceContainer = Services.instance.dataSourceContainer
-    private val eventBusContainer = Services.instance.eventBusContainer
+    private val dataSourceContainer = Container.dataSourceContainer
+    private val eventBusContainer = Container.eventBusContainer
     private var eventClickId: Serializable? = null
-    private val database = Services.instance.database
+    private val database = Container.database
     private var currentUser = User()
     private var itemMap: GenericItemMap = EmptyGenericItemMap()
-    private val mapperInstanceProvider = Services.instance.mapperInstanceProvider
+    private val mapperInstanceProvider = Container.mapperInstanceProvider
 
     init {
         presenter = GenericPresenter(this)

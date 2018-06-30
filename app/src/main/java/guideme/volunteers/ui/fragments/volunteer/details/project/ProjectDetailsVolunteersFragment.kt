@@ -3,7 +3,7 @@ package guideme.volunteers.ui.fragments.volunteer.details.project
 import guideme.volunteers.R
 import guideme.volunteers.domain.Project
 import guideme.volunteers.domain.Volunteer
-import guideme.volunteers.helpers.Services
+import guideme.volunteers.helpers.Container
 import guideme.volunteers.ui.fragments.KnownMappers
 import guideme.volunteers.ui.fragments.base.BaseFragment
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
@@ -17,7 +17,7 @@ import io.reactivex.ObservableEmitter
 import kotlinx.android.synthetic.main.project_details_volunteers_fragment.*
 
 class ProjectDetailsVolunteersFragment : BaseFragment<ProjectDetailsPresenter>(), IProjectDetailsFragment {
-    val mapperInstanceProvider = Services.instance.mapperInstanceProvider
+    val mapperInstanceProvider = Container.mapperInstanceProvider
     init {
         presenter = ProjectDetailsPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.project_details_volunteers_fragment).showBackArrow().create()

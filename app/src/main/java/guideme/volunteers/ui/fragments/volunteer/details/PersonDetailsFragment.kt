@@ -4,7 +4,7 @@ import guideme.volunteers.R
 import guideme.volunteers.domain.Human
 import guideme.volunteers.domain.Person
 import guideme.volunteers.domain.Privilege
-import guideme.volunteers.helpers.Services
+import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.dataservices.datasource.UserDataSource
 import guideme.volunteers.helpers.dataservices.datasource.VolunteerDataSource
 import guideme.volunteers.ui.fragments.base.BaseFragment
@@ -25,10 +25,10 @@ class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
     }
 
     init {
-        val container = Services.instance.dataSourceContainer
+        val container = Container.dataSourceContainer
         configuration = FragmentConfiguration.withLayout(R.layout.admin_user_details).showBackArrow().create()
-        usersDataSource = container.getDataSource(UserDataSource.ID) as UserDataSource?
-        val volunteersDataSource = container.getDataSource(VolunteerDataSource.ID) as VolunteerDataSource?
+        usersDataSource = Container.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
+        val volunteersDataSource = Container.dataSourceContainer.getDataSource(VolunteerDataSource.ID) as VolunteerDataSource?
         presenter = PersonPresenter(
                 userDataSource = usersDataSource,
                 volunteerDataSource = volunteersDataSource)

@@ -1,7 +1,7 @@
 package guideme.volunteers.ui.fragments.settings
 
 import guideme.volunteers.R
-import guideme.volunteers.helpers.Services
+import guideme.volunteers.helpers.Container
 import guideme.volunteers.ui.fragments.base.BaseFragment
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import android.os.Bundle
@@ -18,7 +18,7 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
                 .title(R.string.user_not_signed_in_menu_item)
                 .showBackArrow()
                 .create()
-        presenter = AuthenticationPresenter(this, Services.instance.googleAuth, Services.instance.database)
+        presenter = AuthenticationPresenter(this, Container.googleAuth, Container.database)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +52,7 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
     }
 
     private fun updateUi() {
-        val authUser = Services.instance.googleAuth.signInAuthResult.authUser
+        val authUser = Container.googleAuth.signInAuthResult.authUser
         signedLayout.visibility = if (authUser != null) View.VISIBLE else View.GONE
 
         if (authUser != null) {

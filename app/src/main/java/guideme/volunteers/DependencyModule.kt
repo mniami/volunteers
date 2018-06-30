@@ -2,7 +2,7 @@ package guideme.volunteers
 
 import guideme.volunteers.auth.AuthImpl
 import guideme.volunteers.auth.AuthUser
-import guideme.volunteers.helpers.Services
+import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.content.AndroidResourceManager
 import guideme.volunteers.helpers.databases.FirebaseDatabaseImpl
 import guideme.volunteers.helpers.databases.MockDatabaseImpl
@@ -27,7 +27,7 @@ class DependencyModule {
         Logger.instance = AndroidLogger()
         mapperInstanceProvider.register(KnownMappers.volunteers, VolunteerGenericItemMap(fragmentChanger))
 
-//        Services.instance = ServicesImpl(
+//        container = ServicesImpl(
 //                resourceManager,
 //                FacebookAuthentication(),
 //                AndroidLocalDataCache(app.baseContext),
@@ -39,20 +39,20 @@ class DependencyModule {
 //                database,
 //                mapperInstanceProvider,
 //                fragmentChanger)
-        Services.instance.database = MockDatabaseImpl()
-        Services.instance.fragmentChanger = fragmentChanger
-        Services.instance.mapperInstanceProvider = mapperInstanceProvider
-        Services.instance.resourceManager = resourceManager
-        Services.instance.dataSourceContainer = dataContainer
+        Container.database = MockDatabaseImpl()
+        Container.fragmentChanger = fragmentChanger
+        Container.mapperInstanceProvider = mapperInstanceProvider
+        Container.resourceManager = resourceManager
+        Container.dataSourceContainer = dataContainer
 
         val dataSources = listOf(
                 //VolunteerDataSourceImpl(database),
                 MockVolunteersDataSource(),
-                //UserDataSourceImpl(Services.instance.database, Services.instance.auth)
+                //UserDataSourceImpl(Container.database, Container.auth)
                 MockUserDataSource())
 
         for (dataSource in dataSources) {
-            Services.instance.dataSourceContainer.putDataSource(dataSource)
+            Container.dataSourceContainer.putDataSource(dataSource)
         }
     }
 }

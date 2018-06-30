@@ -45,11 +45,7 @@ class EmptyServices : IServices {
     override var fragmentChanger: FragmentChanger = EmptyFragmentChanger()
 }
 
-class Services {
-    companion object {
-        var instance: IServices = EmptyServices()
-    }
-}
+var Container : IServices = EmptyServices()
 
 class ServicesImpl(
         override var resourceManager: ResourceManager,

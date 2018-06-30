@@ -4,7 +4,7 @@ import guideme.volunteers.R
 import guideme.volunteers.auth.SignInAuthResult
 import guideme.volunteers.domain.Project
 import guideme.volunteers.domain.Volunteer
-import guideme.volunteers.helpers.Services
+import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.ui.activities.main.base.BaseMainActivityImpl
 import guideme.volunteers.ui.views.actionbar.ActionBarTool
@@ -24,13 +24,13 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
     private var menu: Menu? = null
     private var presenter: MainPresenter? = null
-    private val fragmentChanger = Services.instance.fragmentChanger
+    private val fragmentChanger = Container.fragmentChanger
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         data?.let {
-            Services.instance.googleAuth.onActivityResult(requestCode, it)
+            Container.googleAuth.onActivityResult(requestCode, it)
         }
     }
 
@@ -39,7 +39,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
         super.onCreate(savedInstanceState)
 
-        Services.instance.googleAuth.init(this)
+        Container.googleAuth.init(this)
 
         setContentView(R.layout.activity_main)
 
@@ -47,7 +47,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
         setSupportActionBar(myToolbar)
 
         if (presenter == null) {
-            presenter = MainPresenter(this, Services.instance.googleAuth, Services.instance.database, this)
+            presenter = MainPresenter(this, Container.googleAuth, Container.database, this)
         }
         presenter?.onCreate()
     }
@@ -106,7 +106,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
     override fun refreshMenu() {
         val logInMenuItem = menu?.findItem(R.id.action_authentication)
-        val logInTextId = if (Services.instance.googleAuth.isSignedIn()) R.string.user_signed_in_menu_item else R.string.user_not_signed_in_menu_item
+        val logInTextId = if (Container.googleAuth.isSignedIn()) R.string.user_signed_in_menu_item else R.string.user_not_signed_in_menu_item
 
         logInMenuItem?.title = getString(logInTextId)
     }
