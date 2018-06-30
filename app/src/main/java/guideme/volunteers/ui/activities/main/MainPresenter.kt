@@ -1,5 +1,6 @@
 package guideme.volunteers.ui.activities.main
 
+import android.support.v4.app.FragmentActivity
 import guideme.volunteers.auth.GoogleAuth
 import guideme.volunteers.domain.Person
 import guideme.volunteers.domain.Privilege
@@ -10,7 +11,6 @@ import guideme.volunteers.helpers.databases.actions.AddVolunteer
 import guideme.volunteers.helpers.dataservices.databases.Database
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.helpers.dataservices.errors.ErrorType
-import android.support.v4.app.FragmentActivity
 import io.reactivex.rxkotlin.subscribeBy
 
 internal class MainPresenter(
@@ -30,13 +30,13 @@ internal class MainPresenter(
     override fun onStart() {
         if (!googleAuth.isSignedIn()) {
             googleAuth.signIn(fragmentActivity).subscribeBy(
-                    onComplete = {
+                    onSuccess = {
                         addTestsVolunteers {
                             mainView.refreshMenu()
                             mainView.showVolunteerList()
                         }
                     },
-                    onError = { ex ->
+                    onError = {
                         mainView.showError(ErrorMessage(ErrorType.NO_INTERNET_CONNECTION))
                     })
         }

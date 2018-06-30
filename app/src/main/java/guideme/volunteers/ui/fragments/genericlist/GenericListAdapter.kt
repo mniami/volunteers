@@ -27,12 +27,12 @@ class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (G
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): GenericListAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericListAdapter.ViewHolder {
         return GenericListAdapter.ViewHolder(LayoutInflater.from(parent?.context)
                 .inflate(R.layout.generic_item, parent, false), onClickListener)
     }
 
-    override fun onBindViewHolder(holder: GenericListAdapter.ViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: GenericListAdapter.ViewHolder, position: Int) {
         val item = filteredList[position]
         holder?.update(item)
     }

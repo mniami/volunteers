@@ -2,13 +2,13 @@ package guideme.volunteers.auth
 
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
-import io.reactivex.Observable
+import io.reactivex.Single
 
 interface GoogleAuth {
-    var signInAuthResult : SignInAuthResult
-    
+    var authResult: SignInAuthResult
+
     fun init(fragmentActivity: FragmentActivity)
-    fun signIn(fragmentActivity: FragmentActivity) : Observable<SignInAuthResult>
-    fun onActivityResult(requestCode: Int, data : Intent)
+    fun signIn(fragmentActivity: FragmentActivity): Single<SignInAuthResult>
+    fun onActivityResult(requestCode: Int, data: Intent)
     fun isSignedIn(): Boolean
 }

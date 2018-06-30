@@ -1,128 +1,100 @@
 package guideme.volunteers.auth
 
-import guideme.volunteers.R
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
-import android.util.Log
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import io.reactivex.Observable
-import io.reactivex.ObservableEmitter
+import guideme.volunteers.R
+import guideme.volunteers.log.createLog
+import io.reactivex.Single
+import io.reactivex.SingleEmitter
+import java.lang.IllegalStateException
 import java.util.*
 
-class GoogleAuthImpl(val auth: guideme.volunteers.auth.Auth, override var signInAuthResult: SignInAuthResult) : GoogleAuth, GoogleApiClient.OnConnectionFailedListener {
-    private class SingingProcess(val observableEmitter: ObservableEmitter<SignInAuthResult>)
-
-    private val TAG = "GoogleAuthImpl"
+class GoogleAuthImpl(val auth: guideme.volunteers.auth.Auth, override var authResult: SignInAuthResult) : GoogleAuth, GoogleApiClient.OnConnectionFailedListener {
     private val RC_SIGN_IN = 13234
+    private val log = createLog(this)
 
     private var apiClient: GoogleApiClient? = null
-    private var singingProcess: SingingProcess? = null
-    private var googleSignInAccount: IdpResponse? = null
-    private var authenticationObservable: Observable<SignInAuthResult>? = null
+    private var emitter: SingleEmitter<SignInAuthResult>? = null
 
     override fun init(fragmentActivity: FragmentActivity) {
-        if (apiClient == null) {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestProfile()
-                    .requestIdToken(fragmentActivity.getString(R.string.default_web_client_id))
-                    .build()
-
-            apiClient = GoogleApiClient.Builder(fragmentActivity)
-                    //.enableAutoManage(fragmentActivity, this)
-                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                    .build()
+        if (apiClient != null) {
+            return;
         }
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestProfile()
+                .requestIdToken(fragmentActivity.getString(R.string.default_web_client_id))
+                .build()
+
+        apiClient = GoogleApiClient.Builder(fragmentActivity)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build()
     }
 
     override fun isSignedIn(): Boolean {
-        return signInAuthResult.success
+        return authResult.success
     }
 
-    override fun signIn(fragmentActivity: FragmentActivity): Observable<SignInAuthResult> {
-        var authObs = authenticationObservable
-        if (authObs == null) {
-            authObs = Observable.create { emitter ->
-                val singInResult = signInAuthResult
-
-                if (singInResult.success) {
-                    emitter.onNext(singInResult)
-                    emitter.onComplete()
-                    authenticationObservable = null
-                } else {
-                    startSignInProcess(fragmentActivity, emitter)
-                }
+    override fun signIn(fragmentActivity: FragmentActivity): Single<SignInAuthResult> {
+        return Single.create { emitter ->
+            if (authResult.success) {
+                emitter.onSuccess(authResult)
+            } else {
+                this.emitter = emitter
+                startActivity(fragmentActivity)
             }
-            authenticationObservable = authObs
-            return authObs
         }
-        return authObs
     }
 
     override fun onConnectionFailed(p0: ConnectionResult) {
-        Log.w("MYAPP", "Google auth connection failed")
+        log.d { "Google auth connection failed" }
 
-        singingProcess?.observableEmitter?.let {
+        emitter?.let {
             it.onError(Exception("Connection failed"))
         }
     }
 
     override fun onActivityResult(requestCode: Int, data: Intent) {
-        if (requestCode == RC_SIGN_IN) {
-
-            val result = data.extras["extra_idp_response"]
-            if (result is IdpResponse) {
-                Log.d(TAG, "handleSignInResult: true")
-
-                googleSignInAccount = result
-
-                singingProcess?.observableEmitter?.let {
-                    if (result.idpToken == null){
-                        it.onError(AuthException())
-                        authenticationObservable = null
-                        return;
-                    }
-                    val lDisplayName = ""
-                    val email = result.email ?: ""
-                    val photoUrl = ""
-                    val id = result.idpSecret ?: ""
-                    val idToken = result.idpToken ?: ""
-
-                    auth.authUser = AuthUser(lDisplayName, photoUrl, email, id, idToken)
-
-                    val lSingInResult = SignInAuthResult(true, auth.authUser)
-
-                    signInAuthResult = lSingInResult
-                    singingProcess = null
-
-                    it.onNext(lSingInResult)
-                    it.onComplete()
-
-                    authenticationObservable = null
-                }
-            } else {
-                singingProcess?.observableEmitter?.onComplete()
-            }
+        if (requestCode != RC_SIGN_IN) {
+            return;
         }
+
+        val result = data.extras["extra_idp_response"]
+        if (result !is IdpResponse) {
+            emitter?.onError(IllegalStateException("No idp response found"))
+            return;
+        }
+        log.d { "Authentication data found" }
+        if (result.idpToken == null) {
+            log.d { "No idp token found in authentication response" }
+
+            emitter?.onError(AuthException())
+            return;
+        }
+
+        auth.authUser = AuthUser("",
+                "",
+                result.email ?: "",
+                result.idpSecret ?: "",
+                result.idpToken ?: "")
+
+        authResult = SignInAuthResult(true, auth.authUser)
+
+        emitter?.onSuccess(authResult)
     }
 
-    private fun startSignInProcess(fragmentActivity: FragmentActivity, emitter: ObservableEmitter<SignInAuthResult>) {
-        singingProcess = SingingProcess(emitter)
-
-        apiClient?.let {
-            fragmentActivity.startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(
-                                    Arrays.asList(AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                            AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build(),
-                                            AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                            AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
-                            .build(), RC_SIGN_IN)
-        }
+    private fun startActivity(fragmentActivity: FragmentActivity) {
+        fragmentActivity.startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(
+                                Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build(),
+                                        AuthUI.IdpConfig.FacebookBuilder().build()))
+                        .build(), RC_SIGN_IN)
     }
 }

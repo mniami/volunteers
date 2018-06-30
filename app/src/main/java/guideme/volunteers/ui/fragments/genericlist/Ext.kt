@@ -7,5 +7,5 @@ fun DataSource.isObservableDataSource() : Boolean{
     return this is ObservableDataSource<*>
 }
 fun <T> DataSource.asObservableDataSource() : ObservableDataSource<T>? {
-    return this as ObservableDataSource<T>
+    return this as ObservableDataSource<T>?
 }

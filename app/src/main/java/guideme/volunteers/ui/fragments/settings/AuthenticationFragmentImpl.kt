@@ -1,15 +1,15 @@
 package guideme.volunteers.ui.fragments.settings
 
-import guideme.volunteers.R
-import guideme.volunteers.helpers.Container
-import guideme.volunteers.ui.fragments.base.BaseFragment
-import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import android.os.Bundle
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import com.squareup.picasso.Picasso
+import guideme.volunteers.R
+import guideme.volunteers.helpers.Container
+import guideme.volunteers.ui.fragments.base.BaseFragment
+import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import kotlinx.android.synthetic.main.authentication_fragment.*
 
 class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), AuthenticationFragment {
@@ -37,10 +37,10 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
         super.onCreateOptionsMenu(menu, inflater)
 
         val searchItem = menu?.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as SearchView
+        val searchView = searchItem?.actionView as SearchView?
 
         searchView?.setOnCloseListener { return@setOnCloseListener false }
-        searchView.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(text: String?): Boolean {
                 return false
             }
@@ -52,17 +52,13 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
     }
 
     private fun updateUi() {
-        val authUser = Container.googleAuth.signInAuthResult.authUser
-        signedLayout.visibility = if (authUser != null) View.VISIBLE else View.GONE
+        val authUser = Container.googleAuth.authResult.authUser
+        signedLayout.visibility = if (!authUser.isEmpty()) View.VISIBLE else View.GONE
+        tvHeader.text = authUser.name
+        tvShortDescription.text = String.format(getString(R.string.authenticated_user_short_description), authUser.email)
 
-        if (authUser != null) {
-            tvHeader.text = authUser.name
-            tvShortDescription.text =
-                    String.format(getString(R.string.authenticated_user_short_description), authUser.email)
-
-            if (authUser.photoUrl.isNotBlank()) {
-                Picasso.with(context).load(authUser.photoUrl).into(ivImage)
-            }
+        if (authUser.photoUrl.isNotBlank()) {
+            Picasso.with(context).load(authUser.photoUrl).into(ivImage)
         }
     }
 }
