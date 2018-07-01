@@ -139,6 +139,8 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
         val dataSourceId = arguments?.get(GenericListFragment.DATA_SOURCE_ID)
         val mapperClassName = arguments?.get(GenericListFragment.MAPPER_CLASS_NAME)
 
+        eventClickId = arguments?.get(GenericListFragment.EVENT_CLICK_ID) as Serializable?
+
         if (toolbarConfiguration is ToolbarConfiguration) {
             this.configuration.toolbar.titleResourceId = toolbarConfiguration.titleResourceId
             this.configuration.toolbar.showBackArrow = toolbarConfiguration.showBackArrow

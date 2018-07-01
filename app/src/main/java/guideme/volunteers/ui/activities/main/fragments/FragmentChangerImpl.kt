@@ -67,7 +67,7 @@ class FragmentChangerImpl(override var supportFragmentManager: FragmentManager? 
 
     override fun openEditUserDetails(volunteer: Volunteer) {
         val bundle = Bundle()
-        bundle.putSerializable(PersonDetailsFragment.HUMAN_ARG, volunteer.person)
+        bundle.putSerializable(PersonDetailsFragment.HUMAN_ARG, volunteer)
 
         val fragment = PersonDetailsFragment()
         fragment.arguments = bundle

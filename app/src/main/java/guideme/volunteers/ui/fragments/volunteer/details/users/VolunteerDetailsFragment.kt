@@ -38,6 +38,10 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
 
     private fun updateView() {
         actionBar.hideOptions()
+        val volunteer = presenter?.volunteer
+        if (volunteer == null){
+            return
+        }
         presenter?.volunteer?.let { v ->
             actionBar.setTitle("Volunteers Details")
             tvSubHeader?.text = "${v.person.name} ${v.person.surname}"

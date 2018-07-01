@@ -23,9 +23,9 @@ class VolunteerGenericItemMap(val fragmentChanger: FragmentChangerImpl) : Generi
         if (obs != null) {
             return Observable.create { outer ->
                 obs.subscribeBy(
-                        onNext = {
-                            it.person.let {
-                                outer.onNext(GenericItemImpl(it.name + " " + it.surname, it.shortDescription, it.avatarImageUri, it))
+                        onNext = { volunteer ->
+                            volunteer.person.let {
+                                outer.onNext(GenericItemImpl(it.name + " " + it.surname, it.shortDescription, it.avatarImageUri, volunteer))
                             }
                         },
                         onComplete = {
