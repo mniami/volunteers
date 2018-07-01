@@ -1,14 +1,5 @@
 package guideme.volunteers.ui.activities.main
 
-import guideme.volunteers.R
-import guideme.volunteers.auth.SignInAuthResult
-import guideme.volunteers.domain.Project
-import guideme.volunteers.domain.Volunteer
-import guideme.volunteers.helpers.Container
-import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
-import guideme.volunteers.ui.activities.main.base.BaseMainActivityImpl
-import guideme.volunteers.ui.views.actionbar.ActionBarTool
-import guideme.volunteers.ui.views.actionbar.ActionBarToolImpl
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -16,6 +7,18 @@ import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import guideme.volunteers.R
+import guideme.volunteers.auth.SignInAuthResult
+import guideme.volunteers.domain.Project
+import guideme.volunteers.domain.Volunteer
+import guideme.volunteers.helpers.Container
+import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
+import guideme.volunteers.ui.activities.main.base.BaseMainActivityImpl
+import guideme.volunteers.ui.fragments.base.ToolbarConfiguration
+import guideme.volunteers.ui.fragments.base.FragmentConfiguration
+import guideme.volunteers.ui.tools.ToolbarConfigurationHandler
+import guideme.volunteers.ui.views.actionbar.ActionBarTool
+import guideme.volunteers.ui.views.actionbar.ActionBarToolImpl
 import kotlinx.android.synthetic.main.activity_main.*
 
 internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
@@ -25,6 +28,11 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
     private var menu: Menu? = null
     private var presenter: MainPresenter? = null
     private val fragmentChanger = Container.fragmentChanger
+    private val toolbarConfigurationHandler = ToolbarConfigurationHandler()
+    private val configuration : FragmentConfiguration = FragmentConfiguration
+            .withTitle(R.string.volunteers_title)
+            .noArrow()
+            .create()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -56,6 +64,10 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
         fragmentChanger.paused = false
         super.onStart()
         presenter?.onStart()
+
+        supportFragmentManager?.addOnBackStackChangedListener {
+            refreshMenu()
+        }
     }
 
     override fun onPause() {
@@ -109,6 +121,10 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
         val logInTextId = if (Container.googleAuth.isSignedIn()) R.string.user_signed_in_menu_item else R.string.user_not_signed_in_menu_item
 
         logInMenuItem?.title = getString(logInTextId)
+
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            toolbarConfigurationHandler.applyConfiguration(this, configuration)
+        }
     }
 
     override fun openSettings() = fragmentChanger.openSettings()
@@ -120,10 +136,9 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
     override fun openEditUserDetails(volunteer: Volunteer) = fragmentChanger.openEditUserDetails(volunteer)
     override fun updateUserStatus(signInResult: SignInAuthResult) {}
     override fun showError(errorMessage: ErrorMessage) {
-        val content = errorMessage.content
-        if (content != null) {
-            Snackbar.make(activity_main, content, Snackbar.LENGTH_LONG).show()
-        }
+        val content = errorMessage.content ?: "Unexpected error occurred"
+
+        Snackbar.make(activity_main, content, Snackbar.LENGTH_LONG).show()
     }
 }
 

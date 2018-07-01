@@ -1,22 +1,22 @@
 package guideme.volunteers.ui.activities.main.fragments
 
-import guideme.volunteers.R
-import guideme.volunteers.domain.Project
-import guideme.volunteers.domain.Volunteer
-import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
-import guideme.volunteers.helpers.dataservices.datasource.DataSourceContainer
-import guideme.volunteers.ui.activities.main.FragmentNames
-import guideme.volunteers.ui.activities.main.base.BaseMainActivityImpl
-import guideme.volunteers.ui.fragments.ErrorFragmentImpl
-import guideme.volunteers.ui.fragments.VolunteersFragmentPresenter
-import guideme.volunteers.ui.fragments.settings.AuthenticationFragmentImpl
-import guideme.volunteers.ui.fragments.settings.SettingsFragment
-import guideme.volunteers.ui.fragments.volunteer.details.PersonDetailsFragment
-import guideme.volunteers.ui.fragments.volunteer.details.users.VolunteerDetailsFragment
-import guideme.volunteers.ui.fragments.volunteer.details.project.ProjectDetailsFragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import guideme.volunteers.R
+import guideme.volunteers.domain.Project
+import guideme.volunteers.domain.Volunteer
+import guideme.volunteers.helpers.dataservices.datasource.DataSourceContainer
+import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
+import guideme.volunteers.ui.activities.main.FragmentNames
+import guideme.volunteers.ui.activities.main.base.BaseMainActivityImpl
+import guideme.volunteers.ui.fragments.ErrorFragmentImpl
+import guideme.volunteers.ui.fragments.settings.AuthenticationFragmentImpl
+import guideme.volunteers.ui.fragments.settings.SettingsFragment
+import guideme.volunteers.ui.fragments.volunteer.VolunteersFragmentFactory
+import guideme.volunteers.ui.fragments.volunteer.details.PersonDetailsFragment
+import guideme.volunteers.ui.fragments.volunteer.details.project.ProjectDetailsFragment
+import guideme.volunteers.ui.fragments.volunteer.details.users.VolunteerDetailsFragment
 
 class FragmentChangerImpl(override var supportFragmentManager: FragmentManager? = null,
                           override var paused: Boolean = false,
@@ -34,7 +34,7 @@ class FragmentChangerImpl(override var supportFragmentManager: FragmentManager? 
 
     override fun openSettings() = changeFragment(SettingsFragment(), FragmentNames.SETTINGS)
     override fun openAuthentication() = changeFragment(AuthenticationFragmentImpl(), FragmentNames.AUTHENTICATION)
-    override fun showVolunteerList() = changeFragment(VolunteersFragmentPresenter().createFragment(dataSourceContainer) { showVolunteer(it) }, FragmentNames.VOLUNTEERS_LIST)
+    override fun showVolunteerList() = changeFragment(VolunteersFragmentFactory().createFragment(dataSourceContainer) { showVolunteer(it) }, FragmentNames.VOLUNTEERS_LIST)
     override fun showError(errorMessage: ErrorMessage) = changeFragment(ErrorFragmentImpl.createFragment(errorMessage),
             FragmentNames.ERROR)
 

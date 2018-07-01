@@ -1,4 +1,4 @@
-package guideme.volunteers.ui.fragments
+package guideme.volunteers.ui.fragments.volunteer
 
 import guideme.volunteers.R
 import guideme.volunteers.domain.Volunteer
@@ -13,8 +13,9 @@ import guideme.volunteers.ui.fragments.genericlist.GenericListFragmentImpl
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import guideme.volunteers.helpers.Container
+import guideme.volunteers.ui.fragments.KnownMappers
 
-class VolunteersFragmentPresenter {
+class VolunteersFragmentFactory {
     fun createFragment(dataSourceContainer : DataSourceContainer, onClick : (Volunteer) -> Unit) : Fragment {
         val dataSource = dataSourceContainer.getDataSource(VolunteerDataSource.ID)
         var bundle = Bundle()

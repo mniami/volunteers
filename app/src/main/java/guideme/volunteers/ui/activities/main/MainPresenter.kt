@@ -31,13 +31,11 @@ internal class MainPresenter(
         if (!googleAuth.isSignedIn()) {
             googleAuth.signIn(fragmentActivity).subscribeBy(
                     onSuccess = {
-                        addTestsVolunteers {
-                            mainView.refreshMenu()
-                            mainView.showVolunteerList()
-                        }
+                        mainView.refreshMenu()
+                        mainView.showVolunteerList()
                     },
                     onError = {
-                        mainView.showError(ErrorMessage(ErrorType.NO_INTERNET_CONNECTION))
+                        mainView.showError(ErrorMessage(ErrorType.AUTHENTICATION_FAILED, it.message))
                     })
         }
     }

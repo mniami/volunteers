@@ -1,10 +1,14 @@
 package guideme.volunteers.ui.fragments.base
 
 class FragmentConfiguration(val toolbar: ToolbarConfiguration = ToolbarConfiguration(),
-                            var layoutResourceId: Int? = null){
+                            var layoutResourceId: Int? = null) {
     companion object {
         fun withLayout(layoutResourceId: Int): Builder {
             return Builder().withLayout(layoutResourceId)
+        }
+
+        fun withTitle(titleResourceId: Int): Builder {
+            return Builder().title(titleResourceId)
         }
     }
 

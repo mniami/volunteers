@@ -11,9 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
+import guideme.volunteers.ui.tools.ToolbarConfigurationHandler
 
 open class BaseFragment<T : Presenter> : Fragment() {
     private val emptyMainActivity = EmptyMainActivity(EmptyActionBarTool())
+    private val toolbarConfigurationHandler = ToolbarConfigurationHandler()
     protected var presenter: T? = null
     protected var configuration: FragmentConfiguration = FragmentConfiguration()
     protected var mainActivity: MainActivity = emptyMainActivity
@@ -41,16 +43,7 @@ open class BaseFragment<T : Presenter> : Fragment() {
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         if (enter) {
-            configuration.toolbar.titleResourceId?.let {
-                mainActivity.actionBarTool.setTitle(mainActivity.getResourceText(it))
-            }
-            configuration.toolbar.showBackArrow?.let { showBackArrow ->
-                if (showBackArrow) {
-                    mainActivity.actionBarTool.showBackArrow()
-                } else {
-                    mainActivity.actionBarTool.hideBackArrow()
-                }
-            }
+            toolbarConfigurationHandler.applyConfiguration(mainActivity, configuration)
         }
         return super.onCreateAnimation(transit, enter, nextAnim)
     }

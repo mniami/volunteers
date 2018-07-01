@@ -1,3 +1,3 @@
 package guideme.volunteers.auth
 
-class AuthException : Exception() {}
+class AuthException(message : String?) : Exception(message) {}

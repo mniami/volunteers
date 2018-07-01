@@ -73,7 +73,7 @@ class GoogleAuthImpl(val auth: guideme.volunteers.auth.Auth, override var authRe
         if (result.idpToken == null) {
             log.d { "No idp token found in authentication response" }
 
-            emitter?.onError(AuthException())
+            emitter?.onError(AuthException("Authentication failed"))
             return;
         }
 
@@ -93,8 +93,7 @@ class GoogleAuthImpl(val auth: guideme.volunteers.auth.Auth, override var authRe
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(
-                                Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build(),
-                                        AuthUI.IdpConfig.FacebookBuilder().build()))
+                                Arrays.asList(AuthUI.IdpConfig.GoogleBuilder().build()))
                         .build(), RC_SIGN_IN)
     }
 }
