@@ -37,5 +37,10 @@ class FragmentConfiguration(val toolbar: ToolbarConfiguration = ToolbarConfigura
             configuration.toolbar.showBackArrow = false
             return this
         }
+
+        fun withMenu(menuResourceId : Int) : Builder {
+            configuration.toolbar.menuResourceId = menuResourceId
+            return this
+        }
     }
 }

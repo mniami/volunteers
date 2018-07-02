@@ -10,7 +10,7 @@ import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.helpers.dataservices.errors.ErrorType
 import guideme.volunteers.ui.activities.main.MainActivity
 import guideme.volunteers.ui.fragments.base.Presenter
-import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
 
 class PersonPresenter(var human: Human? = null,
@@ -38,20 +38,22 @@ class PersonPresenter(var human: Human? = null,
         }
         when (humanVal) {
             is User -> {
-                handleUpdate(userDataSource?.update(User(person = newPerson)))
+                handleUpdate(userDataSource?.update(User(person = newPerson, id = humanVal.id)))
             }
             is Volunteer -> {
-                handleUpdate(volunteerDataSource?.update(Volunteer(person = newPerson)))
+                handleUpdate(volunteerDataSource?.update(Volunteer(person = newPerson, id = humanVal.id)))
             }
         }
     }
 
-    private fun <T : Human> handleUpdate(observable: Observable<T>?) {
+    private fun <T : Human> handleUpdate(observable: Single<T>?) {
         observable?.subscribeBy(
-                onNext = { human = it },
-                onComplete = { mainActivity?.goBack() },
+                onSuccess = {
+                    human = it
+                    mainActivity?.goBack()
+                },
                 onError = {
-                    //TODO show error on main activity
+                    mainActivity?.showError(ErrorMessage(ErrorType.ILLEGAL_STATE_EXCEPTION))
                 })
     }
 }

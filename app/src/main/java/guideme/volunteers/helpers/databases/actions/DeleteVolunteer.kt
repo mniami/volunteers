@@ -2,27 +2,25 @@ package guideme.volunteers.helpers.databases.actions
 
 import com.google.firebase.database.FirebaseDatabase
 import guideme.volunteers.domain.Volunteer
+import guideme.volunteers.helpers.dataservices.errors.ElementNotFoundException
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 
-class AddVolunteer(private val volunteer: Volunteer) {
+class DeleteVolunteer(private val volunteer: Volunteer) {
     fun execute(database: FirebaseDatabase): Single<Volunteer> {
         return Single.create<Volunteer> {
-            addVolunteer(database, it)
+            deleteVolunteer(database, it)
         }
     }
 
-    private fun addVolunteer(database: FirebaseDatabase, emitter: SingleEmitter<Volunteer>) {
-        var id: String? = volunteer.id
-        if (volunteer.id.isEmpty()) {
-            id = database.reference.child(DatabaseTables.VOLUNTEERS).push().key
+    private fun deleteVolunteer(database: FirebaseDatabase, emitter: SingleEmitter<Volunteer>) {
+        if (volunteer.id == null){
+            emitter.onError(ElementNotFoundException(volunteer, "Volunteer without id cannot be removed"))
+            return
         }
-
-        if (id == null) {
-            throw IllegalStateException()
-        }
-        val copiedVolunteer = volunteer.cloneWithId(id)
-        database.reference.child(DatabaseTables.VOLUNTEERS).child(id).setValue(copiedVolunteer)
+        database.reference.child(DatabaseTables.VOLUNTEERS)
+                .child(volunteer.id)
+                .removeValue()
                 .addOnFailureListener {
                     emitter.onError(Error(it.localizedMessage))
                 }

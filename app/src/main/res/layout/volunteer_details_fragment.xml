@@ -5,27 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/tbAdmin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:visibility="gone">
-        <Button
-            android:id="@+id/btEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit"
-            android:layout_gravity="right"
-            />
-        </android.support.v7.widget.Toolbar>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_margin="8dp">
 
         <ImageView
             android:id="@+id/ivImage"
@@ -35,8 +19,7 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:minHeight="@dimen/_80sdp"
-            android:minWidth="@dimen/_80sdp"
-            app:srcCompat="@color/cardview_dark_background" />
+            android:minWidth="@dimen/_80sdp" />
 
         <LinearLayout
             android:layout_width="wrap_content"

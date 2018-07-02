@@ -3,16 +3,24 @@ package guideme.volunteers.domain
 import guideme.volunteers.annotations.Required
 import java.io.Serializable
 
-data class Volunteer(val id: String = "",
+data class Volunteer(override val id: String = "",
                      val needies: List<Needy> = emptyList(),
                      val volunteerType: String = "",
-                     override val person: Person = Person()) : Human
+                     override val person: Person = Person()) : Human {
+    fun cloneWithId(id : String) : Volunteer{
+        return Volunteer(id = id,
+                needies = needies,
+                volunteerType = volunteerType,
+                person = person)
+    }
+}
 
-data class Needy(val id: String = "",
+data class Needy(override val id: String = "",
                  val volunteers: List<Volunteer> = emptyList(),
                  override val person: Person = Person()) : Human
 
 interface Human : Serializable {
+    val id : String
     val person : Person
 }
 
@@ -33,7 +41,7 @@ data class Person(
         var key: String = "") : Serializable
 
 data class User(
-        val id: String = "",
+        override val id: String = "",
         val volunteers: MutableList<Volunteer> = mutableListOf(),
         override val person: Person = Person()) : Human
 

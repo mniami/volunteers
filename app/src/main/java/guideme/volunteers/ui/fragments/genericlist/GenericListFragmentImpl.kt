@@ -16,6 +16,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
+import guideme.volunteers.helpers.dataservices.errors.ErrorType
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -59,9 +61,9 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
 
     override fun onResume() {
         super.onResume()
-        database.getCurrentUserAsync()
+        database.getCurrentUser()
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(onNext = { user ->
+                .subscribeBy(onSuccess = { user ->
                     currentUser = user
 
                     actionButton.visibility = View.VISIBLE
@@ -113,7 +115,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                             genericItems.add(it)
                         },
                         onError = {
-                            Toast.makeText(this@GenericListFragmentImpl.context, "Ups", Toast.LENGTH_SHORT)
+                            mainActivity?.showError(ErrorMessage(ErrorType.ILLEGAL_STATE_EXCEPTION, it.message))
                         },
                         onComplete = {
                             val gi = genericItems

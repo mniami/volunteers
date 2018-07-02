@@ -28,7 +28,7 @@ class DependencyModule {
     private fun initProduction(app: App){
         val resourceManager = AndroidResourceManager(app)
         val auth = AuthImpl(AuthUser.createEmpty())
-        val database = FirebaseDatabaseImpl(auth)
+        val database = FirebaseDatabaseImpl()
         val mapperInstanceProvider = MapperInstanceProvider()
         val dataContainer = DataSourceContainerImpl()
         val fragmentChanger = FragmentChangerImpl(dataSourceContainer = dataContainer)
@@ -60,8 +60,6 @@ class DependencyModule {
 
     private fun initMock(app: App){
         val resourceManager = AndroidResourceManager(app)
-        val auth = AuthImpl(AuthUser.createEmpty())
-        val database = FirebaseDatabaseImpl(auth)
         val mapperInstanceProvider = MapperInstanceProvider()
         val dataContainer = DataSourceContainerImpl()
         val fragmentChanger = FragmentChangerImpl(dataSourceContainer = dataContainer)

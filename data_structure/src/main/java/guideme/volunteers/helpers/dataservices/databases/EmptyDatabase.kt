@@ -2,19 +2,21 @@ package guideme.volunteers.helpers.dataservices.databases
 
 import guideme.volunteers.domain.User
 import guideme.volunteers.domain.Volunteer
+import guideme.volunteers.helpers.dataservices.errors.UserNotSignedInException
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class EmptyDatabase : Database {
-    override fun updateVolunteer(volunteer: Volunteer): Observable<Volunteer> {
-        return Observable.create {
-            it.onComplete()
-        }
+    override fun deleteVolunteer(volunteer: Volunteer): Single<Volunteer> {
+        return Single.just(volunteer)
     }
 
-    override fun setUser(user: User): Observable<User> {
-        return Observable.create { emitter ->
-            emitter.onComplete()
-        }
+    override fun updateVolunteer(volunteer: Volunteer): Single<Volunteer> {
+        return Single.just(volunteer)
+    }
+
+    override fun setUser(user: User): Single<User> {
+        return Single.just(user)
     }
 
     override fun getVolunteers(): Observable<Volunteer> {
@@ -23,10 +25,8 @@ class EmptyDatabase : Database {
         }
     }
 
-    override fun getCurrentUserAsync(): Observable<User> {
-        return Observable.create { emitter ->
-            emitter.onComplete()
-        }
+    override fun getCurrentUser(): Single<User> {
+        return Single.error(UserNotSignedInException())
     }
 
     override fun addListener(databaseListener: IDatabaseListener) {

@@ -1,6 +1,9 @@
 package guideme.volunteers.helpers.dataservices.datasource
 
+import guideme.volunteers.domain.User
+import guideme.volunteers.domain.Volunteer
 import io.reactivex.Observable
+import io.reactivex.Single
 import java.io.Serializable
 import java.util.*
 
@@ -34,7 +37,7 @@ interface ObservableDataSource<T>: DataSource{
     override val data: ObservableData<T>
 }
 interface ModifiableDataSource<T> : ObservableDataSource<T>{
-    fun update(data : T) : Observable<T>
+    fun update(data : T) : Single<T>
 }
 class ObservableDataImpl<T>(override val observable: Observable<T>) : ObservableData<T>()
 

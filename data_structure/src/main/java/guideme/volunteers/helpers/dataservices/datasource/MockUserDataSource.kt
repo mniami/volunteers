@@ -6,17 +6,17 @@ import guideme.volunteers.domain.Privilege
 import guideme.volunteers.domain.User
 import guideme.volunteers.log.createLog
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class MockUserDataSource(override val id: DataSourceId = KeyDataSourceId("current.user.name")) : UserDataSource {
     private val log = createLog(this)
 
-    override fun update(user: User): Observable<User> {
+    override fun update(user: User): Single<User> {
         log.d { "update user called ${user.person.name}" }
-        return Observable.create {
+        return Single.create {
             user.person.activity.actions.add(Action("User updated"))
             data.observable.publish()
-            it.onNext(user)
-            it.onComplete()
+            it.onSuccess(user)
         }
     }
 

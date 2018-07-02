@@ -1,23 +1,22 @@
 package guideme.volunteers.ui.fragments.volunteer.details.users
 
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import com.squareup.picasso.Picasso
 import guideme.volunteers.R
 import guideme.volunteers.domain.Privilege
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.helpers.Container
-import guideme.volunteers.helpers.databases.actions.AddVolunteer
 import guideme.volunteers.helpers.dataservices.datasource.UserDataSource
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.helpers.dataservices.errors.ErrorType
 import guideme.volunteers.ui.fragments.base.BaseFragment
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import guideme.volunteers.ui.fragments.volunteer.details.VolunteerProjectListFragment
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentPagerAdapter
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import com.squareup.picasso.Picasso
 import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.android.synthetic.main.volunteer_details_fragment.*
 
@@ -26,9 +25,16 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
         val VOLUNTEER_ARG = "volunteer"
     }
 
+    private var actionEdit: MenuItem? = null
+    private var actionDelete: MenuItem? = null
+
     init {
         presenter = VolunteerDetailsPresenter(this)
-        configuration = FragmentConfiguration.withLayout(R.layout.volunteer_details_fragment).showBackArrow().create()
+        configuration = FragmentConfiguration
+                .withLayout(R.layout.volunteer_details_fragment)
+                .withMenu(R.menu.volunteers_details_menu)
+                .showBackArrow()
+                .create()
     }
 
     override fun onResume() {
@@ -39,27 +45,33 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
     private fun updateView() {
         actionBar.hideOptions()
         val volunteer = presenter?.volunteer
-        if (volunteer == null){
+        if (volunteer == null) {
             return
         }
         presenter?.volunteer?.let { v ->
-            actionBar.setTitle("Volunteers Details")
-            tvSubHeader?.text = "${v.person.name} ${v.person.surname}"
-            tvHeader?.text = v.volunteerType
-            if (v.person.avatarImageUri.isNotEmpty()){
-                Picasso.with(context).load(v.person.avatarImageUri).into(ivImage)
+            var address = v.person.addresses.values.firstOrNull() ?: ""
+            var subHeader = "${v.person.email}\n${address}"
+
+            actionBar.setTitle("${v.person.name} ${v.person.surname}")
+            tvSubHeader?.text = subHeader
+            tvHeader?.text = "${v.person.name} ${v.person.surname}"
+
+            var imageUrl = ""
+            if (v.person.avatarImageUri.isNotEmpty()) {
+                imageUrl = v.person.avatarImageUri
             }
+            else {
+                imageUrl = "http://style.anu.edu.au/_anu/4/images/placeholders/person.png"
+            }
+
+            Picasso.with(context).load(imageUrl).into(ivImage)
             tvShortDescription?.text = v.person.shortDescription
 
             val userDataSource = Container.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
             userDataSource?.let {
                 it.data.observable.subscribeBy(onNext = { currentUser ->
-                    if (currentUser.person.privilege == Privilege.ADMIN) {
-                        tbAdmin?.visibility = View.VISIBLE
-                        btEdit?.setOnClickListener {
-                            mainActivity.openEditUserDetails(v)
-                        }
-                    }
+                    val enabled = currentUser.person.privilege == Privilege.ADMIN
+                    actionEdit?.isEnabled = enabled
                 })
             }
         }
@@ -67,7 +79,7 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
         viewPager?.let {
             it.adapter = object : FragmentPagerAdapter(childFragmentManager) {
                 override fun getCount(): Int {
-                    return 2
+                    return 0
                 }
 
                 override fun getItem(position: Int): Fragment? {
@@ -104,23 +116,31 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        menu?.clear()
-        inflater?.inflate(R.menu.volunteers_details_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
-        val saveItem = menu?.findItem(R.id.action_save)
+        actionEdit = menu?.findItem(R.id.action_edit)
+        actionDelete = menu?.findItem(R.id.action_delete)
 
-        saveItem?.actionView?.setOnClickListener {
-            val v = presenter?.volunteer
-            if (v != null) {
-                AddVolunteer(v).execute(Container.database,
-                        onFailure = {
-                            mainActivity.showError(ErrorMessage(ErrorType.UNKNOWN, it.localizedMessage))
-                        },
-                        onComplete = {
-                            mainActivity.goBack()
-                        })
-            }
+        val v = presenter?.volunteer
+        if (v == null) {
+            return;
+        }
+
+        actionDelete?.setOnMenuItemClickListener {
+            Container.database.deleteVolunteer(v)
+                    .subscribeBy(
+                            onSuccess = {
+                                mainActivity?.goBack()
+                            },
+                            onError = {
+                                mainActivity?.showError(ErrorMessage(ErrorType.DELETE_FAILED, "Delete Volunteer failed"))
+                            })
+
+            return@setOnMenuItemClickListener true
+        }
+        actionEdit?.setOnMenuItemClickListener {
+            mainActivity.openEditUserDetails(v)
+            return@setOnMenuItemClickListener true
         }
     }
 }

@@ -3,7 +3,7 @@ package guideme.volunteers.helpers.dataservices.datasource
 import guideme.volunteers.auth.Auth
 import guideme.volunteers.domain.User
 import guideme.volunteers.helpers.dataservices.databases.Database
-import io.reactivex.Observable
+import io.reactivex.Single
 
 interface UserDataSource : ModifiableDataSource<User> {
     companion object {
@@ -14,14 +14,14 @@ interface UserDataSource : ModifiableDataSource<User> {
 class UserDataSourceImpl(private val database: Database, private val auth: Auth) : UserDataSource {
     override val data: ObservableData<User>
         get() {
-            return ObservableDataImpl(database.getCurrentUserAsync())
+            return ObservableDataImpl(database.getCurrentUser().toObservable())
         }
     override val id: DataSourceId
         get() {
             return UserDataSource.ID
         }
 
-    override fun update(user: User): Observable<User> {
+    override fun update(user: User): Single<User> {
         return database.setUser(user)
     }
 }

@@ -15,6 +15,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.squareup.picasso.Picasso
+import guideme.volunteers.domain.Address
 import kotlinx.android.synthetic.main.admin_user_details.*
 
 class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
@@ -92,12 +93,15 @@ class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
 
     private fun updatePerson() {
         val sourcePerson = presenter?.human?.person
+        //TODO Address should be set
+        //val address = Address(etCity.text.toString(), etPostCode.text.toString(), etAddress.text.toString())
         presenter?.updatePerson(Person(
                 name = etName.text.toString(),
                 email = etEmail.text.toString(),
                 key = sourcePerson?.key?:"",
                 privilege = sourcePerson?.privilege?:Privilege.USER,
                 description = etDescription.text.toString(),
+                addresses = emptyMap(),
                 avatarImageUri = sourcePerson?.avatarImageUri?:""))
     }
 

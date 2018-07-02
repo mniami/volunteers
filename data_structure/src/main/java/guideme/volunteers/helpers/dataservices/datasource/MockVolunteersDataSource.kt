@@ -3,25 +3,24 @@ package guideme.volunteers.helpers.dataservices.datasource
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.log.createLog
 import io.reactivex.Observable
+import io.reactivex.Single
 
 class MockVolunteersDataSource : VolunteerDataSource {
     private val log = createLog(this)
 
-    override fun update(volunteer: Volunteer): Observable<Volunteer> {
-        return Observable.create {
+    override fun update(volunteer: Volunteer): Single<Volunteer> {
+        return Single.create {
             val index = volunteers.indexOfFirst { it.id == volunteer.id }
             if (index >= 0) {
                 volunteers[index] = volunteer
                 log.d { "update volunteer '${volunteer.person.name}'" }
 
-                it.onNext(volunteer)
-                it.onComplete()
+                it.onSuccess(volunteer)
             } else {
                 log.d { "add new volunteer '${volunteer.person.name}'" }
 
                 volunteers.add(volunteer)
-                it.onNext(volunteer)
-                it.onComplete()
+                it.onSuccess(volunteer)
             }
             data.observable.publish()
         }

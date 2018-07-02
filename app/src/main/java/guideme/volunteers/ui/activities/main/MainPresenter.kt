@@ -39,26 +39,5 @@ internal class MainPresenter(
                     })
         }
     }
-
-    private fun addTestsVolunteers(volunteerNumber: Int = 0, onComplete: () -> Unit) {
-        if (volunteerNumber == 0) {
-            onComplete()
-        } else {
-            addVolunteer { addTestsVolunteers(volunteerNumber + 1, onComplete) }
-        }
-    }
-
-    private fun addVolunteer(onComplete: () -> Unit) {
-        AddVolunteer(Volunteer(
-                volunteerType = VolunteerType.Junior,
-                person = Person(name = "Damian",
-                        surname = "Szczepanski",
-                        description = "The volunteer we need",
-                        email = "d.szczepek@gmail.com",
-                        privilege = Privilege.USER,
-                        shortDescription = "There is nth to say"))).execute(Container.database,
-                onFailure = {},
-                onComplete = { onComplete() })
-    }
 }
 

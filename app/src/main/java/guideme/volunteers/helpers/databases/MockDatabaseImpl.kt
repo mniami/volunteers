@@ -7,26 +7,30 @@ import guideme.volunteers.helpers.dataservices.databases.Database
 import guideme.volunteers.helpers.dataservices.databases.IDatabaseListener
 import guideme.volunteers.helpers.dataservices.datasource.MockUserDataSource
 import guideme.volunteers.helpers.dataservices.datasource.MockVolunteersDataSource
-import android.util.Log
+import guideme.volunteers.log.createLog
 import io.reactivex.Observable
+import io.reactivex.Single
 
-/**
- * Created by DASZ on 10.02.2018.
- */
 class MockDatabaseImpl : Database {
-    val logName = "MockDatabase"
+    private val log = createLog(this)
 
-    override fun updateVolunteer(volunteer: Volunteer): Observable<Volunteer> {
-        Log.d(logName, "update volunteer called ${volunteer.person.name}")
-        return Observable.create {
-            Thread.sleep(200)
-            volunteer.person.activity.actions.add(Action("Updated data"))
-            it.onNext(volunteer)
-            it.onComplete()
+    override fun deleteVolunteer(volunteer: Volunteer): Single<Volunteer> {
+        return Single.create {
+            MockVolunteersDataSource.volunteers.remove(volunteer)
+            it.onSuccess(volunteer)
         }
     }
 
-    override fun getCurrentUserAsync(): Observable<User> = MockUserDataSource().data.observable
+    override fun updateVolunteer(volunteer: Volunteer): Single<Volunteer> {
+        log.d { "update volunteer called ${volunteer.person.name}" }
+        return Single.create {
+            Thread.sleep(200)
+            volunteer.person.activity.actions.add(Action("Updated data"))
+            it.onSuccess(volunteer)
+        }
+    }
+
+    override fun getCurrentUser(): Single<User> = MockUserDataSource().data.observable.firstOrError()
 
     override fun addListener(databaseListener: IDatabaseListener) {
     }
@@ -44,5 +48,7 @@ class MockDatabaseImpl : Database {
     override fun signOut() {
     }
 
-    override fun setUser(user: User): Observable<User> = MockUserDataSource().data.observable
+    override fun setUser(user: User): Single<User> {
+        return MockUserDataSource().data.observable.firstOrError()
+    }
 }
