@@ -18,6 +18,7 @@ import guideme.volunteers.ui.fragments.base.BaseFragment
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import guideme.volunteers.ui.fragments.volunteer.details.VolunteerProjectListFragment
 import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.android.synthetic.main.volunteer_details_account.*
 import kotlinx.android.synthetic.main.volunteer_details_fragment.*
 
 class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVolunteerDetailsFragment {
@@ -65,13 +66,16 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
             }
 
             Picasso.with(context).load(imageUrl).into(ivImage)
+
             tvShortDescription?.text = v.person.shortDescription
+            tvDescription?.text = v.person.description
 
             val userDataSource = Container.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
             userDataSource?.let {
                 it.data.observable.subscribeBy(onNext = { currentUser ->
-                    val enabled = currentUser.person.privilege == Privilege.ADMIN
-                    actionEdit?.isEnabled = enabled
+                    val visible = currentUser.person.privilege == Privilege.ADMIN
+                    actionEdit?.isVisible = visible
+                    actionDelete?.isVisible = visible
                 })
             }
         }
@@ -79,7 +83,7 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
         viewPager?.let {
             it.adapter = object : FragmentPagerAdapter(childFragmentManager) {
                 override fun getCount(): Int {
-                    return 0
+                    return 1
                 }
 
                 override fun getItem(position: Int): Fragment? {
