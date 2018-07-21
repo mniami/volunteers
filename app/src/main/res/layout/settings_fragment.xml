@@ -4,9 +4,9 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/tvAppVersion"
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="App Version: 1.0.0"/>
+        android:id="@+id/settingsListView">
+    </ListView>
 </LinearLayout>

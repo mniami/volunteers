@@ -1,4 +1,4 @@
-package guideme.volunteers.helpers.databases.actions
+package guideme.volunteers.databases.actions
 
 import com.google.firebase.database.FirebaseDatabase
 import guideme.volunteers.domain.Volunteer

@@ -1,5 +1,10 @@
 package guideme.volunteers.ui.fragments.volunteer.details
 
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import com.squareup.picasso.Picasso
 import guideme.volunteers.R
 import guideme.volunteers.domain.Human
 import guideme.volunteers.domain.Person
@@ -10,13 +15,7 @@ import guideme.volunteers.helpers.dataservices.datasource.VolunteerDataSource
 import guideme.volunteers.ui.fragments.base.BaseFragment
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import guideme.volunteers.ui.fragments.volunteer.details.presenters.PersonPresenter
-import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import com.squareup.picasso.Picasso
-import guideme.volunteers.domain.Address
-import kotlinx.android.synthetic.main.admin_user_details.*
+import kotlinx.android.synthetic.main.person_details_fragment.*
 
 class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
     private val usersDataSource: UserDataSource?
@@ -26,8 +25,7 @@ class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
     }
 
     init {
-        val container = Container.dataSourceContainer
-        configuration = FragmentConfiguration.withLayout(R.layout.admin_user_details).showBackArrow().create()
+        configuration = FragmentConfiguration.withLayout(R.layout.person_details_fragment).showBackArrow().create()
         usersDataSource = Container.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
         val volunteersDataSource = Container.dataSourceContainer.getDataSource(VolunteerDataSource.ID) as VolunteerDataSource?
         presenter = PersonPresenter(
@@ -98,17 +96,17 @@ class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
         presenter?.updatePerson(Person(
                 name = etName.text.toString(),
                 email = etEmail.text.toString(),
-                key = sourcePerson?.key?:"",
-                privilege = sourcePerson?.privilege?:Privilege.USER,
+                key = sourcePerson?.key ?: "",
+                privilege = sourcePerson?.privilege ?: Privilege.USER,
                 description = etDescription.text.toString(),
                 addresses = emptyMap(),
-                avatarImageUri = sourcePerson?.avatarImageUri?:""))
+                avatarImageUri = sourcePerson?.avatarImageUri ?: ""))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId){
-            R.id.action_check ->{
-               return true
+        when (item?.itemId) {
+            R.id.action_check -> {
+                return true
             }
         }
         return false

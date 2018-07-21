@@ -35,12 +35,6 @@ class EmptyDatabase : Database {
     override fun removeListener(databaseListener: IDatabaseListener) {
     }
 
-    override fun getUser(name: String): Observable<User> {
-        return Observable.create { emitter ->
-            emitter.onComplete()
-        }
-    }
-
     override fun init() {
     }
 

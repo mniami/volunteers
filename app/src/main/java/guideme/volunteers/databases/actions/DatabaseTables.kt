@@ -1,4 +1,4 @@
-package guideme.volunteers.helpers.databases.actions
+package guideme.volunteers.databases.actions
 
 object DatabaseTables {
     val VOLUNTEERS = "volunteers"

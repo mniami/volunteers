@@ -8,7 +8,6 @@ import android.content.Context
 import kotlinx.android.synthetic.main.settings_fragment.*
 
 class SettingsFragment : BaseFragment<SettingsPresenter>(), ISettingsFragment {
-
     init {
         presenter = SettingsPresenter(
                 Container.appVersionProvider,
@@ -19,14 +18,5 @@ class SettingsFragment : BaseFragment<SettingsPresenter>(), ISettingsFragment {
                 .title(R.string.action_settings)
                 .showBackArrow()
                 .create()
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        presenter?.mainView = mainActivity
-    }
-
-    override fun setAppVersion(appVersion: String) {
-        tvAppVersion.text = appVersion
     }
 }

@@ -1,4 +1,4 @@
-package guideme.volunteers.helpers.authentication
+package guideme.volunteers.auth
 
 import com.facebook.login.LoginResult
 

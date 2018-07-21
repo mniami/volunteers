@@ -7,11 +7,11 @@ import guideme.volunteers.auth.SignInAuthResult
 import guideme.volunteers.eventbus.EventBusContainer
 import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.ServicesImpl
-import guideme.volunteers.helpers.authentication.FacebookAuthentication
+import guideme.volunteers.auth.FacebookAuthentication
 import guideme.volunteers.helpers.cache.AndroidLocalDataCache
 import guideme.volunteers.helpers.content.AndroidResourceManager
-import guideme.volunteers.helpers.databases.FirebaseDatabaseImpl
-import guideme.volunteers.helpers.databases.MockDatabaseImpl
+import guideme.volunteers.databases.FirebaseDatabaseImpl
+import guideme.volunteers.databases.MockDatabaseImpl
 import guideme.volunteers.helpers.dataservices.datasource.*
 import guideme.volunteers.log.Logger
 import guideme.volunteers.ui.activities.main.fragments.FragmentChangerImpl

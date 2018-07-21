@@ -30,8 +30,9 @@ data class Person(
         val name: String = "",
         val surname: String = "",
         val avatarImageUri: String = "",
-        val shortDescription: String = "",
+        val personalityDescription: String = "",
         val description: String = "",
+        val shortDescription: String = "",
         @Required
         val email: String = "",
         val skills: Skills = Skills(),

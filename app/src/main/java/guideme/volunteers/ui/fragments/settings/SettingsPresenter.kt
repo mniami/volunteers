@@ -16,7 +16,10 @@ class SettingsPresenter(val appVersionProvider: AppVersionProvider,
             mainView.goBack()
             true
         }
-        view?.setAppVersion(appVersionProvider.getAppVersion())
+    }
+
+    fun getAppVersion() : String {
+        return appVersionProvider.getAppVersion()
     }
 
     override fun onPause() {

@@ -1,4 +1,4 @@
-package guideme.volunteers.helpers.databases
+package guideme.volunteers.databases
 
 import guideme.volunteers.helpers.dataservices.databases.DbErrorException
 import com.google.firebase.database.DatabaseError

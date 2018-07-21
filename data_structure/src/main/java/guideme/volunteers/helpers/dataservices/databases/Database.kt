@@ -9,7 +9,6 @@ interface Database {
     fun getCurrentUser(): Single<User>
     fun addListener(databaseListener: IDatabaseListener)
     fun removeListener(databaseListener: IDatabaseListener)
-    fun getUser(name: String): Observable<User>
     fun getVolunteers(): Observable<Volunteer>
     fun init()
     fun signOut()

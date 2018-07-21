@@ -46,8 +46,8 @@ class PersonPresenter(var human: Human? = null,
         }
     }
 
-    private fun <T : Human> handleUpdate(observable: Single<T>?) {
-        observable?.subscribeBy(
+    private fun <T : Human> handleUpdate(updateResult: Single<T>?) {
+        updateResult?.subscribeBy(
                 onSuccess = {
                     human = it
                     mainActivity?.goBack()

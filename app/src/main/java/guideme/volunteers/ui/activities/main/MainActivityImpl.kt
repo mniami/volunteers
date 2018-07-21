@@ -14,7 +14,6 @@ import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.ui.activities.main.base.BaseMainActivityImpl
-import guideme.volunteers.ui.fragments.base.ToolbarConfiguration
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import guideme.volunteers.ui.tools.ToolbarConfigurationHandler
 import guideme.volunteers.ui.views.actionbar.ActionBarTool
@@ -29,7 +28,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
     private var presenter: MainPresenter? = null
     private val fragmentChanger = Container.fragmentChanger
     private val toolbarConfigurationHandler = ToolbarConfigurationHandler()
-    private val configuration : FragmentConfiguration = FragmentConfiguration
+    private val configuration: FragmentConfiguration = FragmentConfiguration
             .withTitle(R.string.volunteers_title)
             .noArrow()
             .create()
@@ -47,17 +46,19 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
         super.onCreate(savedInstanceState)
 
-        Container.googleAuth.init(this)
+        if (savedInstanceState == null) {
+            Container.googleAuth.init(this)
 
-        setContentView(R.layout.activity_main)
+            setContentView(R.layout.activity_main)
 
-        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(myToolbar)
+            val myToolbar = findViewById<Toolbar>(R.id.toolbar)
+            setSupportActionBar(myToolbar)
 
-        if (presenter == null) {
-            presenter = MainPresenter(this, Container.googleAuth, Container.database, this)
+            if (presenter == null) {
+                presenter = MainPresenter(this, Container.googleAuth, Container.database, this)
+            }
+            presenter?.onCreate()
         }
-        presenter?.onCreate()
     }
 
     override fun onStart() {

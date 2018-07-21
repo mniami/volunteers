@@ -67,7 +67,7 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
 
             Picasso.with(context).load(imageUrl).into(ivImage)
 
-            tvShortDescription?.text = v.person.shortDescription
+            tvShortDescription?.text = v.person.personalityDescription
             tvDescription?.text = v.person.description
 
             val userDataSource = Container.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?

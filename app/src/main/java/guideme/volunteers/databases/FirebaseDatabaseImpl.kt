@@ -1,10 +1,10 @@
-package guideme.volunteers.helpers.databases
+package guideme.volunteers.databases
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import guideme.volunteers.databases.actions.*
 import guideme.volunteers.domain.User
 import guideme.volunteers.domain.Volunteer
-import guideme.volunteers.helpers.databases.actions.*
 import guideme.volunteers.helpers.dataservices.databases.Database
 import guideme.volunteers.helpers.dataservices.databases.IDatabaseListener
 import guideme.volunteers.helpers.dataservices.errors.DatabaseIllegalStateException
@@ -17,7 +17,7 @@ class FirebaseDatabaseImpl(private val timeout: Long = 10000) : Database {
     private var databaseListener: IDatabaseListener? = null
     private val firebaseDb: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var firebaseAuth: FirebaseAuth? = null
-    private val getVolunteersAction = GetVolunteersAction(firebaseDb, timeout)
+    private val getVolunteersAction = GetVolunteers(firebaseDb, timeout)
     private val setUserAction = AddUser(firebaseDb)
 
     override fun init() {
@@ -51,25 +51,13 @@ class FirebaseDatabaseImpl(private val timeout: Long = 10000) : Database {
         this.databaseListener = databaseListener
     }
 
-    override fun getUser(name: String): Observable<User> {
-        return Observable.error { NotImplementedError() }
-    }
-
     override fun setUser(user: User): Single<User> {
         return Single.create { emitter ->
             setUserAction.update(user, emitter)
         }
     }
 
-    override fun getVolunteers(): Observable<Volunteer> {
-        return getVolunteersAction.getVolunteers()
-    }
-
-    override fun updateVolunteer(volunteer: Volunteer): Single<Volunteer> {
-        return AddVolunteer(volunteer).execute(firebaseDb)
-    }
-
-    override fun deleteVolunteer(volunteer: Volunteer): Single<Volunteer> {
-        return DeleteVolunteer(volunteer).execute(firebaseDb)
-    }
+    override fun getVolunteers(): Observable<Volunteer> = getVolunteersAction.getVolunteers()
+    override fun updateVolunteer(volunteer: Volunteer): Single<Volunteer> = AddVolunteer(volunteer).execute(firebaseDb)
+    override fun deleteVolunteer(volunteer: Volunteer): Single<Volunteer> = DeleteVolunteer(volunteer).execute(firebaseDb)
 }

@@ -2,12 +2,6 @@ package guideme.volunteers.ui.activities.main
 
 import android.support.v4.app.FragmentActivity
 import guideme.volunteers.auth.GoogleAuth
-import guideme.volunteers.domain.Person
-import guideme.volunteers.domain.Privilege
-import guideme.volunteers.domain.Volunteer
-import guideme.volunteers.domain.VolunteerType
-import guideme.volunteers.helpers.Container
-import guideme.volunteers.helpers.databases.actions.AddVolunteer
 import guideme.volunteers.helpers.dataservices.databases.Database
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.helpers.dataservices.errors.ErrorType

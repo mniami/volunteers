@@ -1,4 +1,4 @@
-package guideme.volunteers.helpers.databases
+package guideme.volunteers.databases
 
 import guideme.volunteers.domain.Action
 import guideme.volunteers.domain.User
@@ -37,8 +37,6 @@ class MockDatabaseImpl : Database {
 
     override fun removeListener(databaseListener: IDatabaseListener) {
     }
-
-    override fun getUser(name: String): Observable<User> = MockUserDataSource().data.observable
 
     override fun getVolunteers(): Observable<Volunteer> = MockVolunteersDataSource().data.observable
 

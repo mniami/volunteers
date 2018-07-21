@@ -25,7 +25,7 @@ class VolunteerGenericItemMap(val fragmentChanger: FragmentChangerImpl) : Generi
                 obs.subscribeBy(
                         onNext = { volunteer ->
                             volunteer.person.let {
-                                outer.onNext(GenericItemImpl(it.name + " " + it.surname, it.shortDescription, it.avatarImageUri, volunteer))
+                                outer.onNext(GenericItemImpl(it.name + " " + it.surname, it.personalityDescription, it.avatarImageUri, volunteer))
                             }
                         },
                         onComplete = {

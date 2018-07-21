@@ -1,17 +1,16 @@
 package guideme.volunteers.ui.fragments.volunteer.details
 
+import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import guideme.volunteers.R
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.ui.fragments.base.BaseFragment
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import guideme.volunteers.ui.fragments.volunteer.details.project.ProjectListAdapter
-import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.view.View
 import kotlinx.android.synthetic.main.volunteer_details_projects.*
 
 class VolunteerProjectListFragment : BaseFragment<VolunteerProjectListPresenter>(), IVolunteerProjectListFragment {
-
     init {
         presenter = VolunteerProjectListPresenter(this)
         configuration = FragmentConfiguration.withLayout(R.layout.volunteer_details_projects).showBackArrow().create()

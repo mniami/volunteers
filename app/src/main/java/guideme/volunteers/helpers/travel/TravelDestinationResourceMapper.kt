@@ -1,4 +1,4 @@
-package guideme.volunteers.actions
+package guideme.volunteers.helpers.travel
 
 import guideme.volunteers.domain.Level
 import guideme.volunteers.domain.TravelDestination

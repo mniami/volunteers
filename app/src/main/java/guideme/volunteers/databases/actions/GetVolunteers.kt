@@ -1,4 +1,4 @@
-package guideme.volunteers.helpers.databases.actions
+package guideme.volunteers.databases.actions
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -10,7 +10,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import java.util.concurrent.TimeUnit
 
-class GetVolunteersAction(private val database: FirebaseDatabase, private val timeout: Long) {
+class GetVolunteers(private val database: FirebaseDatabase, private val timeout: Long) {
     private val log = createLog(this)
 
     fun getVolunteers(): Observable<Volunteer> {

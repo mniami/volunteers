@@ -1,4 +1,4 @@
-package guideme.volunteers.helpers.databases.actions
+package guideme.volunteers.databases.actions
 
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -6,7 +6,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import guideme.volunteers.domain.User
 import guideme.volunteers.helpers.dataservices.errors.ActionCanceledException
-import guideme.volunteers.helpers.dataservices.errors.ElementNotFoundException
 import guideme.volunteers.log.createLog
 import io.reactivex.Single
 import io.reactivex.SingleEmitter

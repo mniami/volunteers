@@ -2,7 +2,7 @@ package guideme.volunteers.helpers
 
 import guideme.volunteers.auth.*
 import guideme.volunteers.eventbus.EventBusContainer
-import guideme.volunteers.helpers.authentication.FacebookAuthentication
+import guideme.volunteers.auth.FacebookAuthentication
 import guideme.volunteers.helpers.cache.EmptyLocalDataCache
 import guideme.volunteers.helpers.cache.LocalDataCache
 import guideme.volunteers.helpers.content.EmptyResourceManager
