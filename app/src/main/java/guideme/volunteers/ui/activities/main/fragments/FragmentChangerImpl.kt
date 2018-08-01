@@ -14,7 +14,7 @@ import guideme.volunteers.ui.fragments.ErrorFragmentImpl
 import guideme.volunteers.ui.fragments.settings.AuthenticationFragmentImpl
 import guideme.volunteers.ui.fragments.settings.SettingsFragment
 import guideme.volunteers.ui.fragments.volunteer.VolunteersFragmentFactory
-import guideme.volunteers.ui.fragments.volunteer.details.PersonDetailsFragment
+import guideme.volunteers.ui.fragments.volunteer.details.PersonFormFragment
 import guideme.volunteers.ui.fragments.volunteer.details.project.ProjectDetailsFragment
 import guideme.volunteers.ui.fragments.volunteer.details.users.VolunteerDetailsFragment
 
@@ -67,9 +67,9 @@ class FragmentChangerImpl(override var supportFragmentManager: FragmentManager? 
 
     override fun openEditUserDetails(volunteer: Volunteer) {
         val bundle = Bundle()
-        bundle.putSerializable(PersonDetailsFragment.HUMAN_ARG, volunteer)
+        bundle.putSerializable(PersonFormFragment.HUMAN_ARG, volunteer)
 
-        val fragment = PersonDetailsFragment()
+        val fragment = PersonFormFragment()
         fragment.arguments = bundle
 
         changeFragment(fragment, FragmentNames.EDIT_PERSON)

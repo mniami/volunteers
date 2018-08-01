@@ -49,6 +49,7 @@ class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (G
             val imageView = itemView.findViewById<ImageView>(R.id.image)
 
             titleView.text = item?.title
+            subtitleView.text = item?.subTitle
 
             titleView.tag = item
             subtitleView.tag = item

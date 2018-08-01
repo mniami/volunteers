@@ -17,7 +17,7 @@ import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import guideme.volunteers.ui.fragments.volunteer.details.presenters.PersonPresenter
 import kotlinx.android.synthetic.main.person_details_fragment.*
 
-class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
+class PersonFormFragment : BaseFragment<PersonPresenter>() {
     private val usersDataSource: UserDataSource?
 
     companion object {
@@ -64,6 +64,8 @@ class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
             }
             etName?.setText(it.name)
             etEmail?.setText(it.email)
+            etPersonalityDescription?.setText(it.personalityDescription)
+            etShortDescription?.setText(it.shortDescription)
 
             val addressEntry = it.addresses.entries.firstOrNull()
             if (addressEntry != null) {
@@ -98,6 +100,8 @@ class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
                 email = etEmail.text.toString(),
                 key = sourcePerson?.key ?: "",
                 privilege = sourcePerson?.privilege ?: Privilege.USER,
+                shortDescription = etShortDescription.text.toString(),
+                personalityDescription = etPersonalityDescription.text.toString(),
                 description = etDescription.text.toString(),
                 addresses = emptyMap(),
                 avatarImageUri = sourcePerson?.avatarImageUri ?: ""))
@@ -115,7 +119,6 @@ class PersonDetailsFragment : BaseFragment<PersonPresenter>() {
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         presenter?.let {
-            // TODO should be cloned, do this after changed Person to data classes
             it.human = args?.get(HUMAN_ARG) as Human?
         }
     }

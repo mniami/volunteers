@@ -12,10 +12,23 @@ import java.util.concurrent.TimeUnit
 
 class GetVolunteers(private val database: FirebaseDatabase, private val timeout: Long) {
     private val log = createLog(this)
+    private var data: List<Volunteer> = ArrayList<Volunteer>()
+        @Synchronized get() {
+            return field
+        }
+        @Synchronized set(value) {
+            field = value
+        }
 
     fun getVolunteers(): Observable<Volunteer> {
         val obs = Observable.create<Volunteer> { emitter ->
-            loadData(emitter)
+            if (data.isEmpty()) {
+                loadData(emitter)
+            }
+            else {
+                data.forEach { emitter.onNext(it) }
+                emitter.onComplete()
+            }
         }
         return obs.timeout(timeout, TimeUnit.MILLISECONDS)
     }
@@ -25,12 +38,12 @@ class GetVolunteers(private val database: FirebaseDatabase, private val timeout:
         val eventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 reportLoadedData(emitter, dataSnapshot)
-                ref.removeEventListener(this)
+                //ref.removeEventListener(this)
                 emitter.onComplete()
             }
 
             override fun onCancelled(var1: DatabaseError) {
-                ref.removeEventListener(this)
+                //ref.removeEventListener(this)
                 emitter.onComplete()
             }
         }
@@ -42,13 +55,16 @@ class GetVolunteers(private val database: FirebaseDatabase, private val timeout:
         log.d {
             "Volunteers count: ${dataSnapshot.children.count()}"
         }
+        val newList = ArrayList<Volunteer>()
         dataSnapshot.children
                 .forEach {
                     val volunteer = it.getValue(Volunteer::class.java)
                     if (volunteer != null) {
+                        newList.add(volunteer)
                         emitter.onNext(volunteer)
                     }
                 }
+        data = newList
     }
 }
 

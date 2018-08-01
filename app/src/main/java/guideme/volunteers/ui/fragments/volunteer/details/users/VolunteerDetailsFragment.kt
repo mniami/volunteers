@@ -40,7 +40,21 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
 
     override fun onResume() {
         super.onResume()
-        updateView()
+
+        val volunteer = presenter?.volunteer
+        if (volunteer == null){
+            return
+        }
+        Container.database.getVolunteers()
+                .filter { it -> it.id == volunteer.id }
+                .subscribeBy (
+                        onNext = {
+                            presenter?.volunteer = it
+                        },
+                        onComplete = {
+                            updateView()
+                        }
+                )
     }
 
     private fun updateView() {

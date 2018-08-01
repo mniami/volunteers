@@ -158,6 +158,21 @@
                             android:inputType="textShortMessage"
                             android:text=""/>
 
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:labelFor="@+id/etShortDescription"
+                            android:text="Short description"/>
+
+                        <EditText
+                            android:id="@+id/etShortDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textShortMessage"
+                            android:text=""/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
