@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
+import guideme.volunteers.ui.utils.CropSquareTransformation
 import kotlinx.android.synthetic.main.volunteer_details_fragment.*
 
 class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (GenericItem<*>?) -> Unit) : RecyclerView.Adapter<GenericListAdapter.ViewHolder>() {
@@ -68,7 +69,7 @@ class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (G
             else {
                 imageUrl = "http://style.anu.edu.au/_anu/4/images/placeholders/person.png"
             }
-            Picasso.with(itemView.context).load(imageUrl).into(imageView)
+            Picasso.with(itemView.context).load(imageUrl).transform(CropSquareTransformation()).into(imageView)
         }
 
         fun onClick(view: View) {
