@@ -14,10 +14,8 @@ class VolunteerDataSourceImpl(private val database: Database) : VolunteerDataSou
     override val id: DataSourceId
         get() = VolunteerDataSource.ID
 
-    override val data: ObservableData<Volunteer>
-        get() {
-            return ObservableDataImpl(database.getVolunteers())
-        }
+    override val item: ObservableData<Volunteer>
+        get() = ObservableDataImpl(database.getVolunteers())
 
     override fun update(volunteer: Volunteer): Single<Volunteer> =
             database.updateVolunteer(volunteer)

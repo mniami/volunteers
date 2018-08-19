@@ -15,12 +15,12 @@ class MockUserDataSource(override val id: DataSourceId = KeyDataSourceId("curren
         log.d { "update user called ${user.person.name}" }
         return Single.create {
             user.person.activity.actions.add(Action("User updated"))
-            data.observable.publish()
+            item.observable.publish()
             it.onSuccess(user)
         }
     }
 
-    override val data: ObservableData<User> = ObservableDataImpl(Observable.create {
+    override val item: ObservableData<User> = ObservableDataImpl(Observable.create {
         log.d { "retrieved user data ${user.person.name}" }
         it.onNext(user)
         it.onComplete()

@@ -12,16 +12,10 @@ interface UserDataSource : ModifiableDataSource<User> {
 }
 
 class UserDataSourceImpl(private val database: Database, private val auth: Auth) : UserDataSource {
-    override val data: ObservableData<User>
-        get() {
-            return ObservableDataImpl(database.getCurrentUser().toObservable())
-        }
+    override val item: ObservableData<User>
+        get() = ObservableDataImpl(database.getCurrentUser().toObservable())
     override val id: DataSourceId
-        get() {
-            return UserDataSource.ID
-        }
+        get() = UserDataSource.ID
 
-    override fun update(user: User): Single<User> {
-        return database.setUser(user)
-    }
+    override fun update(user: User): Single<User> = database.setUser(user)
 }

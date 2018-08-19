@@ -22,7 +22,7 @@ class MockVolunteersDataSource : VolunteerDataSource {
                 volunteers.add(volunteer)
                 it.onSuccess(volunteer)
             }
-            data.observable.publish()
+            item.observable.publish()
         }
     }
 
@@ -30,7 +30,7 @@ class MockVolunteersDataSource : VolunteerDataSource {
         var volunteers: MutableList<Volunteer> = mutableListOf()
     }
 
-    override val data: ObservableData<Volunteer> = ObservableDataImpl(Observable.create {
+    override val item: ObservableData<Volunteer> = ObservableDataImpl(Observable.create {
         val iterator = volunteers.iterator()
         while (iterator.hasNext()) {
             it.onNext(iterator.next())

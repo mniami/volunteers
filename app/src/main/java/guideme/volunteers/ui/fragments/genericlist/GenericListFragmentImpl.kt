@@ -129,7 +129,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
             val lEventClickId = eventClickId
             if (item != null && lEventClickId != null) {
                 val eventBus = eventBusContainer.get<GenericItemClickEvent>(lEventClickId)
-                eventBus.post(GenericItemClickEvent(item))
+                eventBus?.post(GenericItemClickEvent(item))
             }
         }
         recyclerView?.invalidate()
@@ -155,10 +155,10 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                     val mapperInstance = mapperInstanceProvider.get<GenericItemMap>(mapperClassName)
                     if (mapperInstance != null) {
                         itemMap = mapperInstance
-                        presenter?.items = itemMap.map(dataSource.data.observable)
+                        presenter?.items = itemMap.map(dataSource.item.observable)
                     }
                 } else {
-                    val items = dataSource.data.observable as Observable<GenericItem<*>>?
+                    val items = dataSource.item.observable as Observable<GenericItem<*>>?
                     if (items != null) {
                         presenter?.items = items
                     }

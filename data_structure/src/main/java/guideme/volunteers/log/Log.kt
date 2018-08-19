@@ -21,7 +21,7 @@ class Log(private val category: String?,
         }
     }
 
-    open fun log(message: String) {
+    fun log(message: String) {
         Logger.instance.log(logLevel, category, message)
     }
 }

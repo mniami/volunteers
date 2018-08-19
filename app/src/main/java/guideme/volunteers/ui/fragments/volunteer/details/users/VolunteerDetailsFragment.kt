@@ -86,7 +86,7 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
 
             val userDataSource = Container.dataSourceContainer.getDataSource(UserDataSource.ID) as UserDataSource?
             userDataSource?.let {
-                it.data.observable.subscribeBy(onNext = { currentUser ->
+                it.item.observable.subscribeBy(onNext = { currentUser ->
                     val visible = currentUser.person.privilege == Privilege.ADMIN
                     actionEdit?.isVisible = visible
                     actionDelete?.isVisible = visible
@@ -141,17 +141,17 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
 
         val v = presenter?.volunteer
         if (v == null) {
-            return;
+            return
         }
 
         actionDelete?.setOnMenuItemClickListener {
             Container.database.deleteVolunteer(v)
                     .subscribeBy(
                             onSuccess = {
-                                mainActivity?.goBack()
+                                mainActivity.goBack()
                             },
                             onError = {
-                                mainActivity?.showError(ErrorMessage(ErrorType.DELETE_FAILED, "Delete Volunteer failed"))
+                                mainActivity.showError(ErrorMessage(ErrorType.DELETE_FAILED, "Delete Volunteer failed"))
                             })
 
             return@setOnMenuItemClickListener true

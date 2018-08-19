@@ -30,7 +30,7 @@ class MockDatabaseImpl : Database {
         }
     }
 
-    override fun getCurrentUser(): Single<User> = MockUserDataSource().data.observable.firstOrError()
+    override fun getCurrentUser(): Single<User> = MockUserDataSource().item.observable.firstOrError()
 
     override fun addListener(databaseListener: IDatabaseListener) {
     }
@@ -38,7 +38,7 @@ class MockDatabaseImpl : Database {
     override fun removeListener(databaseListener: IDatabaseListener) {
     }
 
-    override fun getVolunteers(): Observable<Volunteer> = MockVolunteersDataSource().data.observable
+    override fun getVolunteers(): Observable<Volunteer> = MockVolunteersDataSource().item.observable
 
     override fun init() {
     }
@@ -47,6 +47,6 @@ class MockDatabaseImpl : Database {
     }
 
     override fun setUser(user: User): Single<User> {
-        return MockUserDataSource().data.observable.firstOrError()
+        return MockUserDataSource().item.observable.firstOrError()
     }
 }
