@@ -11,8 +11,8 @@ class EventBusContainer {
 
     fun <T> get(key: Serializable): EventBus<T>? {
         return if (map.containsKey(key)) {
-            val eventBus5 = map[key] as EventBus<*>
-            return eventBus5 as EventBus<T>
+            @Suppress("UNCHECKED_CAST")
+            map[key] as EventBus<T>
         }
         else {
             val eventBus = EventBus<T>()

@@ -8,19 +8,19 @@ import io.reactivex.Single
 class MockVolunteersDataSource : VolunteerDataSource {
     private val log = createLog(this)
 
-    override fun update(volunteer: Volunteer): Single<Volunteer> {
-        return Single.create {
-            val index = volunteers.indexOfFirst { it.id == volunteer.id }
+    override fun update(data: Volunteer): Single<Volunteer> {
+        return Single.create { emitter ->
+            val index = volunteers.indexOfFirst { it.id == data.id }
             if (index >= 0) {
-                volunteers[index] = volunteer
-                log.d { "update volunteer '${volunteer.person.name}'" }
+                volunteers[index] = data
+                log.d { "update volunteer '${data.person.name}'" }
 
-                it.onSuccess(volunteer)
+                emitter.onSuccess(data)
             } else {
-                log.d { "add new volunteer '${volunteer.person.name}'" }
+                log.d { "add new volunteer '${data.person.name}'" }
 
-                volunteers.add(volunteer)
-                it.onSuccess(volunteer)
+                volunteers.add(data)
+                emitter.onSuccess(data)
             }
             item.observable.publish()
         }

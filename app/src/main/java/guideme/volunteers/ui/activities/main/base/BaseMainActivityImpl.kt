@@ -1,17 +1,19 @@
 package guideme.volunteers.ui.activities.main.base
 
-import guideme.volunteers.ui.activities.main.MainActivityListener
-import guideme.volunteers.ui.views.actionbar.ActionBarTool
-import guideme.volunteers.ui.views.actionbar.ActionBarToolImpl
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import guideme.volunteers.ui.activities.main.MainActivityListener
+import guideme.volunteers.ui.views.actionbar.ActionBarTool
+import guideme.volunteers.ui.views.actionbar.ActionBarToolImpl
 import java.util.*
 
+@SuppressWarnings("Registered")
 open class BaseMainActivityImpl : BaseMainActivity, AppCompatActivity() {
     companion object {
-        val HOME_FRAGMENT_STACK_NAME = "home"
+        const val HOME_FRAGMENT_STACK_NAME = "home"
     }
+
     private var listeners : MutableList<MainActivityListener> = LinkedList()
 
     override fun openHome() {
@@ -25,7 +27,6 @@ open class BaseMainActivityImpl : BaseMainActivity, AppCompatActivity() {
     override fun removeListener(listener: MainActivityListener) {
         listeners.remove(listener)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -49,6 +50,7 @@ open class BaseMainActivityImpl : BaseMainActivity, AppCompatActivity() {
             }
         }
     }
+
     override fun goBack() {
         supportFragmentManager.popBackStack()
     }
@@ -68,6 +70,12 @@ open class BaseMainActivityImpl : BaseMainActivity, AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onDestroy() {
+        val actionBar = actionBarTool as ActionBarToolImpl
+        actionBar.mainActivityImpl = null
+        super.onDestroy()
     }
 
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
