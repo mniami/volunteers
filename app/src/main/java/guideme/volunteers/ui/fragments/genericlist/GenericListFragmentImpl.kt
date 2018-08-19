@@ -1,13 +1,5 @@
 package guideme.volunteers.ui.fragments.genericlist
 
-import guideme.volunteers.R
-import guideme.volunteers.domain.User
-import guideme.volunteers.helpers.Container
-import guideme.volunteers.helpers.dataservices.datasource.DataSourceId
-import guideme.volunteers.helpers.dataservices.datasource.ObservableDataSource
-import guideme.volunteers.ui.fragments.base.BaseFragment
-import guideme.volunteers.ui.fragments.base.FragmentConfiguration
-import guideme.volunteers.ui.fragments.base.ToolbarConfiguration
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
@@ -15,9 +7,16 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import guideme.volunteers.R
+import guideme.volunteers.domain.User
+import guideme.volunteers.helpers.Container
+import guideme.volunteers.helpers.dataservices.datasource.DataSourceId
+import guideme.volunteers.helpers.dataservices.datasource.ObservableDataSource
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.helpers.dataservices.errors.ErrorType
+import guideme.volunteers.ui.fragments.base.BaseFragment
+import guideme.volunteers.ui.fragments.base.FragmentConfiguration
+import guideme.volunteers.ui.fragments.base.ToolbarConfiguration
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
@@ -66,7 +65,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                 .subscribeBy(onSuccess = { user ->
                     currentUser = user
 
-                    actionButton.visibility = View.VISIBLE
+                    addVolunteerButton?.visibility = View.VISIBLE
                     if (recyclerView?.adapter == null) {
                         refreshAdapter()
                     }
@@ -80,9 +79,11 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
             rv.setHasFixedSize(true)
             rv.layoutManager = LinearLayoutManager(context)
         }
-        actionButton?.setOnClickListener {
+
+        addVolunteerButton?.setOnClickListener {
             itemMap.addItem()
         }
+
         swipeRefresh?.setOnRefreshListener {
             refreshAdapter()
         }
@@ -101,9 +102,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                 return true
             }
 
-            override fun onQueryTextSubmit(text: String?): Boolean {
-                return false
-            }
+            override fun onQueryTextSubmit(text: String?): Boolean = false
         })
     }
 
@@ -115,7 +114,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                             genericItems.add(it)
                         },
                         onError = {
-                            mainActivity?.showError(ErrorMessage(ErrorType.ILLEGAL_STATE_EXCEPTION, it.message))
+                            mainActivity.showError(ErrorMessage(ErrorType.ILLEGAL_STATE_EXCEPTION, it.message))
                         },
                         onComplete = {
                             val gi = genericItems
@@ -148,7 +147,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
             this.configuration.toolbar.showBackArrow = toolbarConfiguration.showBackArrow
         }
 
-        if (dataSourceId is DataSourceId && mapperClassName is String) {
+        if (dataSourceId is DataSourceId && mapperClassName is String?) {
             val dataSource = dataSourceContainer.getDataSource(dataSourceId)
 
             if (dataSource != null && dataSource.isObservableDataSource() && dataSource is ObservableDataSource<*>) {

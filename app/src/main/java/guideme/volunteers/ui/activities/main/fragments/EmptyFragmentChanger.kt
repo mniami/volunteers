@@ -1,10 +1,11 @@
 package guideme.volunteers.ui.activities.main.fragments
 
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import guideme.volunteers.domain.Human
 import guideme.volunteers.domain.Project
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 
 class EmptyFragmentChanger(override var paused: Boolean = false,
                            override var supportFragmentManager: FragmentManager? = null) : FragmentChanger {
@@ -33,6 +34,6 @@ class EmptyFragmentChanger(override var paused: Boolean = false,
     override fun showVolunteer(volunteer: Volunteer) {
     }
 
-    override fun openEditUserDetails(volunteer: Volunteer) {
+    override fun openEditUserDetails(human: Human) {
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import guideme.volunteers.R
+import guideme.volunteers.domain.Human
 import guideme.volunteers.domain.Project
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.helpers.dataservices.datasource.DataSourceContainer
@@ -65,9 +66,9 @@ class FragmentChangerImpl(override var supportFragmentManager: FragmentManager? 
         changeFragment(volunteerDetailsFragment, FragmentNames.VOLUNTEER)
     }
 
-    override fun openEditUserDetails(volunteer: Volunteer) {
+    override fun openEditUserDetails(human: Human) {
         val bundle = Bundle()
-        bundle.putSerializable(PersonFormFragment.HUMAN_ARG, volunteer)
+        bundle.putSerializable(PersonFormFragment.HUMAN_ARG, human)
 
         val fragment = PersonFormFragment()
         fragment.arguments = bundle

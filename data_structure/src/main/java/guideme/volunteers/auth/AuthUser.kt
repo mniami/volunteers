@@ -6,11 +6,8 @@ class AuthUser (val name : String,
                 val id : String,
                 val idToken : String) {
     companion object {
-        fun createEmpty() : AuthUser {
-            return AuthUser("","","", "", "")
-        }
+        fun createEmpty(): AuthUser = AuthUser("", "", "", "", "")
     }
-    fun isEmpty() : Boolean {
-        return id.isEmpty()
-    }
+
+    fun isEmpty(): Boolean = idToken.isEmpty()
 }

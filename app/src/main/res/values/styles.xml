@@ -28,4 +28,10 @@
     <style name="DescriptionText">
 
     </style>
+
+    <style name="menu_labels_style">
+        <item name="android:background">@color/half_black</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:padding">4dp</item>
+    </style>
 </resources>

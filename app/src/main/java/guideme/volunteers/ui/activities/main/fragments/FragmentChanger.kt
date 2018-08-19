@@ -1,10 +1,11 @@
 package guideme.volunteers.ui.activities.main.fragments
 
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import guideme.volunteers.domain.Human
 import guideme.volunteers.domain.Project
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 
 interface FragmentChanger {
     var paused : Boolean
@@ -16,6 +17,6 @@ interface FragmentChanger {
     fun openHome()
     fun showProject(project: Project)
     fun showVolunteer(volunteer: Volunteer)
-    fun openEditUserDetails(volunteer: Volunteer)
+    fun openEditUserDetails(human: Human)
     fun showError(errorMessage: ErrorMessage)
 }

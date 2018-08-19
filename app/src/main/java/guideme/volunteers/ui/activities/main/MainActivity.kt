@@ -1,5 +1,6 @@
 package guideme.volunteers.ui.activities.main
 
+import guideme.volunteers.domain.Human
 import guideme.volunteers.domain.Project
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
@@ -12,6 +13,6 @@ interface MainActivity : BaseMainActivity {
     fun openAuthentication()
     fun showVolunteerList()
     fun showProject(project: Project)
-    fun openEditUserDetails(volunteer: Volunteer)
+    fun openEditUserDetails(human: Human)
     fun showError(errorMessage: ErrorMessage)
 }

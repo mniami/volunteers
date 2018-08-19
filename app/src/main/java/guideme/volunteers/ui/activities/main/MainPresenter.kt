@@ -3,8 +3,6 @@ package guideme.volunteers.ui.activities.main
 import android.support.v4.app.FragmentActivity
 import guideme.volunteers.auth.GoogleAuth
 import guideme.volunteers.helpers.dataservices.databases.Database
-import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
-import guideme.volunteers.helpers.dataservices.errors.ErrorType
 import io.reactivex.rxkotlin.subscribeBy
 
 internal class MainPresenter(
@@ -29,7 +27,7 @@ internal class MainPresenter(
                         mainView.showVolunteerList()
                     },
                     onError = {
-                        mainView.showError(ErrorMessage(ErrorType.AUTHENTICATION_FAILED, it.message))
+                        mainView.openAuthentication()
                     })
         }
     }

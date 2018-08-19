@@ -10,4 +10,6 @@
     <color name="shortDescriptionTextColor">#505050</color>
     <color name="pink">#e91e63</color>
     <color name="pink_pressed">#ec407a</color>
+    <color name="white_pressed">#FFFFFF</color>
+    <color name="half_black">#5A5A5A</color>
 </resources>

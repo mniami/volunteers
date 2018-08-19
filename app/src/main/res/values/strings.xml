@@ -107,4 +107,7 @@ proguardFiles(proGuardFileCollection)</pre></div>
     <string name="no_internet_connection_title">No internet connection</string>
     <string name="user_signed_in_menu_item">My account</string>
     <string name="authenticated_user_short_description">Email: %s</string>
+    <string name="edit">Edit</string>
+    <string name="remove">Remove</string>
+    <string name="add">Add</string>
 </resources>

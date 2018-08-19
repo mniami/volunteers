@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import guideme.volunteers.R
 import guideme.volunteers.auth.SignInAuthResult
+import guideme.volunteers.domain.Human
 import guideme.volunteers.domain.Project
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.helpers.Container
@@ -76,9 +77,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
         fragmentChanger.paused = true
     }
 
-    override fun getResourceText(id: Int): String {
-        return getString(id)
-    }
+    override fun getResourceText(id: Int): String = getString(id)
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
@@ -89,13 +88,9 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
         val searchView = searchItem?.actionView as SearchView?
 
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(text: String?): Boolean {
-                return false
-            }
+            override fun onQueryTextChange(text: String?): Boolean = false
 
-            override fun onQueryTextSubmit(text: String?): Boolean {
-                return true
-            }
+            override fun onQueryTextSubmit(text: String?): Boolean = true
         })
         refreshMenu()
         return true
@@ -134,13 +129,10 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
     override fun openHome() = fragmentChanger.openHome()
     override fun showProject(project: Project) = fragmentChanger.showProject(project)
     override fun showVolunteer(volunteer: Volunteer) = fragmentChanger.showVolunteer(volunteer)
-    override fun openEditUserDetails(volunteer: Volunteer) = fragmentChanger.openEditUserDetails(volunteer)
+    override fun openEditUserDetails(human: Human) = fragmentChanger.openEditUserDetails(human)
     override fun updateUserStatus(signInResult: SignInAuthResult) {}
     override fun showError(errorMessage: ErrorMessage) {
         val content = errorMessage.content ?: "Unexpected error occurred"
-
         Snackbar.make(activity_main, content, Snackbar.LENGTH_LONG).show()
     }
 }
-
-

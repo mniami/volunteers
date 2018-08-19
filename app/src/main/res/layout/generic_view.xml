@@ -23,22 +23,21 @@
                 android:id="@+id/tvAdminStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Selected 0"
                 android:textColor="@color/white"/>
 
             <Button
                 android:id="@+id/btRemove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Remove"/>
+                android:layout_gravity="end"
+                android:text="@string/remove"/>
 
             <Button
                 android:id="@+id/btEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:text="Add"/>
+                android:layout_gravity="end"
+                android:text="@string/add"/>
         </android.support.v7.widget.Toolbar>
 
         <android.support.v4.widget.SwipeRefreshLayout
@@ -51,21 +50,56 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="@dimen/_2sdp"
-                android:paddingTop="@dimen/_2sdp">
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingBottom="@dimen/_2sdp">
             </android.support.v7.widget.RecyclerView>
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/actionButton"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/actionMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:visibility="gone"
-        fab:fab_colorNormal="@color/pink"
-        fab:fab_colorPressed="@color/pink_pressed"
-        fab:fab_icon="@drawable/ic_fab_plus"/>
+        fab:fab_addButtonColorNormal="@color/pink"
+        fab:fab_addButtonColorPressed="@color/pink_pressed"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        fab:fab_addButtonSize="normal"
+        fab:fab_icon="@drawable/ic_fab_plus"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addNeedyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/half_black"
+            fab:fab_colorPressed="@color/half_black"
+            fab:fab_icon="@drawable/ic_fab_plus"
+            fab:fab_size="mini"
+            fab:fab_title="Add needy"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addGroupButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/half_black"
+            fab:fab_colorPressed="@color/half_black"
+            fab:fab_icon="@drawable/ic_fab_plus"
+            fab:fab_size="mini"
+            fab:fab_title="Add group"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addVolunteerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/half_black"
+            fab:fab_colorPressed="@color/half_black"
+            fab:fab_icon="@drawable/ic_fab_plus"
+            fab:fab_size="mini"
+            fab:fab_title="Add Volunteer"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </FrameLayout>
