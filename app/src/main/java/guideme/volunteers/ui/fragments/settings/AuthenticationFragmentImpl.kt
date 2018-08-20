@@ -14,12 +14,13 @@ import guideme.volunteers.helpers.dataservices.errors.ErrorType
 import guideme.volunteers.ui.fragments.base.BaseFragment
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import guideme.volunteers.ui.utils.CircleTransform
-import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.authentication_fragment.*
 
 class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), AuthenticationFragment {
     private var actionEdit: MenuItem? = null
     private var currentUser: User? = null
+    private var userLoader: Disposable? = null
 
     init {
         configuration = FragmentConfiguration.withLayout(R.layout.authentication_fragment)
@@ -32,6 +33,12 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        userLoader?.dispose()
+        userLoader = null
     }
 
     override fun onResume() {
@@ -58,20 +65,15 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
 
     private fun updateUi() {
         val authUser = Container.googleAuth.authResult.authUser
-        Container.database.getCurrentUser().subscribeBy(
-                onSuccess = {
-                    currentUser = it
-                    signedLayout.visibility = if (!authUser.isEmpty()) View.VISIBLE else View.GONE
-                    tvHeader.text = authUser.email
-                    tvShortDescription.text = it.person.email
 
-                    if (it.person.avatarImageUri.isNotBlank()) {
-                        Picasso.with(context).load(it.person.avatarImageUri).placeholder(R.mipmap.human_placeholder).transform(CircleTransform()).into(ivImage)
-                    }
-                },
-                onError = {
-                    mainActivity.showError(ErrorMessage(ErrorType.ILLEGAL_STATE_EXCEPTION, it.message))
-                }
-        )
+        signedLayout?.visibility = if (!authUser.isEmpty()) View.VISIBLE else View.GONE
+        unsignedLayout?.visibility = if (authUser.isEmpty()) View.VISIBLE else View.GONE
+
+        tvHeader.text = authUser.name
+        tvEmail.text = authUser.email
+
+        if (authUser.photoUrl.isNotBlank()) {
+            Picasso.with(context).load(authUser.photoUrl).placeholder(R.mipmap.human_placeholder).transform(CircleTransform()).into(ivImage)
+        }
     }
 }
