@@ -18,28 +18,23 @@ class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (G
             filteredList = list
         } else {
             filteredList = list.filter { item ->
-                if (item.title.contains(text, true) || item.subTitle.contains(text, true)) {
-                    return@filter true
-                }
-                return@filter false
+                item.title.contains(text, true) || item.subTitle.contains(text, true)
             }
         }
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericListAdapter.ViewHolder {
-        return GenericListAdapter.ViewHolder(LayoutInflater.from(parent?.context)
+        return GenericListAdapter.ViewHolder(LayoutInflater.from(parent.context)
                 .inflate(R.layout.generic_item, parent, false), onClickListener)
     }
 
     override fun onBindViewHolder(holder: GenericListAdapter.ViewHolder, position: Int) {
         val item = filteredList[position]
-        holder?.update(item)
+        holder.update(item)
     }
 
-    override fun getItemCount(): Int {
-        return filteredList.size
-    }
+    override fun getItemCount(): Int = filteredList.size
 
     class ViewHolder(itemView: View?, val onClickListener: (GenericItem<*>?) -> Unit) : RecyclerView.ViewHolder(itemView) {
         fun update(item: GenericItem<*>?) {
@@ -61,12 +56,10 @@ class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (G
             itemView.setOnClickListener(this::onClick)
 
             var imageUrl = ""
-            if (item?.imageUrl != null && item?.imageUrl.isNotEmpty()) {
-                imageUrl = item?.imageUrl
-            } else {
-                imageUrl = "http://style.anu.edu.au/_anu/4/images/placeholders/person.png"
+            if (item?.imageUrl != null && item.imageUrl.isNotEmpty()) {
+                imageUrl = item.imageUrl
             }
-            Picasso.with(itemView.context).load(imageUrl).transform(CircleTransform()).into(imageView)
+            Picasso.with(itemView.context).load(imageUrl).placeholder(R.mipmap.human_placeholder).transform(CircleTransform()).into(imageView)
         }
 
         fun onClick(view: View) {

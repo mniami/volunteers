@@ -1,18 +1,18 @@
 package guideme.volunteers.ui.fragments
 
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import guideme.volunteers.R
-import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.helpers.android.fromSerializable
+import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.helpers.dataservices.errors.ErrorType
 import guideme.volunteers.ui.activities.main.MainActivityListener
 import guideme.volunteers.ui.fragments.base.BaseFragment
+import guideme.volunteers.ui.fragments.base.BasicPresenter
 import guideme.volunteers.ui.fragments.base.BasicView
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
-import guideme.volunteers.ui.fragments.base.BasicPresenter
-import android.os.Bundle
-import android.text.Html
-import android.view.Menu
-import android.view.MenuInflater
+import guideme.volunteers.ui.utils.HtmlUtils
 import kotlinx.android.synthetic.main.error_fragment.*
 
 /**
@@ -77,11 +77,22 @@ class ErrorFragmentImpl : BaseFragment<BasicPresenter>(), BasicView {
     private fun handleErrorType(errorMessage: ErrorMessage) {
         when(errorMessage.errorType){
             ErrorType.NO_INTERNET_CONNECTION -> {
-                messageTextView.text = Html.fromHtml(getString(R.string.no_internet_connection_message))
+                messageTextView.text = HtmlUtils.fromHtml(getString(R.string.no_internet_connection_message))
                 mainActivity.actionBarTool.setTitle(getString(R.string.no_internet_connection_title))
 
                 val home = menu?.findItem(R.id.home)
                 home?.isVisible = false
+            }
+            ErrorType.AUTHENTICATION_FAILED -> {
+                messageTextView.text = HtmlUtils.fromHtml(getString(R.string.authentication_failed_message))
+                mainActivity.actionBarTool.setTitle(getString(R.string.error_title))
+            }
+            ErrorType.DELETE_FAILED -> {
+                messageTextView.text = HtmlUtils.fromHtml(getString(R.string.delete_failed_message))
+                mainActivity.actionBarTool.setTitle(getString(R.string.error_title))
+            }
+            ErrorType.ILLEGAL_STATE_EXCEPTION, ErrorType.UNKNOWN -> {
+
             }
         }
     }

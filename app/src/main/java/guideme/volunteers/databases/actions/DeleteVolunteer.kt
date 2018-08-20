@@ -14,7 +14,7 @@ class DeleteVolunteer(private val volunteer: Volunteer) {
     }
 
     private fun deleteVolunteer(database: FirebaseDatabase, emitter: SingleEmitter<Volunteer>) {
-        if (volunteer.id == null){
+        if (volunteer.id.isEmpty()) {
             emitter.onError(ElementNotFoundException(volunteer, "Volunteer without id cannot be removed"))
             return
         }

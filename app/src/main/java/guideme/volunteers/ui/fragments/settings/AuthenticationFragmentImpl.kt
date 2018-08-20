@@ -63,10 +63,10 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
                     currentUser = it
                     signedLayout.visibility = if (!authUser.isEmpty()) View.VISIBLE else View.GONE
                     tvHeader.text = authUser.email
-                    tvShortDescription.text = String.format(getString(R.string.authenticated_user_short_description), it.person.email)
+                    tvShortDescription.text = it.person.email
 
                     if (it.person.avatarImageUri.isNotBlank()) {
-                        Picasso.with(context).load(it.person.avatarImageUri).transform(CircleTransform()).into(ivImage)
+                        Picasso.with(context).load(it.person.avatarImageUri).placeholder(R.mipmap.human_placeholder).transform(CircleTransform()).into(ivImage)
                     }
                 },
                 onError = {

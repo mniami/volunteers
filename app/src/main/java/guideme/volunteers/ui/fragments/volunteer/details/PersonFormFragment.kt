@@ -60,7 +60,7 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
         }
         presenter?.human?.person?.let {
             if (it.avatarImageUri.isNotEmpty()) {
-                Picasso.with(context).load(it.avatarImageUri).into(imageView)
+                Picasso.with(context).load(it.avatarImageUri).placeholder(R.mipmap.human_placeholder).into(imageView)
             }
             etName?.setText(it.name)
             etEmail?.setText(it.email)

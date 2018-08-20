@@ -65,7 +65,7 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
         }
         presenter?.volunteer?.let { v ->
             var address = v.person.addresses.values.firstOrNull() ?: ""
-            var subHeader = "${v.person.email}\n${address}"
+            var subHeader = "${v.person.email}\n$address"
 
             actionBar.setTitle("${v.person.name} ${v.person.surname}")
             tvSubHeader?.text = subHeader
@@ -75,11 +75,8 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
             if (v.person.avatarImageUri.isNotEmpty()) {
                 imageUrl = v.person.avatarImageUri
             }
-            else {
-                imageUrl = "http://style.anu.edu.au/_anu/4/images/placeholders/person.png"
-            }
 
-            Picasso.with(context).load(imageUrl).into(ivImage)
+            Picasso.with(context).load(imageUrl).placeholder(R.mipmap.human_placeholder).into(ivImage)
 
             tvShortDescription?.text = v.person.personalityDescription
             tvDescription?.text = v.person.description

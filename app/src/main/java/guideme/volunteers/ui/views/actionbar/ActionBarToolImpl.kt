@@ -1,7 +1,7 @@
 package guideme.volunteers.ui.views.actionbar
 
 import guideme.volunteers.ui.activities.main.base.BaseMainActivityImpl
-import android.text.Html
+import guideme.volunteers.ui.utils.HtmlUtils
 
 internal class ActionBarToolImpl(var mainActivityImpl: BaseMainActivityImpl?) : ActionBarTool {
 
@@ -22,7 +22,7 @@ internal class ActionBarToolImpl(var mainActivityImpl: BaseMainActivityImpl?) : 
     }
 
     override fun setTitle(title: String) {
-        mainActivityImpl?.supportActionBar?.title = Html.fromHtml(title)
+        mainActivityImpl?.supportActionBar?.title = HtmlUtils.fromHtml(title)
     }
 
     override fun hideOptions() {

@@ -17,5 +17,5 @@ class UserDataSourceImpl(private val database: Database, private val auth: Auth)
     override val id: DataSourceId
         get() = UserDataSource.ID
 
-    override fun update(user: User): Single<User> = database.setUser(user)
+    override fun update(data: User): Single<User> = database.setUser(data)
 }

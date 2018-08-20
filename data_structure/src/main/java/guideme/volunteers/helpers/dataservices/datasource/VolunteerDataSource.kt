@@ -17,6 +17,6 @@ class VolunteerDataSourceImpl(private val database: Database) : VolunteerDataSou
     override val item: ObservableData<Volunteer>
         get() = ObservableDataImpl(database.getVolunteers())
 
-    override fun update(volunteer: Volunteer): Single<Volunteer> =
-            database.updateVolunteer(volunteer)
+    override fun update(data: Volunteer): Single<Volunteer> =
+            database.updateVolunteer(data)
 }

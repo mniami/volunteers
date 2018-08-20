@@ -11,12 +11,12 @@ import io.reactivex.Single
 class MockUserDataSource(override val id: DataSourceId = KeyDataSourceId("current.user.name")) : UserDataSource {
     private val log = createLog(this)
 
-    override fun update(user: User): Single<User> {
-        log.d { "update user called ${user.person.name}" }
+    override fun update(data: User): Single<User> {
+        log.d { "update user called ${data.person.name}" }
         return Single.create {
-            user.person.activity.actions.add(Action("User updated"))
+            data.person.activity.actions.add(Action("User updated"))
             item.observable.publish()
-            it.onSuccess(user)
+            it.onSuccess(data)
         }
     }
 
