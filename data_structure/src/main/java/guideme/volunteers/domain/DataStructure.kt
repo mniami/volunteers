@@ -54,9 +54,9 @@ enum class Scope {
     GLOBAL
 }
 
-data class ActionDate(val value: Long = 0)
-data class Action(val name: String = "", val date: ActionDate = ActionDate())
-data class Activity(val actions: MutableList<Action> = mutableListOf())
+data class ActionDate(val value: Long = 0) : Serializable
+data class Action(val name: String = "", val date: ActionDate = ActionDate()) : Serializable
+data class Activity(val actions: MutableList<Action> = mutableListOf()) : Serializable
 data class Skills(val stamina: Level = Level(),
                   val engagement: Level = Level(),
                   val humor: Level = Level(),
@@ -71,11 +71,11 @@ data class Skills(val stamina: Level = Level(),
                   val laziness: Level = Level(),
                   val leading: Level = Level(),
                   val introvert: Level = Level(),
-                  val traveling: Level = Level())
+                  val traveling: Level = Level()) : Serializable
 
-data class Group(val name: String = "", val humans: MutableList<Human> = mutableListOf())
+data class Group(val name: String = "", val humans: MutableList<Human> = mutableListOf()) : Serializable
 
-data class Level(val level: Float = 0f) {
+data class Level(val level: Float = 0f) : Serializable {
     operator fun times(skill2: Level): Level = Level(level * skill2.level)
 
     operator fun times(skillLevel: Float): Level = Level(level * skillLevel)
@@ -111,7 +111,7 @@ data class Address(
         val flat: String = ""
 ) : Serializable
 
-data class TravelDestination(val name: String, val difficultyLevel: Level)
+data class TravelDestination(val name: String, val difficultyLevel: Level) : Serializable
 
 enum class Privilege {
     ADMIN,

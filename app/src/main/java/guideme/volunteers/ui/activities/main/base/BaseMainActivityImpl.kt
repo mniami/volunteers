@@ -10,6 +10,7 @@ import java.util.*
 
 @SuppressWarnings("Registered")
 open class BaseMainActivityImpl : BaseMainActivity, AppCompatActivity() {
+
     companion object {
         const val HOME_FRAGMENT_STACK_NAME = "home"
     }

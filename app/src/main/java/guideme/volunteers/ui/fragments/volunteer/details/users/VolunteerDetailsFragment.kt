@@ -38,8 +38,8 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
                 .create()
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
 
         val volunteer = presenter?.volunteer
         if (volunteer == null){
@@ -71,12 +71,9 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
             tvSubHeader?.text = subHeader
             tvHeader?.text = "${v.person.name} ${v.person.surname}"
 
-            var imageUrl = ""
             if (v.person.avatarImageUri.isNotEmpty()) {
-                imageUrl = v.person.avatarImageUri
+                Picasso.with(context).load(v.person.avatarImageUri).placeholder(R.mipmap.human_placeholder).into(ivImage)
             }
-
-            Picasso.with(context).load(imageUrl).placeholder(R.mipmap.human_placeholder).into(ivImage)
 
             tvShortDescription?.text = v.person.personalityDescription
             tvDescription?.text = v.person.description

@@ -5,14 +5,23 @@ import guideme.volunteers.domain.Project
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
 import guideme.volunteers.ui.views.actionbar.ActionBarTool
+import guideme.volunteers.ui.views.actionbar.EmptyActionBarTool
 
-class EmptyMainActivity(override val actionBarTool: ActionBarTool) : MainActivity {
+class EmptyMainActivity(override val actionBarTool: ActionBarTool = EmptyActionBarTool()) : MainActivity {
+    override fun showProgress() {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun hideProgress() {
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun addListener(listener: MainActivityListener) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun removeListener(listener: MainActivityListener) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun showError(errorMessage: ErrorMessage) {

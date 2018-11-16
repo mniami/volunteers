@@ -1,30 +1,27 @@
 package guideme.volunteers.ui.fragments.base
 
-import guideme.volunteers.ui.activities.main.EmptyMainActivity
-import guideme.volunteers.ui.activities.main.MainActivity
-import guideme.volunteers.ui.views.actionbar.ActionBarTool
-import guideme.volunteers.ui.views.actionbar.EmptyActionBarTool
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.*
 import android.view.animation.Animation
-import guideme.volunteers.R
-import guideme.volunteers.helpers.Container
-import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
-import guideme.volunteers.helpers.dataservices.errors.ErrorType
+import guideme.volunteers.log.createLog
+import guideme.volunteers.ui.activities.main.EmptyMainActivity
+import guideme.volunteers.ui.activities.main.MainActivity
 import guideme.volunteers.ui.tools.ToolbarConfigurationHandler
-import io.reactivex.rxkotlin.subscribeBy
+import guideme.volunteers.ui.views.actionbar.ActionBarTool
+import guideme.volunteers.ui.views.actionbar.EmptyActionBarTool
 
 open class BaseFragment<T : Presenter> : Fragment() {
-    private val emptyMainActivity = EmptyMainActivity(EmptyActionBarTool())
+    protected val log = createLog(this)
     private val toolbarConfigurationHandler = ToolbarConfigurationHandler()
     protected var presenter: T? = null
     protected var configuration: FragmentConfiguration = FragmentConfiguration()
-    protected var mainActivity: MainActivity = emptyMainActivity
-    protected var actionBar: ActionBarTool = EmptyActionBarTool()
+    protected lateinit var mainActivity: MainActivity
+    protected lateinit var actionBar: ActionBarTool
 
     override fun onAttach(context: Context?) {
+        log.d { "onAttach" }
         super.onAttach(context)
         if (context is MainActivity) {
             mainActivity = context
@@ -33,7 +30,9 @@ open class BaseFragment<T : Presenter> : Fragment() {
     }
 
     override fun onDetach() {
-        mainActivity = emptyMainActivity
+        log.d { "onDetach" }
+        actionBar = EmptyActionBarTool()
+        mainActivity = EmptyMainActivity()
         super.onDetach()
     }
 
@@ -52,8 +51,9 @@ open class BaseFragment<T : Presenter> : Fragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        log.d { "onCreate" }
         super.onCreate(savedInstanceState)
-        if (configuration.toolbar.menuResourceId != null){
+        if (configuration.toolbar.menuResourceId != null) {
             setHasOptionsMenu(true)
         }
         presenter?.onCreate()
@@ -69,16 +69,19 @@ open class BaseFragment<T : Presenter> : Fragment() {
     }
 
     override fun onResume() {
+        log.d { "onResume" }
         super.onResume()
         presenter?.onResume()
     }
 
     override fun onPause() {
+        log.d { "onPause" }
         super.onPause()
         presenter?.onPause()
     }
 
     override fun onDestroy() {
+        log.d { "onDestroy" }
         super.onDestroy()
         presenter?.onDestroy()
     }

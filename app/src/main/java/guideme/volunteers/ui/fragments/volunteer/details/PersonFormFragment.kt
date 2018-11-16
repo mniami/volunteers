@@ -1,9 +1,8 @@
 package guideme.volunteers.ui.fragments.volunteer.details
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.*
+import android.widget.TabHost
 import com.squareup.picasso.Picasso
 import guideme.volunteers.R
 import guideme.volunteers.domain.Human
@@ -21,7 +20,7 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
     private val usersDataSource: UserDataSource?
 
     companion object {
-        val HUMAN_ARG = "human"
+        const val HUMAN_ARG = "human"
     }
 
     init {
@@ -33,16 +32,12 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
                 volunteerDataSource = volunteersDataSource)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        presenter?.mainActivity = mainActivity
-        mainActivity.actionBarTool.hideBackArrow()
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        if (view == null) {
+            return view
+        }
+        val tabHost = view.findViewById<TabHost?>(R.id.tabHost)
         tabHost?.let {
             it.setup()
 
@@ -58,6 +53,25 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
 
             it.addTab(tab2)
         }
+        return view
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        log.d { "onCreate" }
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initViews()
+    }
+
+    private fun initViews() {
+        if (presenter?.human == null) {
+            return
+        }
+        presenter?.mainActivity = mainActivity
         presenter?.human?.person?.let {
             if (it.avatarImageUri.isNotEmpty()) {
                 Picasso.with(context).load(it.avatarImageUri).placeholder(R.mipmap.human_placeholder).into(imageView)

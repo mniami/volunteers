@@ -15,4 +15,6 @@ interface MainActivity : BaseMainActivity {
     fun showProject(project: Project)
     fun openEditUserDetails(human: Human)
     fun showError(errorMessage: ErrorMessage)
+    fun showProgress()
+    fun hideProgress()
 }

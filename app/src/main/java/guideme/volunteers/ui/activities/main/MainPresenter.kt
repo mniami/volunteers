@@ -17,9 +17,6 @@ internal class MainPresenter(
 
     override fun onCreate() {
         database.init()
-    }
-
-    override fun onStart() {
         if (!googleAuth.isSignedIn()) {
             googleAuth.signIn(fragmentActivity).subscribeBy(
                     onSuccess = {
@@ -30,6 +27,9 @@ internal class MainPresenter(
                         mainView.openAuthentication()
                     })
         }
+    }
+
+    override fun onStart() {
     }
 }
 

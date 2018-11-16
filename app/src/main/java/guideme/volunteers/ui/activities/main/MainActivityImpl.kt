@@ -7,6 +7,7 @@ import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import guideme.volunteers.R
 import guideme.volunteers.auth.SignInAuthResult
 import guideme.volunteers.domain.Human
@@ -14,6 +15,7 @@ import guideme.volunteers.domain.Project
 import guideme.volunteers.domain.Volunteer
 import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.dataservices.errors.ErrorMessage
+import guideme.volunteers.log.createLog
 import guideme.volunteers.ui.activities.main.base.BaseMainActivityImpl
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import guideme.volunteers.ui.tools.ToolbarConfigurationHandler
@@ -22,7 +24,7 @@ import guideme.volunteers.ui.views.actionbar.ActionBarToolImpl
 import kotlinx.android.synthetic.main.activity_main.*
 
 internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
-
+    private val log = createLog(this)
     override val actionBarTool: ActionBarTool = ActionBarToolImpl(this)
 
     private var menu: Menu? = null
@@ -35,19 +37,22 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
             .create()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        log.d { "onActivityResult" }
         super.onActivityResult(requestCode, resultCode, data)
 
-        data?.let {
-            Container.googleAuth.onActivityResult(requestCode, it)
+        if (data != null) {
+            Container.googleAuth.onActivityResult(requestCode, data)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        log.d { "onCreate" }
         fragmentChanger.supportFragmentManager = supportFragmentManager
 
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
+            log.d { "savedInstance == null" }
             Container.googleAuth.init(this)
 
             setContentView(R.layout.activity_main)
@@ -59,20 +64,22 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
                 presenter = MainPresenter(this, Container.googleAuth, Container.database, this)
             }
             presenter?.onCreate()
+
+            supportFragmentManager?.addOnBackStackChangedListener {
+                refreshMenu()
+            }
         }
     }
 
     override fun onStart() {
+        log.d { "onStart" }
         fragmentChanger.paused = false
         super.onStart()
         presenter?.onStart()
-
-        supportFragmentManager?.addOnBackStackChangedListener {
-            refreshMenu()
-        }
     }
 
     override fun onPause() {
+        log.d { "onPause" }
         super.onPause()
         fragmentChanger.paused = true
     }
@@ -97,22 +104,23 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.string.action_settings -> {
                 presenter?.onSettingsClick()
-                return true
+                true
             }
             R.id.action_authentication -> {
                 presenter?.onAuthenticationClick()
-                return true
+                true
             }
             else -> {
-                return super.onOptionsItemSelected(item)
+                super.onOptionsItemSelected(item)
             }
         }
     }
 
     override fun refreshMenu() {
+        log.d { "refreshMenu" }
         val logInMenuItem = menu?.findItem(R.id.action_authentication)
         val logInTextId = if (Container.googleAuth.isSignedIn()) R.string.user_signed_in_menu_item else R.string.user_not_signed_in_menu_item
 
@@ -121,6 +129,14 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
         if (supportFragmentManager.backStackEntryCount == 0) {
             toolbarConfigurationHandler.applyConfiguration(this, configuration)
         }
+    }
+
+    override fun hideProgress() {
+        progress.visibility = View.GONE
+    }
+
+    override fun showProgress() {
+        progress.visibility = View.VISIBLE
     }
 
     override fun openSettings() = fragmentChanger.openSettings()
