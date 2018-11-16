@@ -109,10 +109,10 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
                 presenter?.onSettingsClick()
                 true
             }
-            R.id.action_authentication -> {
-                presenter?.onAuthenticationClick()
-                true
-            }
+//            R.id.action_authentication -> {
+//                presenter?.onAuthenticationClick()
+//                true
+//            }
             else -> {
                 super.onOptionsItemSelected(item)
             }
@@ -121,10 +121,10 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
     override fun refreshMenu() {
         log.d { "refreshMenu" }
-        val logInMenuItem = menu?.findItem(R.id.action_authentication)
-        val logInTextId = if (Container.googleAuth.isSignedIn()) R.string.user_signed_in_menu_item else R.string.user_not_signed_in_menu_item
+//        val logInMenuItem = menu?.findItem(R.id.action_authentication)
+//        val logInTextId = if (Container.googleAuth.isSignedIn()) R.string.user_signed_in_menu_item else R.string.user_not_signed_in_menu_item
 
-        logInMenuItem?.title = getString(logInTextId)
+        //logInMenuItem?.title = getString(logInTextId)
 
         if (supportFragmentManager.backStackEntryCount == 0) {
             toolbarConfigurationHandler.applyConfiguration(this, configuration)

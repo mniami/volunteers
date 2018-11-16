@@ -77,7 +77,7 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
         presenter?.human?.person?.let { person ->
             if (person.avatarImageUri.isNotEmpty()) {
                 imageView.tag = person.avatarImageUri
-                Picasso.with(context).load(person.avatarImageUri).into(imageView)
+                Picasso.with(context).load(person.avatarImageUri).placeholder(R.mipmap.human_placeholder).into(imageView)
             }
             etName?.setText(person.name)
             etEmail?.setText(person.email)
@@ -86,7 +86,7 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
             imageView?.setOnClickListener {
                 UrlRequestDialog().show(getString(R.string.url_input_dialog_title), getString(R.string.url_input_dialog_message), context) { url ->
                     imageView.tag = url
-                    Picasso.with(context).load(url).into(imageView)
+                    Picasso.with(context).load(url).placeholder(R.mipmap.human_placeholder).into(imageView)
                 }
             }
 
