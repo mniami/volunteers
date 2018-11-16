@@ -27,9 +27,9 @@ class FragmentChangerImpl(override var supportFragmentManager: FragmentManager? 
         val isHome = supportFragmentManager?.backStackEntryCount == 0
 
         supportFragmentManager?.beginTransaction()
-                ?.addToBackStack(if (isHome) BaseMainActivityImpl.HOME_FRAGMENT_STACK_NAME else null)
-                ?.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                ?.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
                 ?.replace(R.id.fragmentContainer, fragment, name)
+                ?.addToBackStack(if (isHome) BaseMainActivityImpl.HOME_FRAGMENT_STACK_NAME else null)
                 ?.commit()
     }
 

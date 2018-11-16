@@ -3,6 +3,7 @@ package guideme.volunteers.ui.fragments.volunteer.details.users
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
+import android.text.Html
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -64,15 +65,19 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
             return
         }
         presenter?.volunteer?.let { v ->
-            var address = v.person.addresses.values.firstOrNull() ?: ""
-            var subHeader = "${v.person.email}\n$address"
-
+            val address = v.person.addresses.entries.firstOrNull()
+            var subHeader = v.person.email
+            if (address != null) {
+                subHeader += getString(R.string.person_short_description)
+                subHeader = subHeader.replace("%city", address.value.city).replace("%zip", address.value.zip).replace("%street", address.value.street)
+            }
             actionBar.setTitle("${v.person.name} ${v.person.surname}")
-            tvSubHeader?.text = subHeader
+            tvSubHeader?.text = Html.fromHtml(subHeader)
+
             tvHeader?.text = "${v.person.name} ${v.person.surname}"
 
             if (v.person.avatarImageUri.isNotEmpty()) {
-                Picasso.with(context).load(v.person.avatarImageUri).placeholder(R.mipmap.human_placeholder).into(ivImage)
+                Picasso.with(context).load(v.person.avatarImageUri).into(ivImage)
             }
 
             tvShortDescription?.text = v.person.personalityDescription

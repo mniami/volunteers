@@ -5,12 +5,14 @@ import android.view.*
 import android.widget.TabHost
 import com.squareup.picasso.Picasso
 import guideme.volunteers.R
+import guideme.volunteers.domain.Address
 import guideme.volunteers.domain.Human
 import guideme.volunteers.domain.Person
 import guideme.volunteers.domain.Privilege
 import guideme.volunteers.helpers.Container
 import guideme.volunteers.helpers.dataservices.datasource.UserDataSource
 import guideme.volunteers.helpers.dataservices.datasource.VolunteerDataSource
+import guideme.volunteers.ui.dialogs.UrlRequestDialog
 import guideme.volunteers.ui.fragments.base.BaseFragment
 import guideme.volunteers.ui.fragments.base.FragmentConfiguration
 import guideme.volunteers.ui.fragments.volunteer.details.presenters.PersonPresenter
@@ -72,23 +74,30 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
             return
         }
         presenter?.mainActivity = mainActivity
-        presenter?.human?.person?.let {
-            if (it.avatarImageUri.isNotEmpty()) {
-                Picasso.with(context).load(it.avatarImageUri).placeholder(R.mipmap.human_placeholder).into(imageView)
+        presenter?.human?.person?.let { person ->
+            if (person.avatarImageUri.isNotEmpty()) {
+                imageView.tag = person.avatarImageUri
+                Picasso.with(context).load(person.avatarImageUri).into(imageView)
             }
-            etName?.setText(it.name)
-            etEmail?.setText(it.email)
-            etPersonalityDescription?.setText(it.personalityDescription)
-            etShortDescription?.setText(it.shortDescription)
+            etName?.setText(person.name)
+            etEmail?.setText(person.email)
+            etPersonalityDescription?.setText(person.personalityDescription)
+            etShortDescription?.setText(person.shortDescription)
+            imageView?.setOnClickListener {
+                UrlRequestDialog().show(getString(R.string.url_input_dialog_title), getString(R.string.url_input_dialog_message), context) { url ->
+                    imageView.tag = url
+                    Picasso.with(context).load(url).into(imageView)
+                }
+            }
 
-            val addressEntry = it.addresses.entries.firstOrNull()
+            val addressEntry = person.addresses.entries.firstOrNull()
             if (addressEntry != null) {
                 val address = addressEntry.value
                 etCity?.setText(address.city)
                 etPostCode?.setText(address.zip)
-                etAddress?.setText(String.format("%s %s/%s", address.street, address.house, address.flat))
+                etAddress?.setText(address.street)
             }
-            etDescription?.setText(it.description)
+            etDescription?.setText(person.description)
         }
     }
 
@@ -117,8 +126,12 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
                 shortDescription = etShortDescription.text.toString(),
                 personalityDescription = etPersonalityDescription.text.toString(),
                 description = etDescription.text.toString(),
-                addresses = emptyMap(),
-                avatarImageUri = sourcePerson?.avatarImageUri ?: ""))
+                addresses = mapOf(Pair(Address.Types.Main, Address(
+                        type = Address.Types.Main,
+                        city = etCity.text.toString(),
+                        street = etAddress.text.toString(),
+                        zip = etPostCode.text.toString()))),
+                avatarImageUri = imageView.tag as String))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

@@ -104,12 +104,17 @@ data class ImageMetadata(val name: String = "",
                          val url: String = "") : Serializable
 
 data class Address(
+        val type: String = "",
         val city: String = "",
         val zip: String = "",
         val street: String = "",
         val house: String = "",
         val flat: String = ""
-) : Serializable
+) : Serializable {
+    object Types {
+        const val Main = "Main"
+    }
+}
 
 data class TravelDestination(val name: String, val difficultyLevel: Level) : Serializable
 

@@ -73,7 +73,7 @@ class AuthenticationFragmentImpl : BaseFragment<AuthenticationPresenter>(), Auth
         tvEmail.text = authUser.email
 
         if (authUser.photoUrl.isNotBlank()) {
-            Picasso.with(context).load(authUser.photoUrl).placeholder(R.mipmap.human_placeholder).transform(CircleTransform()).into(ivImage)
+            Picasso.with(context).load(authUser.photoUrl).transform(CircleTransform()).into(ivImage)
         }
     }
 }

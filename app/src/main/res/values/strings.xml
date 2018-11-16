@@ -111,4 +111,12 @@ proguardFiles(proGuardFileCollection)</pre></div>
     <string name="add">Add</string>
     <string name="authentication_failed_message">Authentication failed</string>
     <string name="delete_failed_message">Delete has failed.</string>
+    <string name="accept_dialog_button_text">Ok</string>
+    <string name="cancel_dialog_button_text">Cancel</string>
+    <string name="url_input_dialog_title">Image Url</string>
+    <string name="url_input_dialog_message">Please insert URL to the image</string>
+    <string name="person_short_description">
+        <![CDATA[
+        <br/><br/>%city %zip<br/>%street
+        ]]></string>
 </resources>

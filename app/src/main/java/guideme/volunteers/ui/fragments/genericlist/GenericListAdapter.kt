@@ -56,7 +56,7 @@ class GenericListAdapter(val list: List<GenericItem<*>>, val onClickListener: (G
             itemView.setOnClickListener(this::onClick)
 
             if (item?.imageUrl != null && item.imageUrl.isNotEmpty()) {
-                Picasso.with(itemView.context).load(item.imageUrl).placeholder(R.mipmap.human_placeholder).transform(CircleTransform()).into(imageView)
+                Picasso.with(itemView.context).load(item.imageUrl).transform(CircleTransform()).into(imageView)
             } else {
 
             }

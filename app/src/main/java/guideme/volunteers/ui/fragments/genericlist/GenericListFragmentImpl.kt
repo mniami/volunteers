@@ -109,7 +109,6 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
     private fun refreshAdapter() {
         var genericItems = LinkedList<GenericItem<*>>()
 
-        mainActivity.showProgress()
         presenter?.items?.observeOn(AndroidSchedulers.mainThread())?.
                 subscribeBy(
                         onNext = {
@@ -123,7 +122,6 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
                             genericItems = LinkedList()
                             updateAdapter(gi)
                             swipeRefresh?.isRefreshing = false
-                            mainActivity.hideProgress()
                         })
     }
 
