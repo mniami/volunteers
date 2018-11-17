@@ -49,7 +49,7 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId){
+        when (item?.itemId) {
             R.string.menu_refresh -> {
                 swipeRefresh.isRefreshing = true
                 refreshAdapter()
@@ -62,14 +62,18 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
         super.onResume()
         database.getCurrentUser()
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(onSuccess = { user ->
-                    currentUser = user
+                .subscribeBy(
+                        onSuccess = { user ->
+                            currentUser = user
 
-                    addVolunteerButton?.visibility = View.VISIBLE
-                    if (recyclerView?.adapter == null) {
-                        refreshAdapter()
-                    }
-                })
+                            addVolunteerButton?.visibility = View.VISIBLE
+                            if (recyclerView?.adapter == null) {
+                                refreshAdapter()
+                            }
+                        },
+                        onError = {
+
+                        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,20 +113,19 @@ class GenericListFragmentImpl : BaseFragment<GenericPresenter>(), GenericListFra
     private fun refreshAdapter() {
         var genericItems = LinkedList<GenericItem<*>>()
 
-        presenter?.items?.observeOn(AndroidSchedulers.mainThread())?.
-                subscribeBy(
-                        onNext = {
-                            genericItems.add(it)
-                        },
-                        onError = {
-                            mainActivity.showError(ErrorMessage(ErrorType.ILLEGAL_STATE_EXCEPTION, it.message))
-                        },
-                        onComplete = {
-                            val gi = genericItems
-                            genericItems = LinkedList()
-                            updateAdapter(gi)
-                            swipeRefresh?.isRefreshing = false
-                        })
+        presenter?.items?.observeOn(AndroidSchedulers.mainThread())?.subscribeBy(
+                onNext = {
+                    genericItems.add(it)
+                },
+                onError = {
+                    mainActivity.showError(ErrorMessage(ErrorType.ILLEGAL_STATE_EXCEPTION, it.message))
+                },
+                onComplete = {
+                    val gi = genericItems
+                    genericItems = LinkedList()
+                    updateAdapter(gi)
+                    swipeRefresh?.isRefreshing = false
+                })
     }
 
     private fun updateAdapter(list: List<GenericItem<*>>) {

@@ -12,7 +12,7 @@ import guideme.volunteers.helpers.dataservices.errors.UserNotSignedInException
 import io.reactivex.Observable
 import io.reactivex.Single
 
-class FirebaseDatabaseImpl(private val timeout: Long = 10000) : Database {
+class FirebaseDatabaseImpl(timeout: Long = 10000) : Database {
 
     private var databaseListener: IDatabaseListener? = null
     private val firebaseDb: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -32,10 +32,10 @@ class FirebaseDatabaseImpl(private val timeout: Long = 10000) : Database {
             return Single.error(DatabaseIllegalStateException())
         }
         val user = auth.currentUser
-        if (user != null && user.uid.isNotEmpty()) {
-            return GetUser(firebaseDb).execute(User(id = user.uid))
+        return if (user != null && user.uid.isNotEmpty()) {
+            GetUser(firebaseDb).execute(User(id = user.uid))
         } else {
-            return Single.error(UserNotSignedInException())
+            Single.error(UserNotSignedInException())
         }
     }
 

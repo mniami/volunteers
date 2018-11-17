@@ -1,5 +1,6 @@
 package guideme.volunteers.databases.actions
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import guideme.volunteers.domain.Volunteer
 import io.reactivex.Single
@@ -22,7 +23,9 @@ class AddVolunteer(private val volunteer: Volunteer) {
             throw IllegalStateException()
         }
         val copiedVolunteer = volunteer.cloneWithId(id)
-        database.reference.child(DatabaseTables.VOLUNTEERS).child(id).setValue(copiedVolunteer)
+        val user = FirebaseAuth.getInstance().currentUser
+        val userid = user!!.uid
+        database.reference.child(userid).child(DatabaseTables.VOLUNTEERS).child(id).setValue(copiedVolunteer)
                 .addOnFailureListener {
                     emitter.onError(Error(it.localizedMessage))
                 }

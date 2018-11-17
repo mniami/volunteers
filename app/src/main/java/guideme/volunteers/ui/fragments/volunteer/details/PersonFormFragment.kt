@@ -131,7 +131,7 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
                         city = etCity.text.toString(),
                         street = etAddress.text.toString(),
                         zip = etPostCode.text.toString()))),
-                avatarImageUri = imageView.tag as String))
+                avatarImageUri = imageView.tag as String? ?: ""))
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

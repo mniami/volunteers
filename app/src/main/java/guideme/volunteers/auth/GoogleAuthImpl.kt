@@ -12,10 +12,10 @@ import guideme.volunteers.R
 import guideme.volunteers.log.createLog
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
-import java.lang.IllegalStateException
 import java.util.*
 
 class GoogleAuthImpl(val auth: guideme.volunteers.auth.Auth, override var authResult: SignInAuthResult) : GoogleAuth, GoogleApiClient.OnConnectionFailedListener {
+
     private val RC_SIGN_IN = 13234
     private val log = createLog(this)
 
@@ -24,7 +24,7 @@ class GoogleAuthImpl(val auth: guideme.volunteers.auth.Auth, override var authRe
 
     override fun init(fragmentActivity: FragmentActivity) {
         if (apiClient != null) {
-            return;
+            return
         }
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestProfile()
@@ -36,9 +36,7 @@ class GoogleAuthImpl(val auth: guideme.volunteers.auth.Auth, override var authRe
                 .build()
     }
 
-    override fun isSignedIn(): Boolean {
-        return authResult.success
-    }
+    override fun isSignedIn(): Boolean = authResult.success
 
     override fun signIn(fragmentActivity: FragmentActivity): Single<SignInAuthResult> {
         return Single.create { emitter ->
@@ -54,27 +52,25 @@ class GoogleAuthImpl(val auth: guideme.volunteers.auth.Auth, override var authRe
     override fun onConnectionFailed(p0: ConnectionResult) {
         log.d { "Google auth connection failed" }
 
-        emitter?.let {
-            it.onError(Exception("Connection failed"))
-        }
+        emitter?.onError(Exception("Connection failed"))
     }
 
     override fun onActivityResult(requestCode: Int, data: Intent) {
         if (requestCode != RC_SIGN_IN) {
-            return;
+            return
         }
 
         val result = data.extras["extra_idp_response"]
         if (result !is IdpResponse) {
             emitter?.onError(IllegalStateException("No idp response found"))
-            return;
+            return
         }
         log.d { "Authentication data found" }
         if (result.idpToken == null) {
             log.d { "No idp token found in authentication response" }
 
             emitter?.onError(AuthException("Authentication failed"))
-            return;
+            return
         }
 
         auth.authUser = AuthUser("",
@@ -86,6 +82,15 @@ class GoogleAuthImpl(val auth: guideme.volunteers.auth.Auth, override var authRe
         authResult = SignInAuthResult(true, auth.authUser)
 
         emitter?.onSuccess(authResult)
+    }
+
+    override fun signOut(fragmentActivity: FragmentActivity): Single<Boolean> {
+        return Single.create { emitter ->
+            AuthUI.getInstance().signOut(fragmentActivity).addOnCompleteListener {
+                authResult = SignInAuthResult(false, AuthUser.createEmpty())
+                emitter.onSuccess(true)
+            }
+        }
     }
 
     private fun startActivity(fragmentActivity: FragmentActivity) {

@@ -6,13 +6,16 @@
     <!--android:title="@string/action_settings"-->
     <!--app:showAsAction="never"/>-->
 
-    <!--<item android:id="@+id/action_authentication"-->
-    <!--android:title="@string/user_not_signed_in_menu_item"-->
-    <!--app:showAsAction="never"/>-->
 
-    <item android:id="@+id/action_search"
-          android:title="Search"
-          android:icon="@drawable/ic_search"
-          app:showAsAction="ifRoom|collapseActionView"
-          app:actionViewClass="android.support.v7.widget.SearchView" />
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView"/>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/action_settings"
+        app:showAsAction="always"/>
 </menu>

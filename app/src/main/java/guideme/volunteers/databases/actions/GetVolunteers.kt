@@ -1,5 +1,6 @@
 package guideme.volunteers.databases.actions
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -9,6 +10,7 @@ import guideme.volunteers.log.createLog
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import java.util.concurrent.TimeUnit
+
 
 class GetVolunteers(private val database: FirebaseDatabase, private val timeout: Long) {
     private val log = createLog(this)
@@ -34,7 +36,10 @@ class GetVolunteers(private val database: FirebaseDatabase, private val timeout:
     }
 
     private fun loadData(emitter: ObservableEmitter<Volunteer>) {
-        val ref = database.reference.child(DatabaseTables.VOLUNTEERS)
+        val user = FirebaseAuth.getInstance().currentUser
+        val userid = user!!.uid
+
+        val ref = database.reference.child(userid).child(DatabaseTables.VOLUNTEERS)
         val eventListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 reportLoadedData(emitter, dataSnapshot)

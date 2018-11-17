@@ -5,7 +5,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import guideme.volunteers.domain.User
-import guideme.volunteers.helpers.dataservices.errors.ActionCanceledException
 import guideme.volunteers.log.createLog
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
@@ -37,7 +36,6 @@ class GetUser(private val database: FirebaseDatabase) {
             override fun onCancelled(var1: DatabaseError) {
                 log.d { "Loading user canceled" }
                 ref.removeEventListener(this)
-                emitter.onError(ActionCanceledException("Loading user canceled"))
             }
         }
         ref.addValueEventListener(eventListener)

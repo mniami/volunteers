@@ -42,6 +42,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
         if (data != null) {
             Container.googleAuth.onActivityResult(requestCode, data)
+            refreshLayout()
         }
     }
 
@@ -67,9 +68,14 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
             supportFragmentManager?.addOnBackStackChangedListener {
                 refreshMenu()
+                refreshLayout()
+            }
+            signInButton.setOnClickListener {
+                presenter?.onAuthenticationClick()
             }
         }
     }
+
 
     override fun onStart() {
         log.d { "onStart" }
@@ -105,14 +111,10 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.string.action_settings -> {
+            R.id.action_settings -> {
                 presenter?.onSettingsClick()
                 true
             }
-//            R.id.action_authentication -> {
-//                presenter?.onAuthenticationClick()
-//                true
-//            }
             else -> {
                 super.onOptionsItemSelected(item)
             }
@@ -121,14 +123,11 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
     override fun refreshMenu() {
         log.d { "refreshMenu" }
-//        val logInMenuItem = menu?.findItem(R.id.action_authentication)
-//        val logInTextId = if (Container.googleAuth.isSignedIn()) R.string.user_signed_in_menu_item else R.string.user_not_signed_in_menu_item
-
-        //logInMenuItem?.title = getString(logInTextId)
 
         if (supportFragmentManager.backStackEntryCount == 0) {
             toolbarConfigurationHandler.applyConfiguration(this, configuration)
         }
+        refreshLayout()
     }
 
     override fun hideProgress() {
@@ -150,5 +149,9 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
     override fun showError(errorMessage: ErrorMessage) {
         val content = errorMessage.content ?: "Unexpected error occurred"
         Snackbar.make(activity_main, content, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun refreshLayout() {
+        signInLayout.visibility = if (Container.googleAuth.isSignedIn()) View.GONE else View.VISIBLE
     }
 }

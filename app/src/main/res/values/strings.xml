@@ -119,4 +119,10 @@ proguardFiles(proGuardFileCollection)</pre></div>
         <![CDATA[
         <br/><br/>%city %zip<br/>%street
         ]]></string>
+    <string name="common_signout_button_text">Wyloguj się</string>
+    <string name="succesfull_signin">Zalogowano pomyślnie</string>
+    <string name="successfull_signout">Wylogowano pomyślnie</string>
+    <string name="login_first_message">Proszę się najpierw zalogować</string>
+    <string name="signin_header">Witaj,\njesteś zalogowany na konto\n\n%user%</string>
+    <string name="signout_header">:)</string>
 </resources>

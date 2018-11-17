@@ -6,17 +6,22 @@ import guideme.volunteers.helpers.dataservices.databases.Database
 import io.reactivex.rxkotlin.subscribeBy
 
 internal class MainPresenter(
-        val mainView: MainView,
-        val googleAuth: GoogleAuth,
+        private val mainView: MainView,
+        private val googleAuth: GoogleAuth,
         val database: Database,
-        val fragmentActivity: FragmentActivity) :
-        IMainPresenter {
-    override fun onAuthenticationClick() = mainView.openAuthentication()
+        private val fragmentActivity: FragmentActivity) : IMainPresenter {
+    override fun onAuthenticationClick() {
+        signIn()
+    }
 
     override fun onSettingsClick() = mainView.openSettings()
 
     override fun onCreate() {
         database.init()
+        signIn()
+    }
+
+    private fun signIn() {
         if (!googleAuth.isSignedIn()) {
             googleAuth.signIn(fragmentActivity).subscribeBy(
                     onSuccess = {

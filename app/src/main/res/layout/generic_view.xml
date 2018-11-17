@@ -72,26 +72,6 @@
         fab:fab_labelsPosition="left">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addNeedyButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/half_black"
-            fab:fab_colorPressed="@color/half_black"
-            fab:fab_icon="@drawable/ic_fab_plus"
-            fab:fab_size="mini"
-            fab:fab_title="Add needy"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addGroupButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/half_black"
-            fab:fab_colorPressed="@color/half_black"
-            fab:fab_icon="@drawable/ic_fab_plus"
-            fab:fab_size="mini"
-            fab:fab_title="Add group"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/addVolunteerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

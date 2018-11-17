@@ -11,4 +11,5 @@ interface GoogleAuth {
     fun signIn(fragmentActivity: FragmentActivity): Single<SignInAuthResult>
     fun onActivityResult(requestCode: Int, data: Intent)
     fun isSignedIn(): Boolean
+    fun signOut(fragmentActivity: FragmentActivity): Single<Boolean>
 }
