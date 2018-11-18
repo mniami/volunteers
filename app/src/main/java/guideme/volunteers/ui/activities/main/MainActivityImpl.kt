@@ -42,7 +42,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
         if (data != null) {
             Container.googleAuth.onActivityResult(requestCode, data)
-            refreshLayout()
+            refreshSignInLayout()
         }
     }
 
@@ -68,7 +68,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
 
             supportFragmentManager?.addOnBackStackChangedListener {
                 refreshMenu()
-                refreshLayout()
+                refreshSignInLayout()
             }
             signInButton.setOnClickListener {
                 presenter?.onAuthenticationClick()
@@ -127,7 +127,6 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
         if (supportFragmentManager.backStackEntryCount == 0) {
             toolbarConfigurationHandler.applyConfiguration(this, configuration)
         }
-        refreshLayout()
     }
 
     override fun hideProgress() {
@@ -151,7 +150,7 @@ internal class MainActivityImpl : BaseMainActivityImpl(), MainView {
         Snackbar.make(activity_main, content, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun refreshLayout() {
+    private fun refreshSignInLayout() {
         signInLayout.visibility = if (Container.googleAuth.isSignedIn()) View.GONE else View.VISIBLE
     }
 }

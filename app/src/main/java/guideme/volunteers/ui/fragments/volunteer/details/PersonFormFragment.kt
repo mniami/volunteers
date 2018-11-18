@@ -45,13 +45,13 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
 
             val tab1 = it.newTabSpec("Details")
             tab1.setContent(R.id.detailsLayout)
-            tab1.setIndicator("Details")
+            tab1.setIndicator(getString(R.string.details_label))
 
             it.addTab(tab1)
 
             val tab2 = it.newTabSpec("Skills")
             tab2.setContent(R.id.skillsLayout)
-            tab2.setIndicator("Skills")
+            tab2.setIndicator(getString(R.string.skills_label))
 
             it.addTab(tab2)
         }
@@ -83,6 +83,7 @@ class PersonFormFragment : BaseFragment<PersonPresenter>() {
             etEmail?.setText(person.email)
             etPersonalityDescription?.setText(person.personalityDescription)
             etShortDescription?.setText(person.shortDescription)
+            etDescription?.setText(person.description)
             imageView?.setOnClickListener {
                 UrlRequestDialog().show(getString(R.string.url_input_dialog_title), getString(R.string.url_input_dialog_message), context) { url ->
                     imageView.tag = url

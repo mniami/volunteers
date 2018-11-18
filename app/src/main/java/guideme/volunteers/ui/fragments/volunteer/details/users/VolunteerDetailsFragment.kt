@@ -115,8 +115,8 @@ class VolunteerDetailsFragment : BaseFragment<VolunteerDetailsPresenter>(), IVol
 
                 override fun getPageTitle(position: Int): CharSequence {
                     when (position) {
-                        0 -> return "Info"
-                        1 -> return "Projects"
+                        0 -> return getString(R.string.details_label)
+                        1 -> return getString(R.string.projects_label)
                     }
                     return ""
                 }

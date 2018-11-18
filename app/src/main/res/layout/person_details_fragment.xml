@@ -59,7 +59,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/etName"
-                            android:text="Name"/>
+                            android:text="@string/person_name_label"/>
 
                         <EditText
                             android:id="@+id/etName"
@@ -73,7 +73,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/etEmail"
-                            android:text="Email"/>
+                            android:text="@string/email_label"/>
 
                         <EditText
                             android:id="@+id/etEmail"
@@ -98,7 +98,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:labelFor="@+id/etCity"
-                                    android:text="City"/>
+                                    android:text="@string/city_label"/>
 
                                 <EditText
                                     android:id="@+id/etCity"
@@ -119,7 +119,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:labelFor="@+id/etPostCode"
-                                    android:text="Post code"/>
+                                    android:text="@string/postcode_label"/>
 
                                 <EditText
                                     android:id="@+id/etPostCode"
@@ -135,7 +135,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/etPostCode"
-                            android:text="Address"/>
+                            android:text="@string/address_label"/>
 
                         <EditText
                             android:id="@+id/etAddress"
@@ -149,7 +149,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/etPersonalityDescription"
-                            android:text="Personality"/>
+                            android:text="@string/position_label"/>
 
                         <EditText
                             android:id="@+id/etPersonalityDescription"
@@ -164,7 +164,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/etShortDescription"
-                            android:text="Short description"/>
+                            android:text="@string/short_description_label"/>
 
                         <EditText
                             android:id="@+id/etShortDescription"
@@ -178,7 +178,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:labelFor="@+id/etDescription"
-                            android:text="Description"/>
+                            android:text="@string/long_description_label"/>
 
                         <EditText
                             android:id="@+id/etDescription"
