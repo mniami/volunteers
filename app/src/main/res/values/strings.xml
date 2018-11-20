@@ -5,9 +5,9 @@
     <string name="action_favorite">Ulubione</string>
     <string name="action_settings">Ustawienia</string>
     <string name="user_not_signed_in_menu_item">Zaloguj się</string>
-    <string name="facebook_application_id">191882514194298</string>
-    <string name="facebook_secret">19b78b0b2170a7746cc19f266f452c1c</string>
-    <string name="fb_login_protocol_scheme">19b78b0b2170a7746cc19f266f452c1c</string>
+    <string name="facebook_application_id">unknown</string>
+    <string name="facebook_secret">unknown</string>
+    <string name="fb_login_protocol_scheme">unknown</string>
     <string name="project_label">Szczegóły projektu</string>
     <string name="long_description" formatted="false">
         <![CDATA[
